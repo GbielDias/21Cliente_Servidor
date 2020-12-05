@@ -1,29 +1,32 @@
 package server;
 
 import java.util.ArrayList;
-import server.Teclado;
+import server.infra.AceitadoraDeConexao;
 
 public class Aplicacao {
 	private static final String DEFAULT_DOOR = "3333";
 
 	public static void main(String[] args) {
-		String comando = null;
-		
 		if (args.length > 1) {
 			System.err.println("Uso esperado: java Servidor [PORTA]\n");
 			return;
 		}
 
-		String door = DEFAULT_DOOR;
+		String porta = DEFAULT_DOOR;
 
 		if (args.length == 1)
-			door = args[0];
+			porta = args[0];
+		
+		String comando = null;
+		AceitadoraDeConexao aceitadora;
+		ArrayList<Parceiro> usuarios;
 		
 		//String só por hora
-		ArrayList<String> parceiros = new ArrayList<>();
+		usuarios = new ArrayList<>();
 		
 		try {
-			
+			aceitadora = new AceitadoraDeConexao(porta, usuarios);
+			aceitadora.start();
 		}catch(Exception e) {
 			System.err.print(e.getMessage());			
 		}
