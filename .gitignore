@@ -1,7 +1,7 @@
 /.metadata/
 bin
 temp
-
+.idea
 .classpath
 .project
 .iml

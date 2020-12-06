@@ -16,7 +16,7 @@ public class Parceiro {
 	
 	public Parceiro(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception {
 		if (conexao == null)
-			throw new Exception("Conex„o nula");
+			throw new Exception("Conex√£o nula");
 		
 		if (receptor == null)
 			throw new Exception("Receptor nulo");
@@ -35,7 +35,7 @@ public class Parceiro {
 			transmissor.writeObject(c);
 			transmissor.flush();
 		}catch(Exception e) {
-			throw new Exception("Erro de recepÁ„o");
+			throw new Exception("Erro de recep√ß√£o");
 		}
 	}
 
@@ -50,12 +50,12 @@ public class Parceiro {
 			
 			return proximoComunicado;
 		} catch(Exception e) {
-			throw new Exception ("Erro de recepÁ„o");
+			throw new Exception ("Erro de recep√ß√£o");
 		}
 	}
 	
 	//Cliente envie
-	public Comunicado servidorEnvie() throws Exception {
+	public Comunicado envie() throws Exception {
 		try {
 			if(proximoComunicado == null)
 				proximoComunicado = (Comunicado) receptor.readObject();
@@ -65,7 +65,7 @@ public class Parceiro {
 			
 			return cm;
 		}catch(Exception e) {
-			throw new Exception("Erro de recepÁ„o");
+			throw new Exception("Erro de recep√ß√£o");
 		}
 	}
 	
