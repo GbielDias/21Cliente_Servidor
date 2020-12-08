@@ -4,7 +4,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.Semaphore;
-import server.infra.Comunicado;
 
 public class Parceiro {
 	private Socket conexao;
