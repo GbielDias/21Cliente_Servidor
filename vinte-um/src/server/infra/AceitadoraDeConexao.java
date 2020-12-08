@@ -53,6 +53,7 @@ public class AceitadoraDeConexao extends Thread{
 			}
 			
 			supervisora.start();
+			System.out.println(usuarios.size());
 		}
 		
 		//TODO startar patida

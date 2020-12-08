@@ -1,47 +1,47 @@
 package client;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MaoDoJogador
-{
-     private ArrayList<Integer> mao = new ArrayList<Integer>();
+import client.models.Carta;
 
+public class MaoDoJogador {
+	private ArrayList<Carta> mao = new ArrayList<>();
 
+	public MaoDoJogador(ArrayList<Carta> valores) {
+		for (int i = 0; i < 3; i++)
+			mao.add(valores.get(i));
 
-    public MaoDoJogador(ArrayList<Integer> valores)
-    {
-        for(int i = 0;i < 3; i++)
-            mao.add(valores.get(i));
+	}
 
-    }
+	public ArrayList<Carta> getMao() {
+		return mao;
+	}
 
-    public ArrayList<Integer> getMao() {
-        return mao;
-    }
+	public void removerNumero(int num) throws Exception {
+		if (num < 0 || num > 10)
+			throw new Exception("Carta inv·lida");
 
-    public void removerNumero(int num) throws Exception
-    {
-        if(num < 0 || num > 10)
-            throw new Exception("Carta inv√°lidade");
+		mao.remove(num);
+	}
 
-        mao.remove(mao.indexOf(num));
-    }
+	public int contar() {
+		int soma = 0;
+		
+		for (int i = 0; i < mao.size(); i++) {
+			soma = soma + mao.get(i).getPontos();			
+		}
 
-    public int contar()
-    {
-        int valor = 0;
-        for(int i = 0; i < mao.size(); i++)
-            valor = valor + mao.get(i);
+		return soma;
+	}
 
-        return valor;
-
-    }
-
-
-    @Override
-    public String toString() {
-        return mao.toString() + "= " + contar();
-    }
+	@Override
+	public String toString() {
+		String str = "[";
+		
+		for (int i = 0; i < mao.size(); i++) {
+			str += mao.get(i).ToString() + ", ";
+		}
+		
+		return str.substring(0,  str.length() - 2)+ "] = " + contar();
+	}
 }
