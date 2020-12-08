@@ -1,6 +1,7 @@
 package client;
 
 import server.Parceiro;
+import server.Teclado;
 
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -12,13 +13,14 @@ public class App {
 	public static final String HOST_PADRAO = "localhost";
 	public static final int PORTA_PADRAO = 3333;
 
-	public static void main(String[] args)
+	public static void main(String[] args) // Cliente
 	{
 		if(args.length > 2)
 		{
 			System.err.println("Uso esperado: java app [HOST[PORTA]]");
 			return;
 		}
+
 		//Criando os objetos que vão ser instanciado
 		Socket 				conexao 	= null;
 		ObjectOutputStream 	transmissor = null;
@@ -48,7 +50,23 @@ public class App {
 		char opcao = ' ';
 		do
 		{
-			//faça algo aqui
+			try
+			{
+				System.out.println("Opções:");
+				System.out.println("C. Comprar do baralho e descartar");
+				System.out.println("D. Comprar da pilha de descarte e descartar");
+				opcao = Teclado.getUmChar(); // A, B, C, 1, 0 // AS, 10 , Um , Es, Palavra
+
+
+				if(opcao == 'b')
+				{
+					throw new Exception("Baboseira");
+				}
+			}
+			catch(Exception erro)
+			{
+				System.err.println("Você Escreveu baboseira!!!");
+			}
 		}
 		while(opcao != 'T');
 
