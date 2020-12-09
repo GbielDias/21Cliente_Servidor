@@ -4,100 +4,155 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import temp.continhas.Cliente.Parceiro;
-
 public class Aplicacao {
-	private static String HOST = "localhost";
-	private static int PORTA = 3333;
 
-	public static void main(String[] args) {
-		if (args.length > 2) {
-			System.err.println("Uso esperado: java Cliente [HOST [PORTA]]\n");
+	public static final String HOST_PADRAO = "localhost";
+	public static final int PORTA_PADRAO = 3333;
+
+	public static void main(String[] args) // Cliente
+	{
+		if(args.length > 2)
+		{
+			System.err.println("Uso esperado: java app [HOST[PORTA]]");
 			return;
 		}
 
-//		Socket conexao = null;
-//		try {
-//			String host = HOST;
-//			int porta = PORTA;
-//
-//			if (args.length > 0)
-//				host = args[0];
-//
-//			if (args.length == 2)
-//				porta = Integer.parseInt(args[1]);
-//
-//			conexao = new Socket(host, porta);
-//		} catch (Exception erro) {
-//			System.err.println("Indique o servidor e a porta corretos!\n");
-//			return;
-//		}
-//
-//		ObjectOutputStream transmissor = null;
-//		try {
-//			transmissor = new ObjectOutputStream(conexao.getOutputStream());
-//		} catch (Exception erro) {
-//			System.err.println("Indique o servidor e a porta corretos!\n");
-//			return;
-//		}
-//
-//		ObjectInputStream receptor = null;
-//		try {
-//			receptor = new ObjectInputStream(conexao.getInputStream());
-//		} catch (Exception erro) {
-//			System.err.println("Indique o servidor e a porta corretos!\n");
-//			return;
-//		}
-//
-//		Parceiro servidor = null;
-//		try {
-//			servidor = new Parceiro(conexao, receptor, transmissor);
-//		} catch (Exception erro) {
-//			System.err.println("Indique o servidor e a porta corretos!\n");
-//			return;
-//		}
+		//Criando os objetos que vão ser instanciado
+		Socket 				conexao 	= null;
+		ObjectOutputStream 	transmissor = null;
+		ObjectInputStream 	receptor 	= null;
+		Parceiro			servidor	= null;
+		TratadoraDeComunicadoDeDesligamento
+				tratadoraDeDesligamento = null;
 
-		Dealer dealer = new Dealer();
+		try
+		{
+			conexao 	= instanciarConexao(args);
+			transmissor = instanciarTransmissor(conexao);
+			receptor 	= instanciarReceptor(conexao);
+			servidor	= instanciarServidor(conexao,receptor,transmissor);
+			tratadoraDeDesligamento = instanciarTratadora(servidor);
+		}
+		catch (Exception err)
+		{
+			System.err.println(err.getMessage());
+			System.err.println("Indique o servidor e a porta corretos!\n");
+			return;
+		}
 
-		System.out.println(dealer.baralho + "\n");
+		//Jogo começa aqui
+		tratadoraDeDesligamento.start();
 
-		for (;;) {
-			if (dealer.contar() != 21) {
+		char opcao = ' ';
+		do
+		{
+			try
+			{
+				System.out.println("Opções:");
+				System.out.println("C. Comprar do baralho e descartar");
+				System.out.println("D. Comprar da pilha de descarte e descartar");
+				System.out.println("S. Sair da partida");
 
-				System.out.println(dealer.maoDoJogador.toString());
-				System.out.println("Suas Op��es: ");
-				System.out.println("1. Comprar uma carta e descartar um.");
-				System.out.println("2. Comprar a �ltima carta do descarte e descartar um.");
+				opcao = Character.toUpperCase(Teclado.getUmChar()); // A, B, C, 1, 0 // AS, 10 , Um , Es, Palavra
 
-				if (dealer.descarte != null)
-					System.out.println("�ltimo descarte:" + dealer.descarte);
-
-				try {
-					char opcao = Teclado.getUmChar();
-
-					switch (opcao) {
-					case '1':
-						dealer.comprar();
-
-					case '2':
-						dealer.comprarDescarte();
-
-					default:
-						System.out.println("Op��o inv�lida");
-						continue;
-
-					}
-
-				} catch (Exception err) {
-					System.out.println(err.getMessage());
+				if(!(opcao == 'C' || opcao == 'D' || opcao == 'S' ))
+				{
+					throw new Exception("Opcao Inválida");
 				}
-			} else {
-				System.out.println("Voc� ganhou, fez 21 com as cartas: " + dealer.maoDoJogador);
-				System.out.println("Quantidade de cartas compradas:" + dealer.vezesJogadas);
-				break;
+
+				//servidor.receba(new Escolha (opcao));
+			}
+			catch(Exception erro)
+			{
+				System.err.println("Opção inválida");
 			}
 
 		}
+		while(opcao != 'S');
 
 	}
+
+	public static Socket instanciarConexao(String[] args) throws Exception
+	{
+		Socket ret = null;
+		try
+		{
+			String host = Aplicacao.HOST_PADRAO;
+			int porta = Aplicacao.PORTA_PADRAO;
+
+			if(args.length > 0)
+				host = args[1];
+			if(args.length == 2)
+				porta = Integer.parseInt(args[1]);
+
+			ret = new Socket(host, porta);
+		}
+		catch(Exception err)
+		{
+			throw new Exception("Ocorreu um erro na instanciação de \"conexao\".");
+		}
+
+		return ret;
+	}
+
+	public static ObjectOutputStream instanciarTransmissor(Socket conexao) throws Exception
+	{
+		ObjectOutputStream ret = null;
+		try
+		{
+			ret = new ObjectOutputStream(conexao.getOutputStream());
+		}
+		catch(Exception err)
+		{
+			throw new Exception("Ocorreu um erro na instanciação do \"transmissor\".");
+		}
+
+		return ret;
+	}
+
+	public static ObjectInputStream instanciarReceptor(Socket conexao) throws Exception
+	{
+		ObjectInputStream ret = null;
+		try
+		{
+			ret = new ObjectInputStream(conexao.getInputStream());
+		}
+		catch(Exception err)
+		{
+			throw new Exception("Ocorreu um erro na instanciação do \"receptor\".");
+		}
+
+		return ret;
+	}
+
+	public static Parceiro  instanciarServidor(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception
+	{
+		Parceiro ret = null;
+		try
+		{
+			ret = new Parceiro(conexao,receptor,transmissor);
+		}
+		catch(Exception err)
+		{
+			throw new Exception("Ocorreu um erro na instanciação do \"servidor\".");
+		}
+
+		return ret;
+	}
+
+	public static TratadoraDeComunicadoDeDesligamento instanciarTratadora(Parceiro servidor) throws Exception
+	{
+		TratadoraDeComunicadoDeDesligamento ret = null;
+		try
+		{
+			ret = new TratadoraDeComunicadoDeDesligamento(servidor);
+		}
+		catch(Exception err)
+		{
+			throw new Exception("Ocorreu um erro na instanciação da \"tratadoraDeDesligamento\"");
+		}
+		return ret;
+	}
+
+
 }

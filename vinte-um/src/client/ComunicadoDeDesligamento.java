@@ -1,6 +1,5 @@
 package client;
 
-import server.infra.Comunicado;
-
+@SuppressWarnings("serial")
 public class ComunicadoDeDesligamento extends Comunicado
 {}

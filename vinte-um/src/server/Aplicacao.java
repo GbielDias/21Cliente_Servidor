@@ -40,14 +40,13 @@ public class Aplicacao {
             }catch(Exception e) {
             	System.err.println(e.getMessage());
             }
-            
-            System.out.println(comando);
+
             if (comando.toLowerCase().equals("desativar")) {
-            	//TODO lançar a notificação para os clientes            	
+
             } 
             
             else 
-            	System.err.println("Comando invállido");
+            	System.err.println("Comando invï¿½llido");
 		}
 	}
 }
