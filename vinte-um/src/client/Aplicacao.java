@@ -22,8 +22,7 @@ public class Aplicacao {
 		ObjectOutputStream 	transmissor = null;
 		ObjectInputStream 	receptor 	= null;
 		Parceiro			servidor	= null;
-		TratadoraDeComunicadoDeDesligamento
-				tratadoraDeDesligamento = null;
+		TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
 
 		try
 		{
@@ -59,8 +58,38 @@ public class Aplicacao {
 				{
 					throw new Exception("Opcao Inválida");
 				}
+				if (opcao == 'C') {
+					servidor.receba(new PedidoDeCarta());
+					//servidor.receba(new Escolha(opcao));
 
-				//servidor.receba(new Escolha (opcao));
+					/*
+					// Visualização da mao do jogador
+					String desc;
+					System.out.print("Escolha uma carta para ser descartada:");
+					 desc = Teclado.getUmString();
+					servidor.receba(new PedidoDeDescarte(desc));
+					*/
+
+					/*
+
+					do
+					{
+						comunicado = (Comunicado)servidor.espiar ();
+					}
+					while (!(comunicado instanceof R));
+					*/
+				}
+				else if (opcao == 'D')
+				{
+					servidor.receba(new PedidoDeCompraDescarte());
+
+					// Visualização da mao do jogador
+
+					String desc;
+					System.out.print("Escolha uma carta para ser descartada:");
+					desc = Teclado.getUmString();
+					servidor.receba(new PedidoDeDescarte(desc));
+				}
 			}
 			catch(Exception erro)
 			{
@@ -70,6 +99,12 @@ public class Aplicacao {
 		}
 		while(opcao != 'S');
 
+		try
+		{
+			servidor.receba (new PedidoParaSair ());
+		}
+		catch (Exception erro)
+		{}
 	}
 
 	public static Socket instanciarConexao(String[] args) throws Exception

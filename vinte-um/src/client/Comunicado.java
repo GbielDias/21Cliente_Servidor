@@ -1,6 +1,6 @@
 package client;
 
-import java.io.*;
+import java.io.Serializable;
 
 public class Comunicado implements Serializable, Cloneable
 {}

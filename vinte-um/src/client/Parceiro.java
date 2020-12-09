@@ -10,7 +10,7 @@ public class Parceiro {
 	private ObjectOutputStream transmissor;
 	
 	private Comunicado proximoComunicado;
-	private Semaphore mutuaExclusao;
+	private Semaphore mutuaExclusao = new Semaphore(1,true);
 	
 	public Parceiro(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception {
 		if (conexao == null)
@@ -28,7 +28,7 @@ public class Parceiro {
 	}
 	
 	//Cliente recebe
-	public void Receba(Comunicado c) throws Exception {
+	public void receba(Comunicado c) throws Exception {
 		try {
 			transmissor.writeObject(c);
 			transmissor.flush();

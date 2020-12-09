@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import server.Dealer;
 import server.Parceiro;
 import server.models.Carta;
 import server.models.PropriedadeCartas;
@@ -11,29 +12,30 @@ import server.models.PropriedadeCartas;
 public class AceitadoraDeConexao extends Thread{
 	private ServerSocket servidor;
 	private ArrayList<Parceiro> usuarios;
-	private ArrayList<Carta> baralho = new ArrayList<>();
-	
+	private ArrayList<Carta> baralho = new ArrayList<Carta>();
+	private Dealer dealer ;
+
 	public AceitadoraDeConexao(String porta, ArrayList<Parceiro> usuarios) throws Exception {
 		if(porta == null)
-			throw new Exception("Insira uma porta válida");
+			throw new Exception("Insira uma porta vï¿½lida");
 		
 		try {
 			servidor = new ServerSocket(Integer.parseInt(porta));
 		}catch(Exception e) {
-			System.err.println("Porta inválida");
+			System.err.println("Porta invï¿½lida");
 		}
 		
 		if(usuarios == null)
-			throw new Exception("Usuários ausentes");
+			throw new Exception("Usuï¿½rios ausentes");
 		
 		this.usuarios = usuarios;
-		
-		instanciaBaralho();
+
+		this.dealer = new Dealer();
 	}
 	
 	public void run() {
 		while(true) {
-			//Barra conexão se contém 3 playes
+			//Barra conexï¿½o se contï¿½m 3 playes
 			if(usuarios.size() == 3)
 				break;
 			
@@ -47,7 +49,7 @@ public class AceitadoraDeConexao extends Thread{
 			SupervisoraDeConexao supervisora = null; 
 			
 			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, baralho);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios,dealer);
 			}catch(Exception e) {	
 			
 			}
@@ -58,7 +60,8 @@ public class AceitadoraDeConexao extends Thread{
 		
 		//TODO startar patida
 	}
-	
+
+	/*
 	private void instanciaBaralho() {
 		for (int i = 0; i < PropriedadeCartas.NOMES.length; i++) {
 			for (int j = 0; j < PropriedadeCartas.SIMBOLOS.length; j++) {
@@ -66,5 +69,6 @@ public class AceitadoraDeConexao extends Thread{
 			}
 		}
 	}
-	
+	*/
+
 }

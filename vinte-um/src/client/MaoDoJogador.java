@@ -1,7 +1,6 @@
 package client;
 
 import java.util.ArrayList;
-
 import client.models.Carta;
 
 public class MaoDoJogador {
@@ -19,7 +18,7 @@ public class MaoDoJogador {
 
 	public void removerNumero(int num) throws Exception {
 		if (num < 0 || num > 10)
-			throw new Exception("Carta inválida");
+			throw new Exception("Carta invï¿½lida");
 
 		mao.remove(num);
 	}

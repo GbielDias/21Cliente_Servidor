@@ -4,33 +4,43 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-import server.Comunicado;
-import server.ComunicadoDeAguarde;
-import server.Parceiro;
+import server.*;
+import server.cases.PedidoDeCarta;
+import server.cases.PedidoDeCompraDescarte;
 import server.cases.PedidoDeDescarte;
 import server.models.Carta;
 
 
 public class SupervisoraDeConexao extends Thread {
+
 	private Parceiro usuario;
 	private Socket conexao;
 	private ArrayList<Parceiro> usuarios;
-	private ArrayList<Carta> baralho;
+	//private ArrayList<Carta> baralho;
+	private Dealer dealer;
+	private MaoDoJogador mao;
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, ArrayList<Carta> baralho) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios,Dealer d) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
 		if (usuarios == null)
 			throw new Exception("Usuarios ausentes");
 
-		if(baralho == null)
-			throw new Exception("Cartas ausentes");
+		if (d == null)
+			throw  new Exception("Dealer Inválido");
+
+
+		//if(baralho == null)
+		//	throw new Exception("Cartas ausentes");
 		
 		this.conexao = conexao;
 		this.usuarios = usuarios;
-		this.baralho = baralho;
+		this.dealer = d;
+		this.mao = new MaoDoJogador(dealer.getBaralho());
+		//this.baralho = baralho;
 	}
 
 	public void run() {
@@ -48,7 +58,9 @@ public class SupervisoraDeConexao extends Thread {
 		} catch (Exception err0) {
 			try {
 				transmissor.close();
-			} catch (Exception falha) {
+			}
+			catch (Exception falha)
+			{
 			}
 
 			return;
@@ -64,11 +76,13 @@ public class SupervisoraDeConexao extends Thread {
 				this.usuarios.add(this.usuario);
 			}
 
+			/*
 			while (usuarios.size() < 3) {
 				for(Parceiro usuario: usuarios) {
 					usuario.receba(new ComunicadoDeAguarde());
 				}
 			}
+			*/
 
 			while(true) {
 				Comunicado comunicado = this.usuario.envie();
@@ -78,6 +92,14 @@ public class SupervisoraDeConexao extends Thread {
 				else if (comunicado instanceof PedidoDeDescarte) {
 					
 					
+				}
+				else if (comunicado instanceof PedidoDeCarta)
+				{
+					dealer.comprar(mao);
+				}
+				else if(comunicado instanceof PedidoDeCompraDescarte)
+				{
+					dealer.comprarDescarte(mao);
 				}
 			}
 			

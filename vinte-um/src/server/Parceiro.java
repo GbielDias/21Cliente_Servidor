@@ -11,7 +11,7 @@ public class Parceiro {
 	private ObjectOutputStream transmissor;
 	
 	private Comunicado proximoComunicado;
-	private Semaphore mutuaExclusao;
+	private Semaphore mutuaExclusao = new Semaphore(1, true);
 	
 	public Parceiro(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception {
 		if (conexao == null)
