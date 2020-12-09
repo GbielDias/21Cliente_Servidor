@@ -1,4 +1,4 @@
-package server.infra;
+package server;
 
 import java.io.Serializable;
 

@@ -1,5 +1,8 @@
-package server.infra;
+package server.cases;
 
+import server.Comunicado;
+
+@SuppressWarnings("serial")
 public class PedidoDeDescarte extends Comunicado {
 
 

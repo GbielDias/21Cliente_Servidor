@@ -21,7 +21,6 @@ public class Aplicacao {
 		AceitadoraDeConexao aceitadora;
 		ArrayList<Parceiro> usuarios;
 		
-		//String só por hora
 		usuarios = new ArrayList<>();
 		
 		try {
@@ -42,7 +41,8 @@ public class Aplicacao {
             	System.err.println(e.getMessage());
             }
             
-            if (comando.toLowerCase() == "desativar") {
+            System.out.println(comando);
+            if (comando.toLowerCase().equals("desativar")) {
             	//TODO lançar a notificação para os clientes            	
             } 
             
