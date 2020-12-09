@@ -2,8 +2,8 @@ package client;
 
 import server.Parceiro;
 import server.Teclado;
+import server.infra.Comunicado;
 
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -55,18 +55,22 @@ public class App {
 				System.out.println("Opções:");
 				System.out.println("C. Comprar do baralho e descartar");
 				System.out.println("D. Comprar da pilha de descarte e descartar");
-				opcao = Teclado.getUmChar(); // A, B, C, 1, 0 // AS, 10 , Um , Es, Palavra
+				System.out.println("S. Sair da partida");
 
+				opcao = Character.toUpperCase(Teclado.getUmChar()); // A, B, C, 1, 0 // AS, 10 , Um , Es, Palavra
 
-				if(opcao == 'b')
+				if(!(opcao == 'C' || opcao == 'D' || opcao == 'S' ))
 				{
-					throw new Exception("Baboseira");
+					throw new Exception("Opcao Inválida");
 				}
+
+				servidor.receba(new Escolha (opcao));
 			}
 			catch(Exception erro)
 			{
 				System.err.println("Você Escreveu baboseira!!!");
 			}
+
 		}
 		while(opcao != 'T');
 

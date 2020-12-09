@@ -29,7 +29,7 @@ public class Parceiro {
 	}
 	
 	//Cliente recebe
-	public void Receba(Comunicado c) throws Exception {
+	public void receba(Comunicado c) throws Exception {
 		try {
 			transmissor.writeObject(c);
 			transmissor.flush();
