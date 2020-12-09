@@ -2,7 +2,7 @@ package client;
 
 import server.Parceiro;
 import server.Teclado;
-import server.infra.Comunicado;
+import server.Comunicado;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -64,7 +64,7 @@ public class App {
 					throw new Exception("Opcao Inválida");
 				}
 
-				servidor.receba(new Escolha (opcao));
+				//servidor.receba(new Escolha (opcao));
 			}
 			catch(Exception erro)
 			{
