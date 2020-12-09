@@ -66,7 +66,7 @@ public class SupervisoraDeConexao extends Thread {
 
 			while (usuarios.size() < 3) {
 				for(Parceiro usuario: usuarios) {
-					usuario.Receba(new ComunicadoDeAguarde());
+					usuario.receba(new ComunicadoDeAguarde());
 				}
 			}
 
