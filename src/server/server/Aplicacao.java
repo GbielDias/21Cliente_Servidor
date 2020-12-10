@@ -1,7 +1,7 @@
 package server;
 
 import java.util.ArrayList;
-import server.infra.AceitadoraDeConexao;
+
 import commons.*;
 
 public class Aplicacao {

@@ -1,30 +1,11 @@
-package client;
+package commons;
 
 import java.util.ArrayList;
-import client.models.Carta;
-import client.models.PropriedadeCartas;
 
 public class Baralho {
-	ArrayList<Carta> baralho;
 
-//	public Baralho() {
-//		cartas = new ArrayList<Carta>(52);
-//
-//		int valor = 1;
-//		for (int i = 0; i < 52; i = i + 4) // 16 -> 10 / 4- de cada numero
-//		{
-//
-//			if (valor > 10)
-//				valor = 10;
-//
-//			cartas.add(valor);
-//			cartas.add(valor);
-//			cartas.add(valor);
-//			cartas.add(valor);
-//
-//			valor++;
-//		}
-//	}
+	private ArrayList<Carta> baralho;
+
 	
 	public Baralho() {
 		baralho = new ArrayList<>();

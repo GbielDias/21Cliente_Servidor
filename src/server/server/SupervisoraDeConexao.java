@@ -1,5 +1,4 @@
-package server.infra;
-
+package server;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,9 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
-import server.Dealer;
-import server.MaoDoJogador;
-import server.cases.PedidoDeCompraDescarte;
+
 import commons.*;
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
@@ -75,7 +72,7 @@ public class SupervisoraDeConexao extends Thread {
 		try {
 			synchronized (this.usuarios) {
 				this.usuarios.add(this.usuario);
-
+/*
 				if(usuarios.size() == 2)
 				{
 
@@ -84,6 +81,8 @@ public class SupervisoraDeConexao extends Thread {
 						usuario.receba(new ComunicadoDeAguarde());
 					}
 				}
+
+ */
 			}
 
 			vezDoUsuario();

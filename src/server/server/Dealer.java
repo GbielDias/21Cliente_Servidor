@@ -1,6 +1,6 @@
 package server;
 
-import server.models.Carta;
+import commons.*;
 
 // Aqui vai ter todos os relacionamentos entre mao e baralho
 public class Dealer {

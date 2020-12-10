@@ -1,7 +1,6 @@
-package client;
+package commons;
 
 import java.io.Serializable;
-import commons.*;
 
 @SuppressWarnings("serial")
 public class PedidoDeDescarte extends Comunicado {

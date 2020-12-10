@@ -1,15 +1,14 @@
-package client;
+package commons;
 
 import java.util.ArrayList;
-import client.models.Carta;
-import commons.Comunicado;
 
 public class MaoDoJogador extends Comunicado {
 	private ArrayList<Carta> mao = new ArrayList<>();
 
-	public MaoDoJogador(ArrayList<Carta> valores) {
+	public MaoDoJogador(Baralho valores) {
+
 		for (int i = 0; i < 3; i++)
-			mao.add(valores.get(i));
+			mao.add(valores.comprarUmaCarta());
 
 	}
 
@@ -17,11 +16,33 @@ public class MaoDoJogador extends Comunicado {
 		return mao;
 	}
 
-	public void removerNumero(int num) throws Exception {
-		if (num < 0 || num > 10)
+	public void removerCarta(String c) throws Exception {
+		if(!mao.contains(c))
 			throw new Exception("Carta inv�lida");
 
-		mao.remove(num);
+		for (int i=0; i < 4; i++)
+		{
+			if(mao.get(i).ToString().equals(c))
+			{
+				mao.remove(i);
+				return;
+			}
+		}
+	}
+
+	public Carta getCarta (String nomeCarta) throws Exception
+	{
+		if (nomeCarta == null)
+			throw new Exception("Nome de carta inválido");
+
+		for (int i=0; i < 4; i++)
+		{
+			if(mao.get(i).ToString().equals(nomeCarta))
+			{
+				return mao.get(i);
+			}
+		}
+		throw new Exception("Carta não encontrada");
 	}
 
 	public int contar() {

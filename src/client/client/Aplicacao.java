@@ -49,7 +49,7 @@ public class Aplicacao {
 
 		//Jogo começa aqui
 		tratadoraDeDesligamento.start();
-
+/*
 		Comunicado comunicado = null;
 		do
 		{
@@ -65,6 +65,8 @@ public class Aplicacao {
 		while (!(comunicado instanceof ComunicadoDeAguarde));
 
 
+ */
+
 		Comunicado comn = null;
 		do
 		{
@@ -74,6 +76,7 @@ public class Aplicacao {
 			}
 			catch(Exception err)
 			{
+				System.err.println(err.getMessage() + " Erro no espiar");
 			}
 		}
 		while (!(comn instanceof MaoDoJogador));
@@ -81,15 +84,18 @@ public class Aplicacao {
 		try {
 			maoDoJogador = (MaoDoJogador) servidor.envie();
 		}
-		catch (Exception e){}
+		catch (Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
 
+		System.out.println(maoDoJogador);
 		char opcao = ' ';
 
 		do
 		{
 			try
 			{
-				System.out.println(maoDoJogador);
 				System.out.println("Opções:");
 				System.out.println("C. Comprar do baralho e descartar");
 				System.out.println("D. Comprar da pilha de descarte e descartar");

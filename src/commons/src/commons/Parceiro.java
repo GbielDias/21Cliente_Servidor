@@ -49,7 +49,7 @@ public class Parceiro {
 			
 			return proximoComunicado;
 		} catch(Exception e) {
-			throw new Exception ("Erro de recepcao (espiar)");
+			throw new Exception (e.getMessage());
 		}
 	}
 	

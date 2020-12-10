@@ -1,12 +1,10 @@
-package server.infra;
+package server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
-import server.Dealer;
-import server.models.Carta;
 import commons.*;
 
 public class AceitadoraDeConexao extends Thread{

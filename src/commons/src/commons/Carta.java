@@ -1,11 +1,13 @@
-package client.models;
+package commons;
 
-public class Carta {
+import commons.Comunicado;
+
+public class Carta extends Comunicado {
 	private String simbolo; 
 	private String nome;
 	private int pontos;
 	
-	//Construtor não necessitando de validação, pois será usado internamente e não pello usuário
+	//Construtor nï¿½o necessitando de validaï¿½ï¿½o, pois serï¿½ usado internamente e nï¿½o pello usuï¿½rio
 	public Carta(String nome, String  simbolo){
 		this.simbolo = simbolo; 
 		this.nome = nome;
@@ -27,6 +29,6 @@ public class Carta {
 	}
 	
 	public String ToString() {
-		return nome + "-" + simbolo;
+		return nome + " | " + simbolo;
 	}
 }
