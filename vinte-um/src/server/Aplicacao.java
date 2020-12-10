@@ -46,7 +46,7 @@ public class Aplicacao {
             } 
             
             else 
-            	System.err.println("Comando inv�llido");
+            	System.err.println("Comando invallido");
 		}
 	}
 }

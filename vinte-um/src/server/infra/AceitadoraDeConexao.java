@@ -3,6 +3,7 @@ package server.infra;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 import server.Dealer;
 import server.Parceiro;
@@ -12,8 +13,9 @@ import server.models.PropriedadeCartas;
 public class AceitadoraDeConexao extends Thread{
 	private ServerSocket servidor;
 	private ArrayList<Parceiro> usuarios;
-	private ArrayList<Carta> baralho = new ArrayList<Carta>();
-	private Dealer dealer ;
+	private Dealer dealer;
+	private Semaphore mutEx = new Semaphore(1, true);
+	private ArrayList<Carta> baralho = new ArrayList<>();
 
 	public AceitadoraDeConexao(String porta, ArrayList<Parceiro> usuarios) throws Exception {
 		if(porta == null)
@@ -36,9 +38,9 @@ public class AceitadoraDeConexao extends Thread{
 	public void run() {
 		while(true) {
 			//Barra conex�o se cont�m 3 playes
-			if(usuarios.size() == 3)
-				break;
-			
+//			if(usuarios.size() == 3)
+//				break;
+//			
 			Socket conexao = null;
 			try {
 				conexao = servidor.accept();
@@ -49,7 +51,7 @@ public class AceitadoraDeConexao extends Thread{
 			SupervisoraDeConexao supervisora = null; 
 			
 			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios,dealer);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, mutEx);
 			}catch(Exception e) {	
 			
 			}

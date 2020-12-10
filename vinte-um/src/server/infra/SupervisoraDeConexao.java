@@ -4,43 +4,47 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Semaphore;
 
-import server.*;
-import server.cases.PedidoDeCarta;
+import server.Comunicado;
+import server.Dealer;
+import server.MaoDoJogador;
+import server.Parceiro;
 import server.cases.PedidoDeCompraDescarte;
-import server.cases.PedidoDeDescarte;
-import server.models.Carta;
-
 
 public class SupervisoraDeConexao extends Thread {
-
-	private Parceiro usuario;
 	private Socket conexao;
+	private Semaphore mutEx;
+	
+	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
-	//private ArrayList<Carta> baralho;
+	// private ArrayList<Carta> baralho;
 	private Dealer dealer;
 	private MaoDoJogador mao;
+	
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios,Dealer d) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, Semaphore mutEx) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
 		if (usuarios == null)
 			throw new Exception("Usuarios ausentes");
 
-		if (d == null)
-			throw  new Exception("Dealer Inválido");
+		if (dealer == null)
+			throw new Exception("Dealer Inválido");
 
-
-		//if(baralho == null)
-		//	throw new Exception("Cartas ausentes");
+		if (mutEx == null)
+			throw new Exception("Sem�foro inv�lido");
 		
+		// if(baralho == null)
+		// throw new Exception("Cartas ausentes");
+
 		this.conexao = conexao;
+		this.mutEx = mutEx;
 		this.usuarios = usuarios;
-		this.dealer = d;
+		this.dealer = dealer;
 		this.mao = new MaoDoJogador(dealer.getBaralho());
-		//this.baralho = baralho;
+		// this.baralho = baralho;
 	}
 
 	public void run() {
@@ -55,12 +59,10 @@ public class SupervisoraDeConexao extends Thread {
 		ObjectInputStream receptor;
 		try {
 			receptor = new ObjectInputStream(this.conexao.getInputStream());
-		} catch (Exception err0) {
+		} catch (Exception erro) {
 			try {
 				transmissor.close();
-			}
-			catch (Exception falha)
-			{
+			} catch (Exception falha) {
 			}
 
 			return;
@@ -77,43 +79,13 @@ public class SupervisoraDeConexao extends Thread {
 			}
 
 			/*
-			while (usuarios.size() < 3) {
-				for(Parceiro usuario: usuarios) {
-					usuario.receba(new ComunicadoDeAguarde());
-				}
-			}
-			*/
-
-			while(true) {
-				Comunicado comunicado = this.usuario.envie();
-				
-				if (comunicado == null)
-					return;
-				else if (comunicado instanceof PedidoDeDescarte) {
-					
-					
-				}
-				else if (comunicado instanceof PedidoDeCarta)
-				{
-					dealer.comprar(mao);
-				}
-				else if(comunicado instanceof PedidoDeCompraDescarte)
-				{
-					dealer.comprarDescarte(mao);
-				}
-			}
-			
-			/*
-			 * remodelar para funcionar com o jogo else if (comunicado instanceof
-			 * PedidoDeCarta) { //Ações quando for pedida uma carta } else if (comunicado
-			 * instanceof PedidoDeDescarte) { //Ações quando for pedido para se descartar
-			 * uma carta, na classe pode ser implementada para se ter como parâmetro //
-			 * qual carta irá ser descartada } else if (comunicado instanceof
-			 * PedidoParaJogarNovamente) { //Ações para recomeçar a partida } else if
-			 * (comunicado instanceof PedidoParaSair) { synchronized (this.usuarios) {
-			 * this.usuarios.remove (this.usuario); } this.usuario.adeus(); }
+			 * while (usuarios.size() < 3) { for(Parceiro usuario: usuarios) {
+			 * usuario.receba(new ComunicadoDeAguarde()); } }
 			 */
+
 			
+			vezDoUsuario();
+
 		}
 
 		catch (Exception erro) {
@@ -124,6 +96,31 @@ public class SupervisoraDeConexao extends Thread {
 			} // so tentando fechar antes de acabar a thread
 
 			return;
+		}
+	}
+	
+	private void vezDoUsuario() {
+		try {
+			//Come�a a vez do jogador
+			mutEx.acquireUninterruptibly();
+		
+			while (true) {
+				Comunicado comunicado = this.usuario.envie();
+
+				if (comunicado == null)
+					continue;
+				
+				else if (comunicado instanceof PedidoDeCompraDescarte) {
+					dealer.comprarDescarte(mao);
+//					usuario.receba(mao);
+					break;
+				}
+			}
+			
+			//Acaba a vez do jogador
+			mutEx.release();
+		}catch(Exception e) {
+			System.err.println(e.getMessage());
 		}
 	}
 }
