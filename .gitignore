@@ -1,9 +1,9 @@
 /.metadata/
-bin
-temp
-.idea
-.classpath
-.project
-.iml
-.settings
-.class
+**/bin
+**/temp
+**/.idea
+**/.classpath
+**/.project
+**.iml
+**/.settings
+**.class

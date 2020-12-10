@@ -3,6 +3,7 @@ package client;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import commons.*;
 
 public class Aplicacao {
 
@@ -21,7 +22,7 @@ public class Aplicacao {
 		Socket 				conexao 	= null;
 		ObjectOutputStream 	transmissor = null;
 		ObjectInputStream 	receptor 	= null;
-		Parceiro			servidor	= null;
+		Parceiro servidor	= null;
 		TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
 
 		try
@@ -39,8 +40,29 @@ public class Aplicacao {
 			return;
 		}
 
+		//Aguarde os usuarios entrarem
+
+
+
+
+
 		//Jogo começa aqui
 		tratadoraDeDesligamento.start();
+
+		Comunicado comunicado = null;
+		do
+		{
+			try {
+				comunicado = (Comunicado) servidor.espiar();
+			}
+			catch(Exception err)
+			{
+				System.err.println(err.getMessage());
+			}
+		}
+		while (!(comunicado instanceof ComunicadoDeAguarde));
+
+		System.out.println ("Por favor, aguarde os 3 usuarios");
 
 		char opcao = ' ';
 		do
@@ -60,24 +82,15 @@ public class Aplicacao {
 				}
 				if (opcao == 'C') {
 					servidor.receba(new PedidoDeCarta());
-					//servidor.receba(new Escolha(opcao));
 
-					/*
+
 					// Visualização da mao do jogador
-					String desc;
-					System.out.print("Escolha uma carta para ser descartada:");
-					 desc = Teclado.getUmString();
+
+					int desc;
+					System.out.print("Escolha uma carta para ser descartada: ");
+					desc = Teclado.getUmInt();
 					servidor.receba(new PedidoDeDescarte(desc));
-					*/
 
-					/*
-
-					do
-					{
-						comunicado = (Comunicado)servidor.espiar ();
-					}
-					while (!(comunicado instanceof R));
-					*/
 				}
 				else if (opcao == 'D')
 				{
@@ -85,9 +98,9 @@ public class Aplicacao {
 
 					// Visualização da mao do jogador
 
-					String desc;
-					System.out.print("Escolha uma carta para ser descartada:");
-					desc = Teclado.getUmString();
+					int desc;
+					System.out.print("Escolha uma carta para ser descartada: ");
+					desc = Teclado.getUmInt();
 					servidor.receba(new PedidoDeDescarte(desc));
 				}
 			}

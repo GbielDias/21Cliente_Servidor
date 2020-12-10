@@ -1,6 +1,6 @@
-package server.cases;
+package client;
 
-import server.Comunicado;
+import commons.Comunicado;
 
 public class PedidoDeCompraDescarte extends Comunicado {
 }

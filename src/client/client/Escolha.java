@@ -1,8 +1,9 @@
 package client;
 
 
-public class Escolha extends Comunicado
-{
+import java.io.Serializable;
+
+public class Escolha implements Serializable, Cloneable {
     private char opcao;
 
     public Escolha(char opcao)

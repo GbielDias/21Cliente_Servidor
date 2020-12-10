@@ -1,5 +1,6 @@
 package client;
-//import client.ComunicadoDeDesligamento;
+import commons.*;
+
 public class TratadoraDeComunicadoDeDesligamento extends Thread
 {
     private Parceiro servidor;

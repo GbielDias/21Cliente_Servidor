@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
-import server.Comunicado;
 import server.Dealer;
 import server.MaoDoJogador;
 import server.Parceiro;
 import server.cases.PedidoDeCompraDescarte;
+import commons.*;
 
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
@@ -31,10 +31,10 @@ public class SupervisoraDeConexao extends Thread {
 			throw new Exception("Usuarios ausentes");
 
 		if (dealer == null)
-			throw new Exception("Dealer Inv√°lido");
+			throw new Exception("Dealer Invalido");
 
 		if (mutEx == null)
-			throw new Exception("Sem·foro inv·lido");
+			throw new Exception("Sem·foro invalido");
 		
 		// if(baralho == null)
 		// throw new Exception("Cartas ausentes");
@@ -76,12 +76,19 @@ public class SupervisoraDeConexao extends Thread {
 		try {
 			synchronized (this.usuarios) {
 				this.usuarios.add(this.usuario);
+				while (usuarios.size() < 3)
+				{
+
+					for(Parceiro usuario: usuarios)
+					{
+						usuario.receba(new ComunicadoDeAguarde());
+					}
+				}
 			}
 
-			/*
-			 * while (usuarios.size() < 3) { for(Parceiro usuario: usuarios) {
-			 * usuario.receba(new ComunicadoDeAguarde()); } }
-			 */
+
+
+
 
 			
 			vezDoUsuario();

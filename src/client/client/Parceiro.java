@@ -1,9 +1,9 @@
-package server;
-
+package client;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.Semaphore;
+import commons.*;
 
 public class Parceiro {
 	private Socket conexao;
@@ -11,7 +11,7 @@ public class Parceiro {
 	private ObjectOutputStream transmissor;
 	
 	private Comunicado proximoComunicado;
-	private Semaphore mutuaExclusao = new Semaphore(1, true);
+	private Semaphore mutuaExclusao = new Semaphore(1,true);
 	
 	public Parceiro(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception {
 		if (conexao == null)
@@ -34,22 +34,25 @@ public class Parceiro {
 			transmissor.writeObject(c);
 			transmissor.flush();
 		}catch(Exception e) {
-			throw new Exception("Erro de recepção");
+			throw new Exception("Erro de recepcao");
 		}
 	}
 
 	public Comunicado espiar() throws Exception {
 		try {
-			mutuaExclusao.acquireUninterruptibly();
+			this.mutuaExclusao.acquireUninterruptibly();
 			
 			if(proximoComunicado == null)
-				proximoComunicado = (Comunicado) receptor.readObject();
+			{
+				Object o = receptor.readObject();
+				proximoComunicado = (ComunicadoDeAguarde) o;
+			}
 			
-			mutuaExclusao.release();
+			this.mutuaExclusao.release();
 			
 			return proximoComunicado;
 		} catch(Exception e) {
-			throw new Exception ("Erro de recepção");
+			throw new Exception (e.getMessage());
 		}
 	}
 	
