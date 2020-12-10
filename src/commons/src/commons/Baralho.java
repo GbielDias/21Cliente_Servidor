@@ -10,8 +10,10 @@ public class Baralho {
 	public Baralho() {
 		baralho = new ArrayList<>();
 		
-		for (int i = 0; i < PropriedadeCartas.NOMES.length; i++) {
-			for (int j = 0; j < PropriedadeCartas.SIMBOLOS.length; j++) {
+		for (int i = 0; i < PropriedadeCartas.NOMES.length; i++)
+		{
+			for (int j = 0; j < PropriedadeCartas.SIMBOLOS.length; j++)
+			{
 				baralho.add(new Carta(PropriedadeCartas.NOMES[i], PropriedadeCartas.SIMBOLOS[j]));
 			}
 		}
