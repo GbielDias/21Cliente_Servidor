@@ -1,9 +1,9 @@
-package client;
+package commons;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.Semaphore;
-import commons.*;
 
 public class Parceiro {
 	private Socket conexao;
@@ -11,11 +11,11 @@ public class Parceiro {
 	private ObjectOutputStream transmissor;
 	
 	private Comunicado proximoComunicado;
-	private Semaphore mutuaExclusao = new Semaphore(1,true);
+	private Semaphore mutuaExclusao = new Semaphore(1, true);
 	
 	public Parceiro(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception {
 		if (conexao == null)
-			throw new Exception("Conexão nula");
+			throw new Exception("Conexao nula");
 		
 		if (receptor == null)
 			throw new Exception("Receptor nulo");
@@ -34,25 +34,22 @@ public class Parceiro {
 			transmissor.writeObject(c);
 			transmissor.flush();
 		}catch(Exception e) {
-			throw new Exception("Erro de recepcao");
+			throw new Exception("Erro de recepcao (receba)");
 		}
 	}
 
 	public Comunicado espiar() throws Exception {
 		try {
-			this.mutuaExclusao.acquireUninterruptibly();
+			mutuaExclusao.acquireUninterruptibly();
 			
 			if(proximoComunicado == null)
-			{
-				Object o = receptor.readObject();
-				proximoComunicado = (ComunicadoDeAguarde) o;
-			}
+				proximoComunicado = (Comunicado) receptor.readObject();
 			
-			this.mutuaExclusao.release();
+			mutuaExclusao.release();
 			
 			return proximoComunicado;
 		} catch(Exception e) {
-			throw new Exception (e.getMessage());
+			throw new Exception ("Erro de recepcao (espiar)");
 		}
 	}
 	
@@ -67,7 +64,7 @@ public class Parceiro {
 			
 			return cm;
 		}catch(Exception e) {
-			throw new Exception("Erro de recepção");
+			throw new Exception("Erro de recepcao (envie)");
 		}
 	}
 	

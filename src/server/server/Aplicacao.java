@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import server.infra.AceitadoraDeConexao;
+import commons.*;
 
 public class Aplicacao {
 	private static final String DEFAULT_DOOR = "3333";

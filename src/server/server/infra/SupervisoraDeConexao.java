@@ -1,5 +1,6 @@
 package server.infra;
 
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -8,10 +9,8 @@ import java.util.concurrent.Semaphore;
 
 import server.Dealer;
 import server.MaoDoJogador;
-import server.Parceiro;
 import server.cases.PedidoDeCompraDescarte;
 import commons.*;
-
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
 	private Semaphore mutEx;
@@ -34,7 +33,7 @@ public class SupervisoraDeConexao extends Thread {
 			throw new Exception("Dealer Invalido");
 
 		if (mutEx == null)
-			throw new Exception("Semáforo invalido");
+			throw new Exception("Semaforo invalido");
 		
 		// if(baralho == null)
 		// throw new Exception("Cartas ausentes");
@@ -76,7 +75,8 @@ public class SupervisoraDeConexao extends Thread {
 		try {
 			synchronized (this.usuarios) {
 				this.usuarios.add(this.usuario);
-				while (usuarios.size() < 3)
+
+				if(usuarios.size() == 2)
 				{
 
 					for(Parceiro usuario: usuarios)
@@ -108,7 +108,7 @@ public class SupervisoraDeConexao extends Thread {
 	
 	private void vezDoUsuario() {
 		try {
-			//Começa a vez do jogador
+			//Comeï¿½a a vez do jogador
 			mutEx.acquireUninterruptibly();
 		
 			while (true) {

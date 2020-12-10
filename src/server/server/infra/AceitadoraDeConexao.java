@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 import server.Dealer;
-import server.Parceiro;
 import server.models.Carta;
-import server.models.PropriedadeCartas;
+import commons.*;
 
 public class AceitadoraDeConexao extends Thread{
 	private ServerSocket servidor;
@@ -19,16 +18,16 @@ public class AceitadoraDeConexao extends Thread{
 
 	public AceitadoraDeConexao(String porta, ArrayList<Parceiro> usuarios) throws Exception {
 		if(porta == null)
-			throw new Exception("Insira uma porta v�lida");
+			throw new Exception("Insira uma porta valida");
 		
 		try {
 			servidor = new ServerSocket(Integer.parseInt(porta));
 		}catch(Exception e) {
-			System.err.println("Porta inv�lida");
+			System.err.println("Porta invalida");
 		}
 		
 		if(usuarios == null)
-			throw new Exception("Usu�rios ausentes");
+			throw new Exception("Usuarios ausentes");
 		
 		this.usuarios = usuarios;
 

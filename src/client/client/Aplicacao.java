@@ -52,7 +52,9 @@ public class Aplicacao {
 		Comunicado comunicado = null;
 		do
 		{
-			try {
+			System.out.println("Aguarde os jogares entrarem na partida");
+			try
+			{
 				comunicado = (Comunicado) servidor.espiar();
 			}
 			catch(Exception err)
@@ -62,7 +64,7 @@ public class Aplicacao {
 		}
 		while (!(comunicado instanceof ComunicadoDeAguarde));
 
-		System.out.println ("Por favor, aguarde os 3 usuarios");
+
 
 		char opcao = ' ';
 		do
