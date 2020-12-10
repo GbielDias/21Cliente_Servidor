@@ -1,10 +1,11 @@
 package server;
 
+import commons.Comunicado;
 import server.models.Carta;
 
 import java.util.ArrayList;
 
-public class MaoDoJogador{
+public class MaoDoJogador extends Comunicado {
 	private ArrayList<Carta> mao = new ArrayList<>();
 
 	public MaoDoJogador(Baralho valores) {

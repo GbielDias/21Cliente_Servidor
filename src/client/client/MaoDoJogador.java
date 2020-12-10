@@ -2,8 +2,9 @@ package client;
 
 import java.util.ArrayList;
 import client.models.Carta;
+import commons.Comunicado;
 
-public class MaoDoJogador {
+public class MaoDoJogador extends Comunicado {
 	private ArrayList<Carta> mao = new ArrayList<>();
 
 	public MaoDoJogador(ArrayList<Carta> valores) {

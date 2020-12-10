@@ -86,11 +86,6 @@ public class SupervisoraDeConexao extends Thread {
 				}
 			}
 
-
-
-
-
-			
 			vezDoUsuario();
 
 		}
@@ -108,9 +103,11 @@ public class SupervisoraDeConexao extends Thread {
 	
 	private void vezDoUsuario() {
 		try {
-			//Come�a a vez do jogador
+
 			mutEx.acquireUninterruptibly();
-		
+
+			usuario.receba(this.mao);
+
 			while (true) {
 				Comunicado comunicado = this.usuario.envie();
 

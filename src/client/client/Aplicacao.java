@@ -24,6 +24,7 @@ public class Aplicacao {
 		ObjectInputStream 	receptor 	= null;
 		Parceiro servidor	= null;
 		TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
+		MaoDoJogador maoDoJogador = null;
 
 		try
 		{
@@ -59,18 +60,36 @@ public class Aplicacao {
 			}
 			catch(Exception err)
 			{
-				System.err.println(err.getMessage());
 			}
 		}
 		while (!(comunicado instanceof ComunicadoDeAguarde));
 
 
-
-		char opcao = ' ';
+		Comunicado comn = null;
 		do
 		{
 			try
 			{
+				comn = (Comunicado) servidor.espiar();
+			}
+			catch(Exception err)
+			{
+			}
+		}
+		while (!(comn instanceof MaoDoJogador));
+
+		try {
+			maoDoJogador = (MaoDoJogador) servidor.envie();
+		}
+		catch (Exception e){}
+
+		char opcao = ' ';
+
+		do
+		{
+			try
+			{
+				System.out.println(maoDoJogador);
 				System.out.println("Opções:");
 				System.out.println("C. Comprar do baralho e descartar");
 				System.out.println("D. Comprar da pilha de descarte e descartar");
