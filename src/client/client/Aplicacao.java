@@ -26,13 +26,16 @@ public class Aplicacao {
         TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
         MaoDoJogador maoDoJogador = null;
 
-        try {
+        try
+        {
             conexao = instanciarConexao(args);
             transmissor = instanciarTransmissor(conexao);
             receptor = instanciarReceptor(conexao);
             servidor = instanciarServidor(conexao, receptor, transmissor);
             tratadoraDeDesligamento = instanciarTratadora(servidor);
-        } catch (Exception err) {
+        }
+        catch (Exception err)
+        {
             System.err.println(err.getMessage());
             System.err.println("Indique o servidor e a porta corretos!\n");
             return;
@@ -42,35 +45,52 @@ public class Aplicacao {
         //Jogo começa aqui
         tratadoraDeDesligamento.start();
 
-        /*Comunicado comunicado = null;
-		do
+        System.out.println("Aguarde os jogares entrarem na partida");
+
+        Comunicado comunicado = null;
+        while (!(comunicado instanceof ComunicadoDeComecar))
 		{
-			System.out.println("Aguarde os jogares entrarem na partida");
+
 			try
 			{
 				comunicado = (Comunicado) servidor.espiar();
 			}
 			catch(Exception err)
 			{
-			}
+			    System.err.print(err.getMessage());
+            }
 		}
-		while (!(comunicado instanceof ComunicadoDeAguarde)); */
 
-        Comunicado comn = null;
-        do {
-            try {
-                comn = (Comunicado) servidor.espiar();
-            } catch (Exception err) {
+        try
+        {
+            comunicado = servidor.envie();
+        }
+        catch(Exception e)
+        {
+            System.err.print(e.getMessage());
+        }
+
+
+        comunicado = null;
+        do
+        {
+            try
+            {
+                comunicado = servidor.espiar();
+            }
+            catch (Exception err)
+            {
                 System.err.println(err.getMessage() + " Erro ao espiar");
             }
         }
-        while (!(comn instanceof MaoDoJogador));
+        while (!(comunicado instanceof MaoDoJogador));
 
-        comn = null;
-
-        try {
+        try
+        {
             maoDoJogador = (MaoDoJogador) servidor.envie();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.err.println(e.getMessage());
         }
 
@@ -82,16 +102,27 @@ public class Aplicacao {
 //          AQUI COMECA A RODADA DO JOGADOR(A)
             try
             {
+                servidor.receba(new PedidoDeRodada());
+            }
+            catch(Exception e)// Caso caia no catch eh porque a rodada ainda nao e do jogador
+            {
+                System.out.println("Não é sua rodada");
+                continue;
+            }
+
+            try
+            {
 
                 System.out.println("Opções:");
                 System.out.println("C. Comprar do baralho e descartar");
                 System.out.println("D. Comprar a ultima descartada e descartar");
-                System.out.println("S. Sair da partida\n");
+                System.out.println("S. Sair da partida");
                 System.out.print("> ");
 
                 opcao = Teclado.getUmString().toUpperCase();
 
-                if (!(opcao.equals("C") || !opcao.equals("D") || !opcao.equals("S"))) {
+                if (!(opcao.equals("C") || !opcao.equals("D") || !opcao.equals("S")))
+                {
                     throw new Exception("Opcao Inválida");
                 }
 
@@ -104,9 +135,9 @@ public class Aplicacao {
                     do
                     {
 //                      O cliente espera a resposta do servidor com sua mao nova
-                        comn = (Comunicado) servidor.espiar();
+                        comunicado = (Comunicado) servidor.espiar();
 
-                    }while (!(comn instanceof MaoDoJogador));
+                    }while (!(comunicado instanceof MaoDoJogador));
 
 
 //                  O servidor finalmente envia a mao do jogador e esse é passado pro objeto maoDoJogador
@@ -136,9 +167,9 @@ public class Aplicacao {
                     do
                     {
 //                      O usuario espera o servidor enviar a sua mao de volta
-                        comn = (Comunicado) servidor.espiar();
+                        comunicado = (Comunicado) servidor.espiar();
                     }
-                    while (!(comn instanceof MaoDoJogador));
+                    while (!(comunicado instanceof MaoDoJogador));
 
 //                  Usuario recebe sua mao de volta e ve sua mao logo apos
                     maoDoJogador = (MaoDoJogador) servidor.envie();
@@ -153,16 +184,16 @@ public class Aplicacao {
                     //quando escolher a "D", ele ta travando aqui mesmo que voce tenha uma Carta no Descarte
                     do
                     {
-                        comn = (Comunicado) servidor.espiar();
+                        comunicado = (Comunicado) servidor.espiar();
                     }
                     //Nao consegui entender o motivo da expressao booleana abaixo ser sempre verdadeira
-                    while (!(comn instanceof Pedido) || !(comn instanceof MaoDoJogador));
+                    while (!(comunicado instanceof Pedido) || !(comunicado instanceof MaoDoJogador));
 
 
 
                     //Aqui eu trato quando o que veio do Servidor for um Pedido, que no caso nao ha carta descartada ainda
-                    comn = servidor.envie();
-                    if(comn instanceof Pedido)
+                    comunicado = servidor.envie();
+                    if(comunicado instanceof Pedido)
                     {
                         System.out.println("Nao ha nenhuma Carta descartada ainda");
                         continue;
@@ -187,9 +218,9 @@ public class Aplicacao {
                     servidor.receba(new Pedido(maoDoJogador, opcao));
 
                     do {
-                        comn = (Comunicado) servidor.espiar();
+                        comunicado = (Comunicado) servidor.espiar();
                     }
-                    while (!(comn instanceof MaoDoJogador));
+                    while (!(comunicado instanceof MaoDoJogador));
 
                     maoDoJogador = (MaoDoJogador) servidor.envie();
                     System.out.println(maoDoJogador);
