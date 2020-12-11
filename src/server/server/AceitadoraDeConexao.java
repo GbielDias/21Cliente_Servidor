@@ -66,6 +66,8 @@ public class AceitadoraDeConexao extends Thread{
 						usuarios.get(o).receba(new ComunicadoDeComecar());
 				}
 				catch (Exception e){}
+
+				//Start uma thread gerenciar a partida
 				break;
 			}
 		}
@@ -82,7 +84,7 @@ public class AceitadoraDeConexao extends Thread{
 			{
 				for(;;)//Aqui tem que ter que fazer mao.contar() da mao do jogador i, caso seja 21, sair desse for
 				{
-					for (int j = 0; i < usuarios.size(); i++) // vai passar p
+					for (int j = 0; j < usuarios.size(); j++) // vai passar p
 					{
 						Comunicado comn;
 						do

@@ -187,11 +187,15 @@ public class Aplicacao {
                         comunicado = (Comunicado) servidor.espiar();
                     }
                     //Nao consegui entender o motivo da expressao booleana abaixo ser sempre verdadeira
-                    while (!(comunicado instanceof Pedido) || !(comunicado instanceof MaoDoJogador));
+
+                    while (!(comunicado instanceof MaoDoJogador));
+                    maoDoJogador = (MaoDoJogador) servidor.envie();
 
 
+                    System.out.println(maoDoJogador);
 
                     //Aqui eu trato quando o que veio do Servidor for um Pedido, que no caso nao ha carta descartada ainda
+
                     comunicado = servidor.envie();
                     if(comunicado instanceof Pedido)
                     {
@@ -199,13 +203,19 @@ public class Aplicacao {
                         continue;
                     }
 
+//                    comn = servidor.envie();
+//                    if(comn instanceof Pedido)
+//                    {
+//                        System.out.println("Nao ha nenhuma Carta descartada ainda");
+//                        continue;
+//                    }
+
+
 //                  O jogador recebe a mão nova dele
-                    maoDoJogador = (MaoDoJogador) servidor.envie();
 
                     //Sou obrigado a mandar ao servidor um nome de uma carta que exista na mao do jogador.
                     //So saio da repeticao quando tiver a carta com o nome correspondete
                     do {
-                        System.out.println(maoDoJogador);
                         System.out.print("Escolha o nome (tudo antes do hifen) uma carta para ser descartada: ");
 
 

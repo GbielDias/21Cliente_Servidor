@@ -107,9 +107,10 @@ public class SupervisoraDeConexao extends Thread {
 				Comunicado comunicado = this.usuario.envie();
 
 				if (comunicado == null)
-					continue;
+					return;
 
-				else if (comunicado instanceof Pedido) {
+				else if (comunicado instanceof Pedido)
+				{
 					Pedido pedido = (Pedido) comunicado;
 
 					switch (pedido.getPedido()){
@@ -127,16 +128,18 @@ public class SupervisoraDeConexao extends Thread {
 							//Estou usando Pedido para informar o cliente, porém isso poderá mudar
 							if(dealer.getDescartada() == null){
 								usuario.receba(new Pedido(mao, "Descartada inexistente"));
-								break;
+								//break;
 							}
+							else
+							{
+								mao = dealer.comprarDescartada(pedido.getMao());
+								usuario.receba(mao);
 
-							mao = dealer.comprarDescartada(pedido.getMao());
-							usuario.receba(mao);
+								pedido = (Pedido) usuario.envie();
 
-							pedido = (Pedido) usuario.envie();
-
-							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
-							usuario.receba(mao);
+								mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
+								usuario.receba(mao);
+							}
 							break;
 					}
 
