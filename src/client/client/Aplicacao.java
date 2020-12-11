@@ -77,13 +77,17 @@ public class Aplicacao {
         System.out.println(maoDoJogador);
         String opcao = "";
 
-        do {
-            try {
+        do
+        {
+//          AQUI COMECA A RODADA DO JOGADOR(A)
+            try
+            {
 
                 System.out.println("Opções:");
                 System.out.println("C. Comprar do baralho e descartar");
-                System.out.println("D. Comprar a ultima descartada e descartar: ");
-                System.out.println("S. Sair da partida");
+                System.out.println("D. Comprar a ultima descartada e descartar");
+                System.out.println("S. Sair da partida\n");
+                System.out.print("> ");
 
                 opcao = Teclado.getUmString().toUpperCase();
 
@@ -92,63 +96,92 @@ public class Aplicacao {
                 }
 
                 //Opcao "C" funcionando corretamente
-                if (opcao.equals("C")) {
+                if (opcao.equals("C"))
+                {
+                    //Servidor recebe informacao da mao e do pedido do cliente
                     servidor.receba(new Pedido(maoDoJogador, opcao));
 
-                    do {
+                    do
+                    {
+//                      O cliente espera a resposta do servidor com sua mao nova
                         comn = (Comunicado) servidor.espiar();
-                    }
-                    while (!(comn instanceof MaoDoJogador));
 
+                    }while (!(comn instanceof MaoDoJogador));
+
+
+//                  O servidor finalmente envia a mao do jogador e esse é passado pro objeto maoDoJogador
                     maoDoJogador = (MaoDoJogador) servidor.envie();
+
+
 
                     //Sou obrigado a mandar ao servidor um nome de uma carta que exista na mao do jogador.
-                    //So saio da repeticao quando tiver a carta com o nome correspondete
-                    do {
+                    //So saio da repeticao quando tiver a carta com o nome correspondente
+                    do
+                    {
                         System.out.println(maoDoJogador);
-                        System.out.print("Escolha o nome (1º char antes do hifen) uma carta para ser descartada: ");
+                        System.out.print("Escolha o nome (tudo antes do hifen) de uma carta para ser descartada: ");
 
                         opcao = Teclado.getUmString().toUpperCase();
-                        System.out.println(opcao + " " + maoDoJogador.contemCarta(opcao));
-                    } while (!maoDoJogador.contemCarta(opcao));
+                        System.out.println("Jogador contem a carta "+opcao + ": " + maoDoJogador.contemCarta(opcao));
+//                      Vai verificar caso o jogador tem essa carta que ele(a) escreveu
 
+                    }
+                    while (!maoDoJogador.contemCarta(opcao));
+//                  Caso tenha a carta descrevida, sai do do-while.
+
+
+//                  O servidor recebe a mao do jogador e a opcao, que no caso eh o nome da carta
                     servidor.receba(new Pedido(maoDoJogador, opcao));
 
-                    do {
+                    do
+                    {
+//                      O usuario espera o servidor enviar a sua mao de volta
                         comn = (Comunicado) servidor.espiar();
                     }
                     while (!(comn instanceof MaoDoJogador));
 
+//                  Usuario recebe sua mao de volta e ve sua mao logo apos
                     maoDoJogador = (MaoDoJogador) servidor.envie();
                     System.out.println(maoDoJogador);
+
+
                 }
-                else if (opcao.equals("D")) {
+                else if (opcao.equals("D"))
+                {
                     servidor.receba(new Pedido(maoDoJogador, opcao));
 
-                    //quando escolher a "D", ele ta travando aqui mesmo que voce tenha uma Carta no Descrte
-                    do {
+                    //quando escolher a "D", ele ta travando aqui mesmo que voce tenha uma Carta no Descarte
+                    do
+                    {
                         comn = (Comunicado) servidor.espiar();
                     }
                     //Nao consegui entender o motivo da expressao booleana abaixo ser sempre verdadeira
                     while (!(comn instanceof Pedido) || !(comn instanceof MaoDoJogador));
 
+
+
                     //Aqui eu trato quando o que veio do Servidor for um Pedido, que no caso nao ha carta descartada ainda
                     comn = servidor.envie();
-                    if(comn instanceof Pedido){
+                    if(comn instanceof Pedido)
+                    {
                         System.out.println("Nao ha nenhuma Carta descartada ainda");
                         continue;
                     }
 
+//                  O jogador recebe a mão nova dele
                     maoDoJogador = (MaoDoJogador) servidor.envie();
 
                     //Sou obrigado a mandar ao servidor um nome de uma carta que exista na mao do jogador.
                     //So saio da repeticao quando tiver a carta com o nome correspondete
                     do {
                         System.out.println(maoDoJogador);
-                        System.out.print("Escolha o nome (1º char antes do hifen) uma carta para ser descartada: ");
+                        System.out.print("Escolha o nome (tudo antes do hifen) uma carta para ser descartada: ");
+
 
                         opcao = Teclado.getUmString().toUpperCase();
                         System.out.println(opcao + " " + maoDoJogador.contemCarta(opcao));
+
+
                     } while (!maoDoJogador.contemCarta(opcao));
 
                     servidor.receba(new Pedido(maoDoJogador, opcao));
@@ -161,9 +194,13 @@ public class Aplicacao {
                     maoDoJogador = (MaoDoJogador) servidor.envie();
                     System.out.println(maoDoJogador);
                 }
-            } catch (Exception erro) {
+            }
+            catch (Exception erro)
+            {
                 System.err.println("Opção inválida");
             }
+
+//          AQUI ACABA A RODADA DO JOGADOR(A)
 
         }
         while (!opcao.equals("S"));
