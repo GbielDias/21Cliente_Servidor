@@ -8,8 +8,8 @@ import commons.*;
 
 public class Aplicacao {
 
-    public static final String HOST_PADRAO = "localhost";
-    public static final int PORTA_PADRAO = 44000;
+    public static final String HOST_PADRAO = "143.106.203.218";
+    public static final int PORTA_PADRAO = 8080;
 
     public static void main(String[] args) // Cliente
     {
