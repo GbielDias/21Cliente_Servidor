@@ -64,7 +64,7 @@ public class Parceiro {
 			
 			return cm;
 		}catch(Exception e) {
-			throw new Exception("Erro de recepcao (envie)");
+			throw new Exception("Erro de recepcao (envie): " + e.getMessage());
 		}
 	}
 	

@@ -2,12 +2,10 @@ package server;
 
 import commons.*;
 
-import java.util.Locale;
-
 // Aqui vai ter todos os relacionamentos entre mao e baralho
 public class Dealer {
 	private Baralho baralho;
-	private Carta descarte = null;
+	private Carta descartada = null;
 
 	// Retirar os valores do baralho e colocar na maoDoJogador
 	public Dealer() {
@@ -15,64 +13,28 @@ public class Dealer {
 
 	}
 
-//	public void comprar(MaoDoJogador mao) {
-//		mao.getMao().add(baralho.comprarUmaCarta());
-//		descartar(mao);
-//	}
+	public MaoDoJogador comprarBaralho(MaoDoJogador mao) {
+		mao.getMao().add(baralho.comprarUmaCarta());
 
-	public MaoDoJogador comprar(MaoDoJogador mao) {
-		if(descarte == null){
-			System.out.println("Voce vai recebe uma carta do Baralho");
-			mao.getMao().add(baralho.comprarUmaCarta());
+		return mao;
+	}
+	public MaoDoJogador comprarDescartada(MaoDoJogador mao) {
+		mao.getMao().add(descartada);
 
-		} else {
-			System.out.println("Voce vai escolher o ultimo descarte: " + descarte +
-					". Ou vai querer comprar do baralho\nD - Ultimo Descarte\nB - Baralh");
-
-			String opcao = Teclado.getUmString().toUpperCase();
-
-			if(opcao.equals("D")) {
-				mao.getMao().add(descarte);
-			}
-			else {
-				mao.getMao().add(baralho.comprarUmaCarta());
-			}
-
-		}
 		return mao;
 	}
 
-	private void descartar(MaoDoJogador mao) {
-		System.out.println(mao);
-		System.out.println("Qual carta voce deseja descartar?");
+	public MaoDoJogador descartar(MaoDoJogador mao, String nome) throws Exception {
+		descartada = mao.getCarta(nome);
 
-		String opcao;
-		while (true) {
-			try {
-				// 1, 4, 6
+		System.out.println(descartada);
+		mao.removerCarta(nome);
 
-
-				opcao = Teclado.getUmString();
-
-				descarte = mao.getCarta(opcao);
-				mao.removerCarta(opcao);
-
-			} catch (Exception err) {
-				System.out.println("Carta invalida");
-			}
-		}
+		return mao;
 	}
 
-	public void comprarEDescarte(MaoDoJogador mao) throws Exception {
-		if (descarte == null)
-			throw new Exception("Nao tem nenhuma carta no monte de descarte");
-
-		mao.getMao().add(descarte);
-		descartar(mao);
-	}
-
-	public int contar(MaoDoJogador mao) {
-		return mao.contar();
+	public Carta getDescartada() {
+		return descartada;
 	}
 
 	public Baralho getBaralho() {

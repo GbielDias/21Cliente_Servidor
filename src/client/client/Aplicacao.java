@@ -3,49 +3,46 @@ package client;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
 import commons.*;
 
 public class Aplicacao {
 
-	public static final String HOST_PADRAO = "localhost";
-	public static final int PORTA_PADRAO = 3333;
+    public static final String HOST_PADRAO = "localhost";
+    public static final int PORTA_PADRAO = 3333;
 
-	public static void main(String[] args) // Cliente
-	{
-		if(args.length > 2)
-		{
-			System.err.println("Uso esperado: java app [HOST[PORTA]]");
-			return;
-		}
+    public static void main(String[] args) // Cliente
+    {
+        if (args.length > 2) {
+            System.err.println("Uso esperado: java app [HOST[PORTA]]");
+            return;
+        }
 
-		//Criando os objetos que vão ser instanciado
-		Socket 				conexao 	= null;
-		ObjectOutputStream 	transmissor = null;
-		ObjectInputStream 	receptor 	= null;
-		Parceiro servidor	= null;
-		TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
-		MaoDoJogador maoDoJogador = null;
+        //Criando os objetos que vão ser instanciado
+        Socket conexao = null;
+        ObjectOutputStream transmissor = null;
+        ObjectInputStream receptor = null;
+        Parceiro servidor = null;
+        TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
+        MaoDoJogador maoDoJogador = null;
 
-		try
-		{
-			conexao 	= instanciarConexao(args);
-			transmissor = instanciarTransmissor(conexao);
-			receptor 	= instanciarReceptor(conexao);
-			servidor	= instanciarServidor(conexao,receptor,transmissor);
-			tratadoraDeDesligamento = instanciarTratadora(servidor);
-		}
-		catch (Exception err)
-		{
-			System.err.println(err.getMessage());
-			System.err.println("Indique o servidor e a porta corretos!\n");
-			return;
-		}
+        try {
+            conexao = instanciarConexao(args);
+            transmissor = instanciarTransmissor(conexao);
+            receptor = instanciarReceptor(conexao);
+            servidor = instanciarServidor(conexao, receptor, transmissor);
+            tratadoraDeDesligamento = instanciarTratadora(servidor);
+        } catch (Exception err) {
+            System.err.println(err.getMessage());
+            System.err.println("Indique o servidor e a porta corretos!\n");
+            return;
+        }
 
-		//Aguarde os usuarios entrarem
-		//Jogo começa aqui
-		tratadoraDeDesligamento.start();
-/*
-		Comunicado comunicado = null;
+        //Aguarde os usuarios entrarem
+        //Jogo começa aqui
+        tratadoraDeDesligamento.start();
+
+        /*Comunicado comunicado = null;
 		do
 		{
 			System.out.println("Aguarde os jogares entrarem na partida");
@@ -57,182 +54,187 @@ public class Aplicacao {
 			{
 			}
 		}
-		while (!(comunicado instanceof ComunicadoDeAguarde));
+		while (!(comunicado instanceof ComunicadoDeAguarde)); */
 
+        Comunicado comn = null;
+        do {
+            try {
+                comn = (Comunicado) servidor.espiar();
+            } catch (Exception err) {
+                System.err.println(err.getMessage() + " Erro ao espiar");
+            }
+        }
+        while (!(comn instanceof MaoDoJogador));
 
- */
+        comn = null;
 
-		Comunicado comn = null;
-		do
-		{
-			try
-			{
-				comn = (Comunicado) servidor.espiar();
-			}
-			catch(Exception err)
-			{
-				System.err.println(err.getMessage() + " Erro no espiar");
-			}
-		}
-		while (!(comn instanceof MaoDoJogador));
+        try {
+            maoDoJogador = (MaoDoJogador) servidor.envie();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
 
-		comn = null;
+        System.out.println(maoDoJogador);
+        String opcao = "";
 
-		try {
-			maoDoJogador = (MaoDoJogador) servidor.envie();
-		}
-		catch (Exception e)
-		{
-			System.err.println(e.getMessage());
-		}
+        do {
+            try {
 
-		System.out.println(maoDoJogador);
-		char opcao = ' ';
+                System.out.println("Opções:");
+                System.out.println("C. Comprar do baralho e descartar");
+                System.out.println("D. Comprar a ultima descartada e descartar: ");
+                System.out.println("S. Sair da partida");
 
-		do
-		{
-			try
-			{
-				System.out.println("Opções:");
-				System.out.println("C. Comprar do baralho e descartar");
-				System.out.println("D. Comprar a ultima descartada e descartar");
-				System.out.println("S. Sair da partida");
+                opcao = Teclado.getUmString().toUpperCase();
 
-				opcao = Character.toUpperCase(Teclado.getUmChar()); // A, B, C, 1, 0 // AS, 10 , Um , Es, Palavra
+                if (!(opcao.equals("C") || !opcao.equals("D") || !opcao.equals("S"))) {
+                    throw new Exception("Opcao Inválida");
+                }
 
-				if(!(opcao == 'C' || opcao == 'D' || opcao == 'S' ))
-				{
-					throw new Exception("Opcao Inválida");
-				}
-				if (opcao == 'C') {
-					servidor.receba(new PedidoDeCarta(maoDoJogador));
+                //Opcao "C" funcionando corretamente
+                if (opcao.equals("C")) {
+                    servidor.receba(new Pedido(maoDoJogador, opcao));
 
-					do
-					{
-						comn = (Comunicado) servidor.espiar();
-					}
-					while (!(comn instanceof MaoDoJogador));
+                    do {
+                        comn = (Comunicado) servidor.espiar();
+                    }
+                    while (!(comn instanceof MaoDoJogador));
 
-					maoDoJogador = (MaoDoJogador) servidor.envie();
+                    maoDoJogador = (MaoDoJogador) servidor.envie();
 
-					System.out.println(servidor.envie());
-					// Visualização da mao do jogador
+                    //Sou obrigado a mandar ao servidor um nome de uma carta que exista na mao do jogador.
+                    //So saio da repeticao quando tiver a carta com o nome correspondete
+                    do {
+                        System.out.println(maoDoJogador);
+                        System.out.print("Escolha o nome (1º char antes do hifen) uma carta para ser descartada: ");
 
-//					int desc;
-//					System.out.print("Escolha uma carta para ser descartada: ");
-//					desc = Teclado.getUmInt();
-//					servidor.receba(new PedidoDeDescarte(desc));
+                        opcao = Teclado.getUmString().toUpperCase();
+                        System.out.println(opcao + " " + maoDoJogador.contemCarta(opcao));
+                    } while (!maoDoJogador.contemCarta(opcao));
 
-				}
-				else if (opcao == 'D')
-				{
-					servidor.receba(new PedidoDeCompraDescarte());
+                    servidor.receba(new Pedido(maoDoJogador, opcao));
 
-					// Visualização da mao do jogador
+                    do {
+                        comn = (Comunicado) servidor.espiar();
+                    }
+                    while (!(comn instanceof MaoDoJogador));
 
-					int desc;
-					System.out.print("Escolha uma carta para ser descartada: ");
-					desc = Teclado.getUmInt();
-					servidor.receba(new PedidoDeDescarte(desc));
-				}
-			}
-			catch(Exception erro)
-			{
-				System.err.println("Opção inválida");
-			}
+                    maoDoJogador = (MaoDoJogador) servidor.envie();
+                    System.out.println(maoDoJogador);
+                }
+                else if (opcao.equals("D")) {
+                    servidor.receba(new Pedido(maoDoJogador, opcao));
 
-		}
-		while(opcao != 'S');
+                    //quando escolher a "D", ele ta travando aqui mesmo que voce tenha uma Carta no Descrte
+                    do {
+                        comn = (Comunicado) servidor.espiar();
+                    }
+                    //Nao consegui entender o motivo da expressao booleana abaixo ser sempre verdadeira
+                    while (!(comn instanceof Pedido) || !(comn instanceof MaoDoJogador));
 
-		try
-		{
-			servidor.receba (new PedidoParaSair ());
-		}
-		catch (Exception erro)
-		{}
-	}
+                    //Aqui eu trato quando o que veio do Servidor for um Pedido, que no caso nao ha carta descartada ainda
+                    comn = servidor.envie();
+                    if(comn instanceof Pedido){
+                        System.out.println("Nao ha nenhuma Carta descartada ainda");
+                        continue;
+                    }
 
-	public static Socket instanciarConexao(String[] args) throws Exception
-	{
-		Socket ret = null;
-		try
-		{
-			String host = Aplicacao.HOST_PADRAO;
-			int porta = Aplicacao.PORTA_PADRAO;
+                    maoDoJogador = (MaoDoJogador) servidor.envie();
 
-			if(args.length > 0)
-				host = args[1];
-			if(args.length == 2)
-				porta = Integer.parseInt(args[1]);
+                    //Sou obrigado a mandar ao servidor um nome de uma carta que exista na mao do jogador.
+                    //So saio da repeticao quando tiver a carta com o nome correspondete
+                    do {
+                        System.out.println(maoDoJogador);
+                        System.out.print("Escolha o nome (1º char antes do hifen) uma carta para ser descartada: ");
 
-			ret = new Socket(host, porta);
-		}
-		catch(Exception err)
-		{
-			throw new Exception("Ocorreu um erro na instanciação de \"conexao\".");
-		}
+                        opcao = Teclado.getUmString().toUpperCase();
+                        System.out.println(opcao + " " + maoDoJogador.contemCarta(opcao));
+                    } while (!maoDoJogador.contemCarta(opcao));
 
-		return ret;
-	}
+                    servidor.receba(new Pedido(maoDoJogador, opcao));
 
-	public static ObjectOutputStream instanciarTransmissor(Socket conexao) throws Exception
-	{
-		ObjectOutputStream ret = null;
-		try
-		{
-			ret = new ObjectOutputStream(conexao.getOutputStream());
-		}
-		catch(Exception err)
-		{
-			throw new Exception("Ocorreu um erro na instanciação do \"transmissor\".");
-		}
+                    do {
+                        comn = (Comunicado) servidor.espiar();
+                    }
+                    while (!(comn instanceof MaoDoJogador));
 
-		return ret;
-	}
+                    maoDoJogador = (MaoDoJogador) servidor.envie();
+                    System.out.println(maoDoJogador);
+                }
+            } catch (Exception erro) {
+                System.err.println("Opção inválida");
+            }
 
-	public static ObjectInputStream instanciarReceptor(Socket conexao) throws Exception
-	{
-		ObjectInputStream ret = null;
-		try
-		{
-			ret = new ObjectInputStream(conexao.getInputStream());
-		}
-		catch(Exception err)
-		{
-			throw new Exception("Ocorreu um erro na instanciação do \"receptor\".");
-		}
+        }
+        while (!opcao.equals("S"));
 
-		return ret;
-	}
+        try {
+            servidor.receba(new PedidoParaSair());
+        } catch (Exception erro) {
+        }
+    }
 
-	public static Parceiro  instanciarServidor(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception
-	{
-		Parceiro ret = null;
-		try
-		{
-			ret = new Parceiro(conexao,receptor,transmissor);
-		}
-		catch(Exception err)
-		{
-			throw new Exception("Ocorreu um erro na instanciação do \"servidor\".");
-		}
+    public static Socket instanciarConexao(String[] args) throws Exception {
+        Socket ret = null;
+        try {
+            String host = Aplicacao.HOST_PADRAO;
+            int porta = Aplicacao.PORTA_PADRAO;
 
-		return ret;
-	}
+            if (args.length > 0)
+                host = args[1];
+            if (args.length == 2)
+                porta = Integer.parseInt(args[1]);
 
-	public static TratadoraDeComunicadoDeDesligamento instanciarTratadora(Parceiro servidor) throws Exception
-	{
-		TratadoraDeComunicadoDeDesligamento ret = null;
-		try
-		{
-			ret = new TratadoraDeComunicadoDeDesligamento(servidor);
-		}
-		catch(Exception err)
-		{
-			throw new Exception("Ocorreu um erro na instanciação da \"tratadoraDeDesligamento\"");
-		}
-		return ret;
-	}
+            ret = new Socket(host, porta);
+        } catch (Exception err) {
+            throw new Exception("Ocorreu um erro na instanciação de \"conexao\".");
+        }
+
+        return ret;
+    }
+
+    public static ObjectOutputStream instanciarTransmissor(Socket conexao) throws Exception {
+        ObjectOutputStream ret = null;
+        try {
+            ret = new ObjectOutputStream(conexao.getOutputStream());
+        } catch (Exception err) {
+            throw new Exception("Ocorreu um erro na instanciação do \"transmissor\".");
+        }
+
+        return ret;
+    }
+
+    public static ObjectInputStream instanciarReceptor(Socket conexao) throws Exception {
+        ObjectInputStream ret = null;
+        try {
+            ret = new ObjectInputStream(conexao.getInputStream());
+        } catch (Exception err) {
+            throw new Exception("Ocorreu um erro na instanciação do \"receptor\".");
+        }
+
+        return ret;
+    }
+
+    public static Parceiro instanciarServidor(Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception {
+        Parceiro ret = null;
+        try {
+            ret = new Parceiro(conexao, receptor, transmissor);
+        } catch (Exception err) {
+            throw new Exception("Ocorreu um erro na instanciação do \"servidor\".");
+        }
+
+        return ret;
+    }
+
+    public static TratadoraDeComunicadoDeDesligamento instanciarTratadora(Parceiro servidor) throws Exception {
+        TratadoraDeComunicadoDeDesligamento ret = null;
+        try {
+            ret = new TratadoraDeComunicadoDeDesligamento(servidor);
+        } catch (Exception err) {
+            throw new Exception("Ocorreu um erro na instanciação da \"tratadoraDeDesligamento\"");
+        }
+        return ret;
+    }
 
 
 }

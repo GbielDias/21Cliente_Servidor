@@ -14,7 +14,7 @@ public class Carta extends Comunicado {
 		
 		if (nome.length() == 1)
 			pontos = Integer.parseInt(nome);
-		else if (nome == "Ais")
+		else if (nome.equals("AIS"))
 			pontos = 1;
 		else 
 			pontos = 10;

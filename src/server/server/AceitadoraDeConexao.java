@@ -48,26 +48,14 @@ public class AceitadoraDeConexao extends Thread{
 			SupervisoraDeConexao supervisora = null; 
 			
 			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, mutEx);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer);
 			}catch(Exception e) {	
 			
 			}
 			
 			supervisora.start();
-			System.out.println(usuarios.size());
 		}
 		
 		//TODO startar patida
 	}
-
-	/*
-	private void instanciaBaralho() {
-		for (int i = 0; i < PropriedadeCartas.NOMES.length; i++) {
-			for (int j = 0; j < PropriedadeCartas.SIMBOLOS.length; j++) {
-				baralho.add(new Carta(PropriedadeCartas.NOMES[i], PropriedadeCartas.SIMBOLOS[j]));
-			}
-		}
-	}
-	*/
-
 }

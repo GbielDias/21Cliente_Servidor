@@ -14,12 +14,11 @@ public class SupervisoraDeConexao extends Thread {
 	
 	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
-	// private ArrayList<Carta> baralho;
 	private Dealer dealer;
 	private MaoDoJogador mao;
 	
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, Semaphore mutEx) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -28,9 +27,6 @@ public class SupervisoraDeConexao extends Thread {
 
 		if (dealer == null)
 			throw new Exception("Dealer Invalido");
-
-		if (mutEx == null)
-			throw new Exception("Semaforo invalido");
 		
 		// if(baralho == null)
 		// throw new Exception("Cartas ausentes");
@@ -106,7 +102,6 @@ public class SupervisoraDeConexao extends Thread {
 //			mutEx.acquireUninterruptibly();
 
 			usuario.receba(this.mao);
-			System.out.println(mao);
 
 			while (true) {
 				Comunicado comunicado = this.usuario.envie();
@@ -114,21 +109,44 @@ public class SupervisoraDeConexao extends Thread {
 				if (comunicado == null)
 					continue;
 
-				//PedidoDeCompraEDescarte
-				else if (comunicado instanceof PedidoDeCarta) {
-					PedidoDeCarta pedido = (PedidoDeCarta) comunicado;
-					mao = dealer.comprar(pedido.getMao());
+				else if (comunicado instanceof Pedido) {
+					Pedido pedido = (Pedido) comunicado;
 
-					System.out.println(mao);
-					usuario.receba(mao);
-					return;
+					switch (pedido.getPedido()){
+						case "C":
+							mao = dealer.comprarBaralho(pedido.getMao());
+							usuario.receba(mao);
+
+							pedido = (Pedido) usuario.envie();
+
+							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
+							usuario.receba(mao);
+							break;
+
+						case "D":
+							//Estou usando Pedido para informar o cliente, porém isso poderá mudar
+							if(dealer.getDescartada() == null){
+								usuario.receba(new Pedido(mao, "Descartada inexistente"));
+								break;
+							}
+
+							mao = dealer.comprarDescartada(pedido.getMao());
+							usuario.receba(mao);
+
+							pedido = (Pedido) usuario.envie();
+
+							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
+							usuario.receba(mao);
+							break;
+					}
+
 				}
 			}
 			
 			//Acaba a vez do jogador
 //			mutEx.release();
 		}catch(Exception e) {
-			System.err.println(e.getMessage());
+			System.err.println("aqui " + e.getMessage());
 		}
 	}
 }
