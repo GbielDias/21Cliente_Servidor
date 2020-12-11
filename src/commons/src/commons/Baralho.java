@@ -55,10 +55,10 @@ public class Baralho {
 		
 		for (int i = 0; i < baralho.size(); i++) {
 			if(str.length() == 15) {
-				str += "\n" + baralho.get(i).ToString() + ", ";
+				str += "\n" + baralho.get(i).toString() + ", ";
 			}
 				
-			str += baralho.get(i).ToString() + ", ";
+			str += baralho.get(i).toString() + ", ";
 		}
 		return str.substring(0, str.length() - 2) + "]";
 	}

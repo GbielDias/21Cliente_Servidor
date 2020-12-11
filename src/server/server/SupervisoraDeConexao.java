@@ -68,17 +68,18 @@ public class SupervisoraDeConexao extends Thread {
 		try {
 			synchronized (this.usuarios) {
 				this.usuarios.add(this.usuario);
-/*
-				if(usuarios.size() == 2)
-				{
 
-					for(Parceiro usuario: usuarios)
-					{
-						usuario.receba(new ComunicadoDeAguarde());
+				if (usuarios.size() > 0) // está 1 só pra teste
+				{
+					try {
+						for (int o = 0; o < usuarios.size(); o++)
+							usuarios.get(o).receba(new ComunicadoDeComecar());
+					} catch (Exception e) {
 					}
+
+					//Start uma thread gerenciar a partida
 				}
 
- */
 			}
 
 			vezDoUsuario();

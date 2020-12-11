@@ -28,7 +28,7 @@ public class Carta extends Comunicado {
 		return nome;
 	}
 	
-	public String ToString() {
+	public String toString() {
 		return nome + "-" + simbolo;
 	}
 }

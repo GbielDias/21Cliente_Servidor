@@ -9,7 +9,7 @@ import commons.*;
 public class Aplicacao {
 
     public static final String HOST_PADRAO = "localhost";
-    public static final int PORTA_PADRAO = 3333;
+    public static final int PORTA_PADRAO = 44000;
 
     public static void main(String[] args) // Cliente
     {
@@ -196,12 +196,12 @@ public class Aplicacao {
 
                     //Aqui eu trato quando o que veio do Servidor for um Pedido, que no caso nao ha carta descartada ainda
 
-                    comunicado = servidor.envie();
-                    if(comunicado instanceof Pedido)
-                    {
-                        System.out.println("Nao ha nenhuma Carta descartada ainda");
-                        continue;
-                    }
+//                    comunicado = servidor.envie();
+//                    if(comunicado instanceof Pedido)
+//                    {
+//                        System.out.println("Nao ha nenhuma Carta descartada ainda");
+//                        continue;
+//                    }
 
 //                    comn = servidor.envie();
 //                    if(comn instanceof Pedido)

@@ -63,7 +63,7 @@ public class MaoDoJogador extends Comunicado {
         String str = "[";
 
         for (int i = 0; i < mao.size(); i++) {
-            str += mao.get(i).ToString() + ", ";
+            str += mao.get(i).toString() + ", ";
         }
 
         return str.substring(0, str.length() - 2) + "] = " + contar();
