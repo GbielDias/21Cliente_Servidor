@@ -2,6 +2,5 @@ package commons;
 
 import java.io.Serializable;
 
-public class Comunicado implements Serializable, Cloneable
-{
+public class Comunicado implements Serializable, Cloneable {
 }

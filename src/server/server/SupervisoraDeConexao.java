@@ -103,25 +103,30 @@ public class SupervisoraDeConexao extends Thread {
 	private void vezDoUsuario() {
 		try {
 
-			mutEx.acquireUninterruptibly();
+//			mutEx.acquireUninterruptibly();
 
 			usuario.receba(this.mao);
+			System.out.println(mao);
 
 			while (true) {
 				Comunicado comunicado = this.usuario.envie();
 
 				if (comunicado == null)
 					continue;
-				
-				else if (comunicado instanceof PedidoDeCompraDescarte) {
-					dealer.comprarDescarte(mao);
-//					usuario.receba(mao);
-					break;
+
+				//PedidoDeCompraEDescarte
+				else if (comunicado instanceof PedidoDeCarta) {
+					PedidoDeCarta pedido = (PedidoDeCarta) comunicado;
+					mao = dealer.comprar(pedido.getMao());
+
+					System.out.println(mao);
+					usuario.receba(mao);
+					return;
 				}
 			}
 			
 			//Acaba a vez do jogador
-			mutEx.release();
+//			mutEx.release();
 		}catch(Exception e) {
 			System.err.println(e.getMessage());
 		}

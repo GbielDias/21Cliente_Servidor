@@ -58,11 +58,11 @@ public class MaoDoJogador extends Comunicado {
 	@Override
 	public String toString() {
 		String str = "[";
-		
+
 		for (int i = 0; i < mao.size(); i++) {
 			str += mao.get(i).ToString() + ", ";
 		}
-		
+
 		return str.substring(0,  str.length() - 2)+ "] = " + contar();
 	}
 }

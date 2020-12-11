@@ -42,11 +42,6 @@ public class Aplicacao {
 		}
 
 		//Aguarde os usuarios entrarem
-
-
-
-
-
 		//Jogo começa aqui
 		tratadoraDeDesligamento.start();
 /*
@@ -81,6 +76,8 @@ public class Aplicacao {
 		}
 		while (!(comn instanceof MaoDoJogador));
 
+		comn = null;
+
 		try {
 			maoDoJogador = (MaoDoJogador) servidor.envie();
 		}
@@ -98,7 +95,7 @@ public class Aplicacao {
 			{
 				System.out.println("Opções:");
 				System.out.println("C. Comprar do baralho e descartar");
-				System.out.println("D. Comprar da pilha de descarte e descartar");
+				System.out.println("D. Comprar a ultima descartada e descartar");
 				System.out.println("S. Sair da partida");
 
 				opcao = Character.toUpperCase(Teclado.getUmChar()); // A, B, C, 1, 0 // AS, 10 , Um , Es, Palavra
@@ -108,15 +105,23 @@ public class Aplicacao {
 					throw new Exception("Opcao Inválida");
 				}
 				if (opcao == 'C') {
-					servidor.receba(new PedidoDeCarta());
+					servidor.receba(new PedidoDeCarta(maoDoJogador));
 
+					do
+					{
+						comn = (Comunicado) servidor.espiar();
+					}
+					while (!(comn instanceof MaoDoJogador));
 
+					maoDoJogador = (MaoDoJogador) servidor.envie();
+
+					System.out.println(servidor.envie());
 					// Visualização da mao do jogador
 
-					int desc;
-					System.out.print("Escolha uma carta para ser descartada: ");
-					desc = Teclado.getUmInt();
-					servidor.receba(new PedidoDeDescarte(desc));
+//					int desc;
+//					System.out.print("Escolha uma carta para ser descartada: ");
+//					desc = Teclado.getUmInt();
+//					servidor.receba(new PedidoDeDescarte(desc));
 
 				}
 				else if (opcao == 'D')

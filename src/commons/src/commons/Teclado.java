@@ -1,4 +1,4 @@
-package client;
+package commons;
 import java.io.*;
 
 public class Teclado
