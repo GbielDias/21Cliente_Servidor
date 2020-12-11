@@ -52,23 +52,26 @@ public class AceitadoraDeConexao extends Thread{
 			
 			}
 			
-			supervisora.start();
+			supervisora.start(); //Teoricamente add um no size de usuario
 
 
 			//TODO colocar size() == 3
 			//Barra conexao se contem 3 players
-			usuarios.size();
-			if(usuarios.size() > 0) // está 1 só pra teste
-			{
-				try
-				{
-					for(int o = 0; o < usuarios.size();o++)
-						usuarios.get(o).receba(new ComunicadoDeComecar());
-				}
-				catch (Exception e){}
 
-				//Start uma thread gerenciar a partida
-				break;
+			synchronized (this.usuarios)
+			{
+
+				if (usuarios.size() > 0) // está 1 só pra teste
+				{
+					try {
+						for (int o = 0; o < usuarios.size(); o++)
+							usuarios.get(o).receba(new ComunicadoDeComecar());
+					} catch (Exception e) {
+					}
+
+					//Start uma thread gerenciar a partida
+					break;
+				}
 			}
 		}
 		
