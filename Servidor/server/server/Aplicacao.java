@@ -18,7 +18,7 @@ public class Aplicacao {
 		if (args.length == 1)
 			porta = args[0];
 		
-		String comando = null;
+		String comando = " ";
 		AceitadoraDeConexao aceitadora;
 		ArrayList<Parceiro> usuarios;
 		
@@ -38,12 +38,12 @@ public class Aplicacao {
             System.out.print   ("> ");
             
             try {
-            	comando = Teclado.getUmString();
+            	comando = (Teclado.getUmString().toLowerCase());
             }catch(Exception e) {
             	System.err.println(e.getMessage());
             }
 
-            if (comando.toLowerCase().equals("desativar"))
+            if (comando.equals("desativar") || comando.equals("desconectar"))
             {
 				synchronized (usuarios)
 				{

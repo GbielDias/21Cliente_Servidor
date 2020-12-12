@@ -88,6 +88,17 @@ public class SupervisoraDeConexao extends Thread {
 			return;
 		}
 
+		try
+		{
+			do {}
+			while (!(usuario.espiar() instanceof ComunicadoDeComecar));
+
+			usuario.envie();
+		}catch(Exception e){}
+
+
+
+
 		while(true)
 		{
 

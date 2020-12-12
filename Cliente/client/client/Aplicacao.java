@@ -67,6 +67,7 @@ public class Aplicacao {
 
         try
         {
+            servidor.receba(comunicado);
             comunicado = servidor.envie();
         }
         catch(Exception e)

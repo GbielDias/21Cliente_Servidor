@@ -19,9 +19,12 @@ public class AceitadoraDeConexao extends Thread{
 		if(porta == null)
 			throw new Exception("Insira uma porta valida");
 		
-		try {
+		try
+		{
 			servidor = new ServerSocket(Integer.parseInt(porta));
-		}catch(Exception e) {
+		}
+		catch(Exception e)
+		{
 			System.err.println("Porta invalida");
 		}
 		
@@ -29,8 +32,8 @@ public class AceitadoraDeConexao extends Thread{
 			throw new Exception("Usuarios ausentes");
 		
 		this.usuarios = usuarios;
-
 		this.dealer = new Dealer();
+		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
 
 	}
 	
@@ -39,9 +42,12 @@ public class AceitadoraDeConexao extends Thread{
 
 
 			Socket conexao = null;
-			try {
+			try
+			{
 				conexao = servidor.accept();
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				continue;
 			}
 
@@ -59,20 +65,20 @@ public class AceitadoraDeConexao extends Thread{
 			try
 			{
 				Thread.sleep(1000);
-			}catch(Exception e)
+			}
+			catch(Exception e)
 			{}
 
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() > 0) // está 1 só pra teste
+				if (usuarios.size() > 0) //TODO Colocar o num exato de usuario
 				{
 					try
 					{
-
 						for (Parceiro usuario : usuarios)
 							usuario.receba(new ComunicadoDeComecar());
-						this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
+
 
 					} catch (Exception e) {}
 
