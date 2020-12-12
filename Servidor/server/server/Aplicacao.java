@@ -42,8 +42,27 @@ public class Aplicacao {
             	System.err.println(e.getMessage());
             }
 
-            if (comando.toLowerCase().equals("desativar")) {
+            if (comando.toLowerCase().equals("desativar"))
+            {
+				synchronized (usuarios)
+				{
+					ComunicadoDeDesligamento comunicadoDeDesligamento =
+							new ComunicadoDeDesligamento ();
 
+					for (Parceiro usuario:usuarios)
+					{
+						try
+						{
+							usuario.receba (comunicadoDeDesligamento);
+							usuario.encerrar();
+						}
+						catch (Exception erro)
+						{}
+					}
+				}
+
+				System.out.println ("O servidor foi desativado!\n");
+				System.exit(0);
             } 
             
             else 
