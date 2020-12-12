@@ -92,23 +92,23 @@ public class SupervisoraDeConexao extends Thread {
 						} catch (Exception e) {
 						}
 
-
-
 						//Start uma thread gerenciar a partida
-						gerenciadora.start();
-						break;
-					}
+					//	gerenciadora.start();
 
+					}
+					usuario.receba(new PermissaoDeRodada());
+					vezDoUsuario();
+					break;
 				}
 			}
-			while (true)
-			{
-				do{}
-				while(!(usuario.espiar() instanceof ComunicadoComecoDeRodada));
-				usuario.envie();
-
-				vezDoUsuario();
-			}
+//			while (true)
+//			{
+//				do{}
+//				while(!(usuario.espiar() instanceof ComunicadoComecoDeRodada));
+//				usuario.envie();
+//
+//				vezDoUsuario();
+//			}
 		}
 
 		catch (Exception erro) {
@@ -155,7 +155,7 @@ public class SupervisoraDeConexao extends Thread {
 							//Estou usando Pedido para informar o cliente, porém isso poderá mudar
 							if(dealer.getDescartada() == null){
 								usuario.receba(new Pedido(mao, "Descartada inexistente"));
-								//break;
+								break;
 							}
 							else
 							{
