@@ -10,7 +10,7 @@ import commons.*;
 public class AceitadoraDeConexao extends Thread{
 	private ServerSocket servidor;
 	private ArrayList<Parceiro> usuarios;
-	private GerenciadoraDePartida gerenciadoraDePartida;
+	//private GerenciadoraDePartida gerenciadoraDePartida;
 	private Dealer dealer;
 	private Semaphore mutEx = new Semaphore(1, true);
 	private ArrayList<Carta> baralho = new ArrayList<>();
@@ -50,7 +50,7 @@ public class AceitadoraDeConexao extends Thread{
 			
 			try
 			{
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDePartida);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer);
 			}
 			catch(Exception e){}
 			

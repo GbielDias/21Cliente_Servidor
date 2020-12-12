@@ -18,7 +18,7 @@ public class SupervisoraDeConexao extends Thread {
 	private MaoDoJogador mao;
 	
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDePartida gerenciadora) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 

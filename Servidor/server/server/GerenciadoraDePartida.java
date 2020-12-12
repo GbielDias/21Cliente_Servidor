@@ -2,11 +2,15 @@ package server;
 
 import commons.*;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class GerenciadoraDePartida extends Thread {
 
     ArrayList<Parceiro> usuarios;
+    ObjectInputStream receptor;
+    ObjectOutputStream transmissor;
     //Tem que ter conexao com o usuario;
 
 
@@ -31,6 +35,9 @@ public class GerenciadoraDePartida extends Thread {
                 {
                     usuarios.get(j).receba(new PermissaoDeRodada());
 
+                    do{}while (usuarios.get(j).espiar() instanceof PermissaoDeRodada);
+
+                    usuarios.get(j).envie();
                     //vezDoUsuario();
                 }
             }
