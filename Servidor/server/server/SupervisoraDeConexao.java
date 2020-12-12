@@ -10,13 +10,12 @@ import java.util.concurrent.Semaphore;
 import commons.*;
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
-	private Semaphore mutEx;
+	private Semaphore mutEx = new Semaphore(1,true);
 	private GerenciadoraDeRodada gerenciadora;
 	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
 	private Dealer dealer;
 	private MaoDoJogador mao;
-	
 
 	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
 		if (conexao == null)
@@ -106,9 +105,9 @@ public class SupervisoraDeConexao extends Thread {
 			{
 				try
 				{
-					usuario.receba(new PermissaoDeRodada());
-
+					mutEx.acquireUninterruptibly();
 					vezDoUsuario();
+					mutEx.release();
 
 				}catch(Exception e){}
 			}
@@ -121,7 +120,7 @@ public class SupervisoraDeConexao extends Thread {
 	private void vezDoUsuario() {
 		try {
 
-//			mutEx.acquireUninterruptibly();
+			usuario.receba(new PermissaoDeRodada());
 
 			usuario.receba(this.mao);
 
