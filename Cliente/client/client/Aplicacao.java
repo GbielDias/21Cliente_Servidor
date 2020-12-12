@@ -90,7 +90,8 @@ public class Aplicacao {
 
             }
 
-            while (rodada instanceof PermissaoDeRodada) {
+            while (rodada instanceof PermissaoDeRodada)
+            {
                 //          AQUI COMECA A RODADA DO JOGADOR(A)
 
                 //            try
@@ -130,8 +131,9 @@ public class Aplicacao {
                     System.out.println(maoDoJogador);
 
 
-                    String opcao = "";
-                    try {
+                    String opcao;
+                    try
+                    {
 
                         System.out.println("Opções:");
                         System.out.println("C. Comprar do baralho e descartar");
@@ -141,9 +143,9 @@ public class Aplicacao {
 
                         opcao = Teclado.getUmString().toUpperCase();
 
-                        if (!(opcao.equals("C") || !opcao.equals("D") || !opcao.equals("S"))) {
+                        if (!(opcao.equals("C") || opcao.equals("D") || opcao.equals("S")))
                             throw new Exception("Opcao Inválida");
-                        }
+
 
                         //Opcao "C" funcionando corretamente
                         if (opcao.equals("C"))
@@ -194,7 +196,8 @@ public class Aplicacao {
                             System.out.println(maoDoJogador);
 
 
-                        } else if (opcao.equals("D"))
+                        }
+                        else if (opcao.equals("D"))
                         {
                             servidor.receba(new Pedido(maoDoJogador, opcao));
 
@@ -208,27 +211,6 @@ public class Aplicacao {
 
                             System.out.println(maoDoJogador);
 
-                            //Aqui eu trato quando o que veio do Servidor for um Pedido, que no caso nao ha carta descartada ainda
-
-                            //                    comunicado = servidor.envie();
-                            //                    if(comunicado instanceof Pedido)
-                            //                    {
-                            //                        System.out.println("Nao ha nenhuma Carta descartada ainda");
-                            //                        continue;
-                            //                    }
-
-                            //                    comn = servidor.envie();
-                            //                    if(comn instanceof Pedido)
-                            //                    {
-                            //                        System.out.println("Nao ha nenhuma Carta descartada ainda");
-                            //                        continue;
-                            //                    }
-
-
-                            //                  O jogador recebe a mão nova dele
-
-                            //Sou obrigado a mandar ao servidor um nome de uma carta que exista na mao do jogador.
-                            //So saio da repeticao quando tiver a carta com o nome correspondete
                             do {
                                 System.out.print("Escolha o nome (tudo antes do hifen) uma carta para ser descartada: ");
 
@@ -249,7 +231,8 @@ public class Aplicacao {
                             maoDoJogador = (MaoDoJogador) servidor.envie();
                             System.out.println(maoDoJogador);
                         }
-                        else if (opcao.equals("S")){
+                        else
+                        {
                             break;
                         }
                     } catch (Exception erro) {
@@ -257,21 +240,31 @@ public class Aplicacao {
                     }
 
                     //          AQUI ACABA A RODADA DO JOGADOR(A)
-                    try {
+                    try
+                    {
                         servidor.receba(new ComunicadoFinalDeRodada());
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         System.out.println(e.getMessage() + " -> Erro ao enviar que acabou a rodada");
                     }
-                    rodada = null;
-                }
-            try {
+            }
+
+            try
+            {
                 servidor.receba(new PedidoParaSair());
-            } catch (Exception erro) {
-            }
-            }
-       // while (!opcao.equals("S"));
+            } catch (Exception erro) {}
+        }
 
     }
+
+
+
+
+
+
+
+
 
     public static Socket instanciarConexao(String[] args) throws Exception {
         Socket ret = null;

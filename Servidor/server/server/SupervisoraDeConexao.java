@@ -76,31 +76,30 @@ public class SupervisoraDeConexao extends Thread {
 
 		try
 		{
-			while(true)
+
+			synchronized (usuarios)
 			{
-				synchronized (this.usuarios)
-				{
-					this.usuarios.add(this.usuario);
-
-					if (usuarios.size() > 0) // está 1 só pra teste
-					{
-						try
-						{
-							for (int o = 0; o < usuarios.size(); o++)
-								usuarios.get(o).receba(new ComunicadoDeComecar());
-
-						} catch (Exception e) {
-						}
-
-						//Start uma thread gerenciar a partida
-					//	gerenciadora.start();
-
-					}
-					usuario.receba(new PermissaoDeRodada());
-					vezDoUsuario();
-					break;
-				}
+				this.usuarios.add(this.usuario);
 			}
+
+			if (usuarios.size() > 0) // está 1 só pra teste
+			{
+				try
+				{
+					for (int o = 0; o < usuarios.size(); o++)
+						usuarios.get(o).receba(new ComunicadoDeComecar());
+
+				} catch (Exception e) {}
+
+				//Start uma thread gerenciar a partida
+//							gerenciadora.start();
+
+			}
+				usuario.receba(new PermissaoDeRodada());
+				vezDoUsuario();
+
+
+
 //			while (true)
 //			{
 //				do{}

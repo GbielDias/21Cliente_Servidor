@@ -31,7 +31,8 @@ public class Aplicacao {
 			System.err.print(e.getMessage());			
 		}
 		
-		while (true) {
+		while (true)
+		{
 			System.out.println ("O servidor esta ativo! Para desativa-lo,");
             System.out.println ("use o comando \"desativar\"\n");
             System.out.print   ("> ");
