@@ -8,7 +8,7 @@ import commons.*;
 
 public class Aplicacao {
 
-    public static final String HOST_PADRAO = "143.106.203.218";
+    public static final String HOST_PADRAO = "localhost";
     public static final int PORTA_PADRAO = 8080;
 
     public static void main(String[] args) // Cliente
@@ -41,10 +41,12 @@ public class Aplicacao {
             return;
         }
 
-        //Aguarde os usuarios entrarem
-        //Jogo começa aqui
+
+
         tratadoraDeDesligamento.start();
 
+
+        //Aguarde os usuarios entrarem
         System.out.println("Aguarde os jogares entrarem na partida");
 
         Comunicado comunicado = null;
@@ -69,6 +71,10 @@ public class Aplicacao {
         {
             System.err.print(e.getMessage());
         }
+
+
+
+//      JOGO COMECA AQUI
 
 
         comunicado = null;
@@ -100,9 +106,16 @@ public class Aplicacao {
         do
         {
 //          AQUI COMECA A RODADA DO JOGADOR(A)
+
             try
             {
-                servidor.receba(new PedidoDeRodada());
+                do
+                {
+                    comunicado = servidor.espiar();
+                }
+                while(!(comunicado instanceof PermissaoDeRodada));
+
+                servidor.envie();
             }
             catch(Exception e)// Caso caia no catch eh porque a rodada ainda nao e do jogador
             {

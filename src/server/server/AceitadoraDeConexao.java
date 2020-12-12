@@ -10,6 +10,7 @@ import commons.*;
 public class AceitadoraDeConexao extends Thread{
 	private ServerSocket servidor;
 	private ArrayList<Parceiro> usuarios;
+	private GerenciadoraDePartida gerenciadoraDePartida;
 	private Dealer dealer;
 	private Semaphore mutEx = new Semaphore(1, true);
 	private ArrayList<Carta> baralho = new ArrayList<>();
@@ -30,6 +31,7 @@ public class AceitadoraDeConexao extends Thread{
 		this.usuarios = usuarios;
 
 		this.dealer = new Dealer();
+		//this.gerenciadoraDePartida = new GerenciadoraDePartida(this.usuarios);
 	}
 	
 	public void run() {
@@ -46,13 +48,13 @@ public class AceitadoraDeConexao extends Thread{
 			
 			SupervisoraDeConexao supervisora = null; 
 			
-			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer);
-			}catch(Exception e) {	
-			
+			try
+			{
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDePartida);
 			}
+			catch(Exception e){}
 			
-			supervisora.start(); //Teoricamente add um no size de usuario
+			supervisora.start(); //Teoricamente add um no size de usuarios
 
 
 			//TODO colocar size() == 3
@@ -67,26 +69,7 @@ public class AceitadoraDeConexao extends Thread{
 		//Em prol de avisar ao quarto jogador que ele nao pode entrar na partida, tem que ser aceito a sua conexao antes
 		//Por isso o while anterior tem que rodar ao mesmo tempo que esse while embaixo
 
-//		while(true)
-//		{
-//			try
-//			{
-//				for(;;)//Aqui tem que ter que fazer mao.contar() da mao do jogador i, caso seja 21, sair desse for
-//				{
-//					for (int j = 0; j < usuarios.size(); j++) // vai passar p
-//					{
-//						Comunicado comn;
-//						do
-//						{
-//							comn = usuarios.get(j).espiar();
-//						}
-//						while(!(comn instanceof PedidoDeRodada));
-//
-//						comn = usuarios.get(j).envie();
-//					}
-//				}
-//			}
-//			catch(Exception e){}
-//		}
+
+
 	}
 }

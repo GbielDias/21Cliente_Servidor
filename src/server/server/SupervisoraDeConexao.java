@@ -11,14 +11,14 @@ import commons.*;
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
 	private Semaphore mutEx;
-	
+	private GerenciadoraDePartida gerenciadora;
 	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
 	private Dealer dealer;
 	private MaoDoJogador mao;
 	
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDePartida gerenciadora) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -32,11 +32,14 @@ public class SupervisoraDeConexao extends Thread {
 		// throw new Exception("Cartas ausentes");
 
 		this.conexao = conexao;
+
+		//TODO ver isso daqui, sem semaforo no parametro passado
 		this.mutEx = mutEx;
+
 		this.usuarios = usuarios;
 		this.dealer = dealer;
 		this.mao = new MaoDoJogador(dealer.getBaralho());
-		// this.baralho = baralho;
+		this.gerenciadora = gerenciadora;
 	}
 
 	public void run() {
@@ -62,27 +65,46 @@ public class SupervisoraDeConexao extends Thread {
 
 		try {
 			this.usuario = new Parceiro(this.conexao, receptor, transmissor);
-		} catch (Exception erro) {
-		}
+		} catch (Exception erro) {}
 
-		try {
-			synchronized (this.usuarios) {
+		try
+		{
+			synchronized (this.usuarios)
+			{
 				this.usuarios.add(this.usuario);
 
-				if (usuarios.size() > 0) // está 1 só pra teste
+				if (usuarios.size() == 1) // está 1 só pra teste
 				{
-					try {
+					try
+					{
 						for (int o = 0; o < usuarios.size(); o++)
 							usuarios.get(o).receba(new ComunicadoDeComecar());
+
 					} catch (Exception e) {
 					}
 
 					//Start uma thread gerenciar a partida
+					gerenciadora.start();
 				}
 
 			}
+			while(true)
+			{
+				Comunicado com;
+				do
+				{
+					com=usuario.espiar();
 
-			vezDoUsuario();
+				}
+				while(!(com instanceof PermissaoDeRodada));
+
+				com=usuario.envie();
+
+
+
+				vezDoUsuario();
+			}
+
 
 		}
 
@@ -104,7 +126,8 @@ public class SupervisoraDeConexao extends Thread {
 
 			usuario.receba(this.mao);
 
-			while (true) {
+			while (true)
+			{
 				Comunicado comunicado = this.usuario.envie();
 
 				if (comunicado == null)
@@ -146,9 +169,11 @@ public class SupervisoraDeConexao extends Thread {
 
 				}
 			}
-			
+
 			//Acaba a vez do jogador
 //			mutEx.release();
+
+			// gerenciador(proximoJogador())
 		}catch(Exception e) {
 			System.err.println("aqui " + e.getMessage());
 		}
