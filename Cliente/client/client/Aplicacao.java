@@ -38,7 +38,8 @@ public class Aplicacao {
         catch (Exception err)
         {
             System.err.println(err.getMessage());
-            System.err.println("Indique o servidor e a porta corretos!\n");
+            System.err.println("Verefique se o servidor está ativo.\n " +
+                    "Se sim, verefique se o servidor e a porta provido estão corretos!\n");
             return;
         }
 
@@ -73,37 +74,9 @@ public class Aplicacao {
             System.err.print(e.getMessage());
         }
 
-
-
-//      JOGO COMECA AQUI
-
-
-        comunicado = null;
-        do
-        {
-            try
-            {
-                comunicado = servidor.espiar();
-            }
-            catch (Exception err)
-            {
-                System.err.println(err.getMessage() + " Erro ao espiar");
-            }
-        }
-        while (!(comunicado instanceof MaoDoJogador));
-
-        try
-        {
-            maoDoJogador = (MaoDoJogador) servidor.envie();
-        }
-        catch (Exception e)
-        {
-            System.err.println(e.getMessage());
-        }
-
-        System.out.println(maoDoJogador);
         String opcao = "";
 
+//      JOGO COMECA AQUI
         do
         {
 //          AQUI COMECA A RODADA DO JOGADOR(A)
@@ -117,12 +90,43 @@ public class Aplicacao {
                 while(!(comunicado instanceof PermissaoDeRodada));
 
                 servidor.envie();
+
+                servidor.receba(new ComunicadoComecoDeRodada());
             }
             catch(Exception e)// Caso caia no catch eh porque a rodada ainda nao e do jogador
             {
                 System.out.println("Não é sua rodada");
                 continue;
             }
+
+
+
+
+            comunicado = null;
+            do
+            {
+                try
+                {
+                    comunicado = servidor.espiar();
+                }
+                catch (Exception err)
+                {
+                    System.err.println(err.getMessage() + " Erro ao espiar");
+                }
+            }
+            while (!(comunicado instanceof MaoDoJogador));
+
+            try
+            {
+                maoDoJogador = (MaoDoJogador) servidor.envie();
+            }
+            catch (Exception e)
+            {
+                System.err.println(e.getMessage());
+            }
+
+            System.out.println(maoDoJogador);
+
 
             try
             {
@@ -256,7 +260,14 @@ public class Aplicacao {
             }
 
 //          AQUI ACABA A RODADA DO JOGADOR(A)
-
+            try
+            {
+                servidor.receba(new ComunicadoFinalDeRodada());
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage() + " -> Erro ao enviar que acabou a rodada");
+            }
         }
         while (!opcao.equals("S"));
 

@@ -11,7 +11,7 @@ import commons.*;
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
 	private Semaphore mutEx;
-	private GerenciadoraDePartida gerenciadora;
+	private GerenciadoraDeRodada gerenciadora;
 	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
 	private Dealer dealer;
@@ -45,20 +45,27 @@ public class SupervisoraDeConexao extends Thread {
 	public void run() {
 
 		ObjectOutputStream transmissor;
-		try {
+		try
+		{
 			transmissor = new ObjectOutputStream(this.conexao.getOutputStream());
-		} catch (Exception erro) {
+		}
+		catch (Exception erro)
+		{
 			return;
 		}
 
 		ObjectInputStream receptor;
 		try {
 			receptor = new ObjectInputStream(this.conexao.getInputStream());
-		} catch (Exception erro) {
-			try {
+		}
+		catch (Exception erro)
+		{
+			try
+			{
 				transmissor.close();
-			} catch (Exception falha) {
 			}
+			catch (Exception falha)
+			{}
 
 			return;
 		}
@@ -69,43 +76,39 @@ public class SupervisoraDeConexao extends Thread {
 
 		try
 		{
-			synchronized (this.usuarios)
-			{
-				this.usuarios.add(this.usuario);
-
-				if (usuarios.size() == 1) // está 1 só pra teste
-				{
-					try
-					{
-						for (int o = 0; o < usuarios.size(); o++)
-							usuarios.get(o).receba(new ComunicadoDeComecar());
-
-					} catch (Exception e) {
-					}
-
-					//Start uma thread gerenciar a partida
-					gerenciadora.start();
-				}
-
-			}
 			while(true)
 			{
-				Comunicado com;
-				do
+				synchronized (this.usuarios)
 				{
-					com=usuario.espiar();
+					this.usuarios.add(this.usuario);
+
+					if (usuarios.size() > 0) // está 1 só pra teste
+					{
+						try
+						{
+							for (int o = 0; o < usuarios.size(); o++)
+								usuarios.get(o).receba(new ComunicadoDeComecar());
+
+						} catch (Exception e) {
+						}
+
+
+
+						//Start uma thread gerenciar a partida
+						gerenciadora.start();
+						break;
+					}
 
 				}
-				while(!(com instanceof PermissaoDeRodada));
-
-				com=usuario.envie();
-
-
+			}
+			while (true)
+			{
+				do{}
+				while(!(usuario.espiar() instanceof ComunicadoComecoDeRodada));
+				usuario.envie();
 
 				vezDoUsuario();
 			}
-
-
 		}
 
 		catch (Exception erro) {
