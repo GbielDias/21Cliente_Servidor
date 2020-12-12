@@ -10,7 +10,7 @@ import commons.*;
 public class AceitadoraDeConexao extends Thread{
 	private ServerSocket servidor;
 	private ArrayList<Parceiro> usuarios;
-	//private GerenciadoraDePartida gerenciadoraDePartida;
+	private GerenciadoraDeRodada gerenciadoraDeRodada;
 	private Dealer dealer;
 	private Semaphore mutEx = new Semaphore(1, true);
 	private ArrayList<Carta> baralho = new ArrayList<>();
@@ -31,7 +31,9 @@ public class AceitadoraDeConexao extends Thread{
 		this.usuarios = usuarios;
 
 		this.dealer = new Dealer();
-		//this.gerenciadoraDePartida = new GerenciadoraDePartida(this.usuarios);
+
+		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
+
 	}
 	
 	public void run() {
@@ -50,15 +52,11 @@ public class AceitadoraDeConexao extends Thread{
 			
 			try
 			{
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 			}
 			catch(Exception e){}
 			
 			supervisora.start(); //Teoricamente add um no size de usuarios
-
-
-			//TODO colocar size() == 3
-			//Barra conexao se contem 3 players
 
 
 		}

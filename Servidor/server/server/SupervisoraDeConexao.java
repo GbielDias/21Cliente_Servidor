@@ -18,7 +18,7 @@ public class SupervisoraDeConexao extends Thread {
 	private MaoDoJogador mao;
 	
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -82,7 +82,7 @@ public class SupervisoraDeConexao extends Thread {
 				this.usuarios.add(this.usuario);
 			}
 
-			if (usuarios.size() > 0) // está 1 só pra teste
+			if (usuarios.size() > 1) // está 1 só pra teste
 			{
 				try
 				{
@@ -95,19 +95,16 @@ public class SupervisoraDeConexao extends Thread {
 //							gerenciadora.start();
 
 			}
-				usuario.receba(new PermissaoDeRodada());
-				vezDoUsuario();
 
+			for(;;)
+			{
+				if(gerenciadora.pode(usuario))
+				{
+					usuario.receba(new PermissaoDeRodada());
+					vezDoUsuario();
+				}
+			}
 
-
-//			while (true)
-//			{
-//				do{}
-//				while(!(usuario.espiar() instanceof ComunicadoComecoDeRodada));
-//				usuario.envie();
-//
-//				vezDoUsuario();
-//			}
 		}
 
 		catch (Exception erro) {
@@ -128,54 +125,56 @@ public class SupervisoraDeConexao extends Thread {
 
 			usuario.receba(this.mao);
 
-			while (true)
+
+			Comunicado comunicado = this.usuario.envie();
+
+			if (comunicado == null)
+				return;
+
+			else if (comunicado instanceof Pedido)
 			{
-				Comunicado comunicado = this.usuario.envie();
+				Pedido pedido = (Pedido) comunicado;
 
-				if (comunicado == null)
-					return;
+				switch (pedido.getPedido()){
+					case "C":
+						mao = dealer.comprarBaralho(pedido.getMao());
+						usuario.receba(mao);
 
-				else if (comunicado instanceof Pedido)
-				{
-					Pedido pedido = (Pedido) comunicado;
+						pedido = (Pedido) usuario.envie();
 
-					switch (pedido.getPedido()){
-						case "C":
-							mao = dealer.comprarBaralho(pedido.getMao());
+						mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
+						usuario.receba(mao);
+						break;
+
+					case "D":
+						//Estou usando Pedido para informar o cliente, porém isso poderá mudar
+						if(dealer.getDescartada() == null){
+							usuario.receba(new Pedido(mao, "Descartada inexistente"));
+							break;
+						}
+						else
+						{
+							mao = dealer.comprarDescartada(pedido.getMao());
 							usuario.receba(mao);
 
 							pedido = (Pedido) usuario.envie();
 
 							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
 							usuario.receba(mao);
-							break;
-
-						case "D":
-							//Estou usando Pedido para informar o cliente, porém isso poderá mudar
-							if(dealer.getDescartada() == null){
-								usuario.receba(new Pedido(mao, "Descartada inexistente"));
-								break;
-							}
-							else
-							{
-								mao = dealer.comprarDescartada(pedido.getMao());
-								usuario.receba(mao);
-
-								pedido = (Pedido) usuario.envie();
-
-								mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
-								usuario.receba(mao);
-							}
-							break;
-					}
-
+						}
+						break;
 				}
+
 			}
+
 
 			//Acaba a vez do jogador
 //			mutEx.release();
 
-			// gerenciador(proximoJogador())
+
+			gerenciadora.proximoJogador();
+
+
 		}catch(Exception e) {
 			System.err.println("aqui " + e.getMessage());
 		}

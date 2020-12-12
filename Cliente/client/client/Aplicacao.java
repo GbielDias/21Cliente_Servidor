@@ -92,25 +92,6 @@ public class Aplicacao {
 
             while (rodada instanceof PermissaoDeRodada)
             {
-                //          AQUI COMECA A RODADA DO JOGADOR(A)
-
-                //            try
-                //            {
-                //                do
-                //                {
-                //                    comunicado = servidor.espiar();
-                //                }
-                //                while(!(comunicado instanceof PermissaoDeRodada));
-                //
-                //                servidor.envie();
-                //
-                //                servidor.receba(new ComunicadoComecoDeRodada());
-                //            }
-                //            catch(Exception e)// Caso caia no catch eh porque a rodada ainda nao e do jogador
-                //            {
-                //                System.out.println("Não é sua rodada");
-                //                continue;
-                //            }
 
                     comunicado = null;
                     do {
@@ -231,22 +212,18 @@ public class Aplicacao {
                             maoDoJogador = (MaoDoJogador) servidor.envie();
                             System.out.println(maoDoJogador);
                         }
-                        else
+                        else // S
                         {
                             break;
                         }
-                    } catch (Exception erro) {
-                        System.err.println("Opção inválida");
-                    }
 
-                    //          AQUI ACABA A RODADA DO JOGADOR(A)
-                    try
+
+//                      AQUI ACABA A RODADA DO JOGADOR(A)
+                        rodada = null;
+
+                    } catch (Exception erro)
                     {
-                        servidor.receba(new ComunicadoFinalDeRodada());
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println(e.getMessage() + " -> Erro ao enviar que acabou a rodada");
+                        System.err.println("Opção inválida");
                     }
             }
 
