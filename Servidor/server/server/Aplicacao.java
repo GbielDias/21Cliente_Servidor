@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import commons.*;
 
 public class Aplicacao {
-	private static final String DEFAULT_DOOR = "8080";
+	private static final String DEFAULT_DOOR = "35555";
 
 	public static void main(String[] args) {
 		if (args.length > 1) {

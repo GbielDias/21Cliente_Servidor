@@ -10,7 +10,7 @@ import commons.*;
 public class Aplicacao {
 
     public static final String HOST_PADRAO = "localhost";
-    public static final int PORTA_PADRAO = 8080;
+    public static final int PORTA_PADRAO = 35555;
 
     public static void main(String[] args) // Cliente
     {
@@ -74,13 +74,16 @@ public class Aplicacao {
             System.err.print(e.getMessage());
         }
 
+        System.out.println("O jogo comecou!");
+
         while (true)
         {
             Comunicado rodada = null;
-    //      JOGO COMECA AQUI
+
             try {
 
-                do {
+                do
+                {
                     rodada = servidor.espiar();
                 }
                 while (!(rodada instanceof PermissaoDeRodada));

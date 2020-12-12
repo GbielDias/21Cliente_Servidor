@@ -11,7 +11,7 @@ public class GerenciadoraDeRodada {
 
     ArrayList<Parceiro> usuarios;
     Socket conexao;
-    int j=0;
+    int j=-1;
     //Tem que ter conexao com o usuario;
 
 
@@ -32,7 +32,10 @@ public class GerenciadoraDeRodada {
 
     public boolean pode(Parceiro usuario)
     {
-        return usuario == usuarios.get(j);
+        if(j > -1)
+            return usuario == usuarios.get(j);
+        else
+            return false;
     }
 
 }

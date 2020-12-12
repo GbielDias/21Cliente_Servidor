@@ -28,14 +28,9 @@ public class SupervisoraDeConexao extends Thread {
 		if (dealer == null)
 			throw new Exception("Dealer Invalido");
 		
-		// if(baralho == null)
-		// throw new Exception("Cartas ausentes");
+
 
 		this.conexao = conexao;
-
-		//TODO ver isso daqui, sem semaforo no parametro passado
-		this.mutEx = mutEx;
-
 		this.usuarios = usuarios;
 		this.dealer = dealer;
 		this.mao = new MaoDoJogador(dealer.getBaralho());
@@ -82,31 +77,7 @@ public class SupervisoraDeConexao extends Thread {
 				this.usuarios.add(this.usuario);
 			}
 
-			if (usuarios.size() > 1) // está 1 só pra teste
-			{
-				try
-				{
-					for (int o = 0; o < usuarios.size(); o++)
-						usuarios.get(o).receba(new ComunicadoDeComecar());
-
-				} catch (Exception e) {}
-
-				//Start uma thread gerenciar a partida
-//							gerenciadora.start();
-
-			}
-
-			for(;;)
-			{
-				if(gerenciadora.pode(usuario))
-				{
-					usuario.receba(new PermissaoDeRodada());
-					vezDoUsuario();
-				}
-			}
-
 		}
-
 		catch (Exception erro) {
 			try {
 				transmissor.close();
@@ -116,6 +87,21 @@ public class SupervisoraDeConexao extends Thread {
 
 			return;
 		}
+
+		while(true)
+		{
+			if(gerenciadora.pode(usuario))
+			{
+				try
+				{
+					usuario.receba(new PermissaoDeRodada());
+					vezDoUsuario();
+				}catch(Exception e){}
+			}
+		}
+
+
+
 	}
 	
 	private void vezDoUsuario() {

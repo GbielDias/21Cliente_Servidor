@@ -37,26 +37,48 @@ public class AceitadoraDeConexao extends Thread{
 	}
 	
 	public void run() {
-		while(true)
-		{
+		while(true) {
 
 
 			Socket conexao = null;
 			try {
 				conexao = servidor.accept();
-			}catch(Exception e) {
+			} catch (Exception e) {
 				continue;
 			}
-			
-			SupervisoraDeConexao supervisora = null; 
-			
+
+
+			SupervisoraDeConexao supervisora = null;
+
+			try {
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+
+			supervisora.start(); //Teoricamente add um no size de usuarios
+
 			try
 			{
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
+				Thread.sleep(1000);
+			}catch(Exception e)
+			{}
+
+
+			synchronized (usuarios)
+			{
+				if (usuarios.size() > 1) // está 1 só pra teste
+				{
+					try {
+						gerenciadoraDeRodada.proximoJogador();
+						for (Parceiro usuario : usuarios)
+							usuario.receba(new ComunicadoDeComecar());
+
+					} catch (Exception e) {}
+
+				}
 			}
-			catch(Exception e){}
-			
-			supervisora.start(); //Teoricamente add um no size de usuarios
+
 
 
 		}
