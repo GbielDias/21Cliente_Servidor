@@ -32,8 +32,6 @@ public class AceitadoraDeConexao extends Thread{
 
 		this.dealer = new Dealer();
 
-		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
-
 	}
 	
 	public void run() {
@@ -67,12 +65,14 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() > 1) // está 1 só pra teste
+				if (usuarios.size() > 0) // está 1 só pra teste
 				{
-					try {
-						gerenciadoraDeRodada.proximoJogador();
+					try
+					{
+
 						for (Parceiro usuario : usuarios)
 							usuario.receba(new ComunicadoDeComecar());
+						this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
 
 					} catch (Exception e) {}
 

@@ -90,12 +90,15 @@ public class SupervisoraDeConexao extends Thread {
 
 		while(true)
 		{
-			if(gerenciadora.pode(usuario))
+
+			if(gerenciadora != null && gerenciadora.pode(usuario))
 			{
 				try
 				{
 					usuario.receba(new PermissaoDeRodada());
+
 					vezDoUsuario();
+
 				}catch(Exception e){}
 			}
 		}

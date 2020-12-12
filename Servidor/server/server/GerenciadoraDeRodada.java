@@ -9,10 +9,9 @@ import java.util.ArrayList;
 
 public class GerenciadoraDeRodada {
 
-    ArrayList<Parceiro> usuarios;
-    Socket conexao;
-    int j=-1;
-    //Tem que ter conexao com o usuario;
+    private final ArrayList<Parceiro> usuarios;
+    private Socket conexao;
+    private int j=0;
 
 
     public GerenciadoraDeRodada(ArrayList<Parceiro> usuarios) throws Exception {
@@ -25,9 +24,12 @@ public class GerenciadoraDeRodada {
 
     public void proximoJogador()
     {
-        j++;
-        if(j >= usuarios.size())
-            j=0;
+        synchronized (usuarios)
+        {
+            j++;
+            if (j >= usuarios.size())
+                j = 0;
+        }
     }
 
     public boolean pode(Parceiro usuario)
