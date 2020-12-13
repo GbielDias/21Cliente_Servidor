@@ -34,10 +34,12 @@ public class GerenciadoraDeRodada {
 
     public boolean pode(Parceiro usuario)
     {
-        if(j > -1)
-            return usuario == usuarios.get(j);
-        else
-            return false;
+        synchronized (usuarios) {
+            if (j > -1)
+                return usuario == usuarios.get(j);
+            else
+                return false;
+        }
     }
 
 }

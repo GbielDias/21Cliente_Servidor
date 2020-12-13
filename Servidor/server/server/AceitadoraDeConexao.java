@@ -72,7 +72,7 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() > 0) //TODO Colocar o num exato de usuario
+				if (usuarios.size() > 1) //TODO Colocar o num exato de usuario
 				{
 					try
 					{
