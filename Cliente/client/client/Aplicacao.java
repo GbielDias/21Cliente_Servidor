@@ -228,6 +228,8 @@ public class Aplicacao {
                 servidor.receba(new PedidoParaSair());
             } catch (Exception erro) {}
 
+        System.out.println("Obrigado por usar esse programa !!");
+            System.exit(0);
 
     }
 

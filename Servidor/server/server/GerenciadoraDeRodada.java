@@ -32,13 +32,19 @@ public class GerenciadoraDeRodada {
         }
     }
 
-    public boolean pode(Parceiro usuario)
+    public boolean pode(Parceiro usuario) throws Exception
     {
-        synchronized (usuarios) {
-            if (j > -1)
-                return usuario == usuarios.get(j);
-            else
-                return false;
+        try {
+            synchronized (usuarios) {
+                if (j > -1)
+                    return usuario == usuarios.get(j);
+                else
+                    return false;
+            }
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Usuário retirado");
         }
     }
 

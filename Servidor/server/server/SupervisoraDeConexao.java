@@ -16,6 +16,8 @@ public class SupervisoraDeConexao extends Thread {
 	private ArrayList<Parceiro> usuarios;
 	private Dealer dealer;
 	private MaoDoJogador mao;
+	private ObjectOutputStream transmissor;
+	private ObjectInputStream receptor;
 
 	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
 		if (conexao == null)
@@ -26,8 +28,6 @@ public class SupervisoraDeConexao extends Thread {
 
 		if (dealer == null)
 			throw new Exception("Dealer Invalido");
-		
-
 
 		this.conexao = conexao;
 		this.usuarios = usuarios;
@@ -38,7 +38,6 @@ public class SupervisoraDeConexao extends Thread {
 
 	public void run() {
 
-		ObjectOutputStream transmissor;
 		try
 		{
 			transmissor = new ObjectOutputStream(this.conexao.getOutputStream());
@@ -48,7 +47,7 @@ public class SupervisoraDeConexao extends Thread {
 			return;
 		}
 
-		ObjectInputStream receptor;
+
 		try {
 			receptor = new ObjectInputStream(this.conexao.getInputStream());
 		}
@@ -100,13 +99,17 @@ public class SupervisoraDeConexao extends Thread {
 
 		while(true)
 		{
-			if(gerenciadora != null && gerenciadora.pode(usuario))
-			{
-				try
-				{
-					vezDoUsuario();
+			try {
+				if (gerenciadora != null && gerenciadora.pode(usuario)) {
+					try {
+						vezDoUsuario();
 
-				}catch(Exception e){}
+					} catch (Exception e) {
+					}
+				}
+			}
+			catch (Exception e){
+				return;
 			}
 		}
 
@@ -161,13 +164,27 @@ public class SupervisoraDeConexao extends Thread {
 						}
 						break;
 				}
-
+			}
+			else if (comunicado instanceof PedidoParaSair)
+			{
+				synchronized (this.usuarios)
+				{
+					this.usuarios.remove (this.usuario);
+				}
+				this.usuario.encerrar();
+				//return;
 			}
 
 			gerenciadora.proximoJogador();
 
 		}catch(Exception e)
 		{
+			try
+			{
+				transmissor.close();
+				receptor.close();
+			}
+			catch (Exception falha){}
 		}
 	}
 }
