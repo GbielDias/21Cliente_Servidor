@@ -114,21 +114,26 @@ public class Aplicacao {
                 System.out.println(maoDoJogador);
 
 
-                String opcao;
-                try
-                {
+                String opcao = "";
+                for(;;) {
+                    try {
 
-                    System.out.println("Opções:");
-                    System.out.println("C. Comprar do baralho e descartar");
-                    System.out.println("D. Comprar a ultima descartada e descartar");
-                    System.out.println("S. Sair da partida");
-                    System.out.print("> ");
+                        System.out.println("Opções:");
+                        System.out.println("C. Comprar do baralho e descartar");
+                        System.out.println("D. Comprar a ultima descartada e descartar");
+                        System.out.println("S. Sair da partida");
+                        System.out.print("> ");
 
-                    opcao = Teclado.getUmString().toUpperCase();
+                        opcao = Teclado.getUmString().toUpperCase();
 
-                    if (!(opcao.equals("C") || opcao.equals("D") || opcao.equals("S")))
-                        throw new Exception("Opcao Inválida");
-
+                        if (!(opcao.equals("C") || opcao.equals("D") || opcao.equals("S")))
+                            throw new Exception("Opcao Inválida");
+                        break;
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                }
+                try {
 
                     //Opcao "C" funcionando corretamente
                     if (opcao.equals("C")) {
@@ -217,12 +222,12 @@ public class Aplicacao {
 
 //                      AQUI ACABA A RODADA DO JOGADOR(A)
 
-
                 } catch (Exception erro) {
                     System.err.println("Opção inválida");
                 }
             }
         }
+        // Perguntar pro dono da partida se ele quer jogar novamente ou sair do programa
             try
             {
                 servidor.receba(new PedidoParaSair());
