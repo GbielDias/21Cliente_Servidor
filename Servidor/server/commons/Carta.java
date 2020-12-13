@@ -27,8 +27,31 @@ public class Carta extends Comunicado {
 	public String getNome() {
 		return nome;
 	}
-	
+
+	@Override
 	public String toString() {
 		return nome + "-" + simbolo;
+	}
+
+	@Override
+	public boolean equals(Object o) //TODO Verificar equals - Carta
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Carta carta = (Carta) o;
+
+		if (pontos != carta.pontos) return false;
+		if (!simbolo.equals(carta.simbolo)) return false;
+		return nome.equals(carta.nome);
+	}
+
+	@Override
+	public int hashCode() //TODO Verificar hashCode - Carta
+	{
+		int result = simbolo.hashCode();
+		result = 31 * result + nome.hashCode();
+		result = 31 * result + pontos;
+		return result;
 	}
 }

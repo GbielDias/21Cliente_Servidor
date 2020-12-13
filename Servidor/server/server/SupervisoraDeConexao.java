@@ -172,9 +172,8 @@ public class SupervisoraDeConexao extends Thread {
 					this.usuarios.remove (this.usuario);
 				}
 				this.usuario.encerrar();
-				//return;
+				return;
 			}
-
 			gerenciadora.proximoJogador();
 
 		}catch(Exception e)

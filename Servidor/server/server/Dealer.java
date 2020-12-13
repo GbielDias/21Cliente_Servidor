@@ -41,4 +41,23 @@ public class Dealer {
 		return this.baralho;
 	}
 
+	@Override
+	public boolean equals(Object o)  //TODO Verificar equals - Dealer
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Dealer dealer = (Dealer) o;
+
+		if (!baralho.equals(dealer.baralho)) return false;
+		return descartada.equals(dealer.descartada);
+	}
+
+	@Override
+	public int hashCode() //TODO Verificar hashCode - Dealer
+	{
+		int result = baralho.hashCode();
+		result = 31 * result + descartada.hashCode();
+		return result;
+	}
 }

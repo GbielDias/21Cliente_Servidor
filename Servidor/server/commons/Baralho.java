@@ -40,7 +40,8 @@ public class Baralho {
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		int ret = 12;
 
 		for (Carta carta: baralho)
@@ -50,7 +51,8 @@ public class Baralho {
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String str = "[";
 		
 		for (int i = 0; i < baralho.size(); i++) {
@@ -61,5 +63,16 @@ public class Baralho {
 			str += baralho.get(i).toString() + ", ";
 		}
 		return str.substring(0, str.length() - 2) + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) //TODO Verificar equals - Baralho
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Baralho baralho1 = (Baralho) o;
+
+		return baralho.equals(baralho1.baralho);
 	}
 }

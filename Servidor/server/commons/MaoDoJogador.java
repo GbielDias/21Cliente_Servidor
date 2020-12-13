@@ -2,7 +2,8 @@ package commons;
 
 import java.util.ArrayList;
 
-public class MaoDoJogador extends Comunicado {
+public class MaoDoJogador extends Comunicado
+{
     private ArrayList<Carta> mao = new ArrayList<>();
 
     public MaoDoJogador(Baralho valores) {
@@ -67,5 +68,22 @@ public class MaoDoJogador extends Comunicado {
         }
 
         return str.substring(0, str.length() - 2) + "] = " + contar();
+    }
+
+    @Override
+    public boolean equals(Object o) //TODO Verificar equals - MaoDoJogador
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MaoDoJogador that = (MaoDoJogador) o;
+
+        return mao.equals(that.mao);
+    }
+
+    @Override
+    public int hashCode() //TODO Verificar equals - MaoDoJogador
+    {
+        return mao.hashCode();
     }
 }

@@ -35,6 +35,7 @@ public class AceitadoraDeConexao extends Thread{
 		this.dealer = new Dealer();
 		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
 
+
 	}
 	
 	public void run() {
@@ -53,18 +54,25 @@ public class AceitadoraDeConexao extends Thread{
 
 
 			SupervisoraDeConexao supervisora = null;
+			TratadoraDeVencedor tratadoraDeVencedor = null;
 
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
-			} catch (Exception e) {
+
+//				tratadoraDeVencedor = new TratadoraDeVencedor(usuarios,gerenciadoraDeRodada,conexao);
+
+			}
+			catch (Exception e)
+			{
 				System.err.println(e.getMessage());
 			}
 
 			supervisora.start(); //Teoricamente add um no size de usuarios
 
+
 			try
 			{
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			}
 			catch(Exception e)
 			{}
@@ -78,7 +86,6 @@ public class AceitadoraDeConexao extends Thread{
 					{
 						for (Parceiro usuario : usuarios)
 							usuario.receba(new ComunicadoDeComecar());
-
 
 					} catch (Exception e) {}
 

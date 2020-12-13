@@ -2,8 +2,7 @@ package server;
 
 import commons.*;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -36,16 +35,52 @@ public class GerenciadoraDeRodada {
     {
         try {
             synchronized (usuarios) {
-                if (j > -1)
-                    return usuario == usuarios.get(j);
-                else
-                    return false;
+
+                return usuario == usuarios.get(j);
+
             }
         }
         catch (Exception e)
         {
             throw new Exception("Usuário retirado");
         }
+    }
+
+    public ArrayList<Parceiro> getUsuarios() // TODO getUsuario - GerenciadoraDeRodada (necessario??)
+    {
+        return usuarios;
+    }
+
+    public int getJ() {
+        return j;
+    }
+
+    public void setJ(int j) {
+        this.j = j;
+    }
+
+    @Override
+    public String toString() //TODO toString - GerenciadoraDeRodada
+    {
+        return "GerenciadoraDeRodada{" +
+                "usuarios=" + usuarios +
+                ", conexao=" + conexao +
+                ", j=" + j +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) //TODO Equal - GerenciadoraDeRodada
+    {
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() //TODO hashCode - GerenciadoraDeRodada
+    {
+
+        return 0;
     }
 
 }

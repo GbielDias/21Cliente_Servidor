@@ -77,4 +77,79 @@ public class Parceiro {
 			
 		}
 	}
+
+	@Override
+	public String toString() //TODO VERIFICAR toString - Parceiro
+	{
+		return "Parceiro{ " + "conexao=" + conexao + " }";
+	}
+
+	@Override
+	public boolean equals(Object o) //TODO VERIFICAR  - Parceiro
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Parceiro parceiro = (Parceiro) o;
+
+		if (!conexao.equals(parceiro.conexao)) return false;
+		if (!receptor.equals(parceiro.receptor)) return false;
+		if (!transmissor.equals(parceiro.transmissor)) return false;
+		if (!proximoComunicado.equals(parceiro.proximoComunicado)) return false;
+		return mutuaExclusao.equals(parceiro.mutuaExclusao);
+	}
+
+	@Override
+	public int hashCode() //TODO VERIFICAR  hashCode - Parceiro
+	{
+		int result = conexao.hashCode();
+		result = 31 * result + receptor.hashCode();
+		result = 31 * result + transmissor.hashCode();
+		result = 31 * result + proximoComunicado.hashCode();
+		result = 31 * result + mutuaExclusao.hashCode();
+		return result;
+	}
+
+
+	//TODO VERIFICACOES de Getters e Setters - Parceiro
+
+	public Comunicado getProximoComunicado() {
+		return proximoComunicado;
+	}
+
+	public ObjectInputStream getReceptor() {
+		return receptor;
+	}
+
+	public ObjectOutputStream getTransmissor() {
+		return transmissor;
+	}
+
+	public Semaphore getMutuaExclusao() {
+		return mutuaExclusao;
+	}
+
+	public Socket getConexao() {
+		return conexao;
+	}
+
+	public void setConexao(Socket conexao) {
+		this.conexao = conexao;
+	}
+
+	public void setMutuaExclusao(Semaphore mutuaExclusao) {
+		this.mutuaExclusao = mutuaExclusao;
+	}
+
+	public void setProximoComunicado(Comunicado proximoComunicado) {
+		this.proximoComunicado = proximoComunicado;
+	}
+
+	public void setReceptor(ObjectInputStream receptor) {
+		this.receptor = receptor;
+	}
+
+	public void setTransmissor(ObjectOutputStream transmissor) {
+		this.transmissor = transmissor;
+	}
 }

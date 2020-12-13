@@ -24,4 +24,23 @@ public class Pedido extends Comunicado {
         return pedido;
     }
 
+    @Override
+    public boolean equals(Object o) //TODO VERIFICACAO equals - Pedido
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Pedido pedido1 = (Pedido) o;
+
+        if (!mao.equals(pedido1.mao)) return false;
+        return pedido.equals(pedido1.pedido);
+    }
+
+    @Override
+    public int hashCode() //TODO VERIFICACAO hashCode - Pedido
+    {
+        int result = mao.hashCode();
+        result = 31 * result + pedido.hashCode();
+        return result;
+    }
 }
