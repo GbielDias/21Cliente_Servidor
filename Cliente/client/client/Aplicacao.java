@@ -222,13 +222,12 @@ public class Aplicacao {
                     System.err.println("Opção inválida");
                 }
             }
-
-
+        }
             try
             {
                 servidor.receba(new PedidoParaSair());
             } catch (Exception erro) {}
-        }
+
 
     }
 

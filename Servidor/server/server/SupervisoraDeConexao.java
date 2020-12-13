@@ -100,14 +100,11 @@ public class SupervisoraDeConexao extends Thread {
 
 		while(true)
 		{
-
 			if(gerenciadora != null && gerenciadora.pode(usuario))
 			{
 				try
 				{
-					mutEx.acquireUninterruptibly();
 					vezDoUsuario();
-					mutEx.release();
 
 				}catch(Exception e){}
 			}
@@ -124,8 +121,9 @@ public class SupervisoraDeConexao extends Thread {
 
 			usuario.receba(this.mao);
 
+			Comunicado comunicado = null;
 
-			Comunicado comunicado = this.usuario.envie();
+			 comunicado = this.usuario.envie();
 
 			if (comunicado == null)
 				return;
@@ -166,16 +164,10 @@ public class SupervisoraDeConexao extends Thread {
 
 			}
 
-
-			//Acaba a vez do jogador
-//			mutEx.release();
-
-
 			gerenciadora.proximoJogador();
 
-
-		}catch(Exception e) {
-			System.err.println("aqui " + e.getMessage());
+		}catch(Exception e)
+		{
 		}
 	}
 }
