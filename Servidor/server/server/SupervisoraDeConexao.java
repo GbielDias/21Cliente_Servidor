@@ -17,8 +17,9 @@ public class SupervisoraDeConexao extends Thread {
 	private MaoDoJogador mao;
 	private ObjectOutputStream transmissor;
 	private ObjectInputStream receptor;
+	private boolean isDJ;
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora,boolean isDJ) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -33,6 +34,7 @@ public class SupervisoraDeConexao extends Thread {
 		this.dealer = dealer;
 		this.mao = new MaoDoJogador(dealer.getBaralho());
 		this.gerenciadora = gerenciadora;
+		this.isDJ = isDJ;
 	}
 
 	public void run() {

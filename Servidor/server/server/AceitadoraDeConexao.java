@@ -60,10 +60,12 @@ public class AceitadoraDeConexao extends Thread{
 
 			SupervisoraDeConexao supervisora = null;
 
-			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
-
-
+			try
+			{
+				if (usuarios.size()==0)
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada,true);
+				else
+					supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada,false);
 			}
 			catch (Exception e)
 			{
