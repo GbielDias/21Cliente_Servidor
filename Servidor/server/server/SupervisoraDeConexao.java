@@ -95,16 +95,7 @@ public class SupervisoraDeConexao extends Thread {
 		while(true) {
 			try {
 				if (gerenciadora != null && gerenciadora.pode(usuario)) {
-<<<<<<< HEAD
 					vezDoUsuario();
-=======
-					try
-					{
-						vezDoUsuario();
-
-					} catch (Exception e) {
-					}
->>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
 				}
 			}
 			catch (Exception e){

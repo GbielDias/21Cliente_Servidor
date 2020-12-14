@@ -2,6 +2,7 @@ package client;
 
 import commons.Parceiro;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -22,6 +23,9 @@ public class Instanciacao
                 porta = Integer.parseInt(args[1]);
 
             ret = new Socket(host, porta);
+        } catch (IOException err) {
+            System.exit(0);
+            throw new Exception("O servidor está cheio");
         } catch (Exception err) {
             throw new Exception("Ocorreu um erro na instanciação de \"conexao\".");
         }
@@ -44,7 +48,10 @@ public class Instanciacao
         ObjectInputStream ret = null;
         try {
             ret = new ObjectInputStream(conexao.getInputStream());
-        } catch (Exception err) {
+        } catch (IOException err) {
+            System.err.println("O servidor está cheio, volte mais tarde");
+            System.exit(0);
+        }  catch (Exception err) {
             throw new Exception("Ocorreu um erro na instanciação do \"receptor\".");
         }
 

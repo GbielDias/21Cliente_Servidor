@@ -34,18 +34,12 @@ public class AceitadoraDeConexao extends Thread{
 		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
 	}
 	
-<<<<<<< HEAD
 	public void run() {
+		int capacidade = 3;
+
 		while(true) {
-=======
-	public void run()
-	{
-		while(true)
-		{
-
-
->>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
 			Socket conexao = null;
+
 			try
 			{
 				conexao = servidor.accept();
@@ -55,13 +49,16 @@ public class AceitadoraDeConexao extends Thread{
 				continue;
 			}
 
+			if(usuarios.size() == 0){
+				try {
+					conexao.close();
+
+				}catch (Exception e){
+
+				}
+			}
 
 			SupervisoraDeConexao supervisora = null;
-<<<<<<< HEAD
-//			TratadoraDeVencedor tratadoraDeVencedor = null;
-=======
-
->>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
 
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
@@ -86,7 +83,7 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() == 2) //TODO Colocar o num exato de usuario
+				if (usuarios.size() > 0) //TODO Colocar o num exato de usuario
 				{
 					try
 					{
