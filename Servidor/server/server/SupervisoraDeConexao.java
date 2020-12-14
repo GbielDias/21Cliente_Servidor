@@ -182,12 +182,13 @@ public class SupervisoraDeConexao extends Thread {
 
 				synchronized (usuarios)
 				{
-					for (Parceiro parceiro: usuarios) {
+					for (Parceiro parceiro: usuarios)
+					{
 						if (!(this.usuario == parceiro))
-						{
 							parceiro.receba(new ComunicadoDeDerrota());
-						}
 
+						usuarios.remove(parceiro);
+						parceiro.encerrar();
 					}
 				}
 			}
