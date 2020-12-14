@@ -31,6 +31,7 @@ public class AceitadoraDeConexao extends Thread{
 		this.usuarios = usuarios;
 		this.dealer = new Dealer();
 		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
+
 	}
 	
 	public void run() {

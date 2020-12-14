@@ -32,7 +32,6 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
-                    servidor.envie();
                     do
                     {
                         if (servidor.espiar() instanceof ComunicadoDeFimDeJogo)
@@ -43,7 +42,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
                         try
                         {
-                            comunicado = servidor.espiar();
+                            comunicado = servidor.envie();
                         }
                         catch (Exception e) {}
 
@@ -68,7 +67,6 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(comunicado instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
-                    servidor.envie();
                     do
                     {
                         if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
@@ -81,7 +79,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
                         try
                         {
-                            comunicado = servidor.espiar();
+                            comunicado = servidor.envie();
                         }
                         catch(Exception e){}
                     }

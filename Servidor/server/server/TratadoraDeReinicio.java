@@ -5,26 +5,19 @@ import commons.ComunicadoDeDesligamento;
 import commons.ComunicadoDeRestart;
 import commons.Parceiro;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class TratadoraDeReinicio extends Thread
 {
 
     private ArrayList<Parceiro> usuarios;
-    private Socket conexao;
 
-    public TratadoraDeReinicio(ArrayList<Parceiro> usuarios, Socket conexao) throws Exception
+    public TratadoraDeReinicio(ArrayList<Parceiro> usuarios) throws Exception
     {
         if(usuarios == null)
             throw new Exception("Usuario Nulo na tratadora");
-        if(conexao == null)
-            throw new Exception("Conexao nula na tratadora");
 
         this.usuarios = usuarios;
-        this.conexao = conexao;
     }
 
 
