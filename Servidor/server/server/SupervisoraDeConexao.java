@@ -101,7 +101,8 @@ public class SupervisoraDeConexao extends Thread {
 		{
 			try {
 				if (gerenciadora != null && gerenciadora.pode(usuario)) {
-					try {
+					try
+					{
 						vezDoUsuario();
 
 					} catch (Exception e) {
@@ -173,6 +174,22 @@ public class SupervisoraDeConexao extends Thread {
 				}
 				this.usuario.encerrar();
 				return;
+			}
+
+			if(mao.contar() == 21)
+			{
+				this.usuario.receba(new ComunicadoDeVitoria());
+
+
+				for (int i = 0; i < usuarios.size(); i++)
+				{
+					if (!(this.usuario == usuarios.get(gerenciadora.getJ())))
+					{
+						this.usuarios.get(i).receba(new ComunicadoDeDerrota());
+					}
+
+				}
+
 			}
 			gerenciadora.proximoJogador();
 
