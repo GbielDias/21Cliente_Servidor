@@ -48,7 +48,7 @@ public class AceitadoraDeConexao extends Thread{
 				continue;
 			}
 
-			if(usuarios.size() == 4)
+			if(usuarios.size() == 3)
 			{
 				try {
 					conexao.close();
@@ -82,7 +82,7 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() > 0) //TODO Colocar o num exato de usuario
+				if (usuarios.size() == 2 ) //TODO Colocar o num exato de usuario
 				{
 					try
 					{

@@ -188,8 +188,8 @@ public class SupervisoraDeConexao extends Thread {
 						{
 							parceiro.receba(new ComunicadoDeRestart());
 						}
-						usuarios.remove(parceiro);
-						parceiro.encerrar();
+//						usuarios.remove(parceiro);
+//						parceiro.encerrar();
 					}
 				}
 			}
