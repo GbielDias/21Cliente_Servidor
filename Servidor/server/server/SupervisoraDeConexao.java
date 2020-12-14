@@ -184,6 +184,10 @@ public class SupervisoraDeConexao extends Thread {
 						if (!(this.usuario == parceiro))
 							parceiro.receba(new ComunicadoDeDerrota());
 
+						if(parceiro == usuarios.get(0))
+						{
+							parceiro.receba(new ComunicadoDeRestart());
+						}
 						usuarios.remove(parceiro);
 						parceiro.encerrar();
 					}

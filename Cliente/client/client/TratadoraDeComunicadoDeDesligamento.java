@@ -32,12 +32,20 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(com instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
-                    System.exit(0);
+                    servidor.envie();
+                    if(servidor.espiar() instanceof ComunicadoDeRestart)
+                    {
+                        System.out.println("Restart");
+                    }
                 }
                 else if(com instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
-                    System.exit(0);
+                    servidor.envie();
+                    if(servidor.espiar() instanceof ComunicadoDeRestart)
+                    {
+                        System.out.println("Restart");
+                    }
                 }
 			}
 			catch (Exception erro)

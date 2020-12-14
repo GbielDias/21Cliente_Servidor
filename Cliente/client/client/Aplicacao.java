@@ -10,7 +10,6 @@ import commons.*;
 public class Aplicacao {
 
     public static final String HOST_PADRAO = "localhost";
-//            "143.106.203.110";
     public static final int PORTA_PADRAO = 8080;
 
     public static void main(String[] args) // Cliente
@@ -132,7 +131,8 @@ public class Aplicacao {
 
                         System.out.println("\nOpções:");
                         System.out.println("C. Comprar do baralho e descartar");
-                        System.out.println("D. Comprar a ultima descartada e descartar");
+                        if(!(descarta.getNome().equals("Nula")))
+                            System.out.println("D. Comprar a ultima descartada e descartar");
                         System.out.println("S. Sair da partida");
                         System.out.print("> ");
 

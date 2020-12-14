@@ -3,7 +3,6 @@ package server;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.Semaphore;
 
 import commons.*;
 
@@ -38,7 +37,7 @@ public class AceitadoraDeConexao extends Thread{
 		int capacidade = 3;
 
 		while(true) {
-			Socket conexao = null;
+			Socket conexao;
 
 			try
 			{
@@ -49,7 +48,8 @@ public class AceitadoraDeConexao extends Thread{
 				continue;
 			}
 
-			if(usuarios.size() == 0){
+			if(usuarios.size() == 4)
+			{
 				try {
 					conexao.close();
 
@@ -77,8 +77,7 @@ public class AceitadoraDeConexao extends Thread{
 			{
 				Thread.sleep(500);
 			}
-			catch(Exception e)
-			{}
+			catch(Exception ignored){}
 
 
 			synchronized (usuarios)
