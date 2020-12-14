@@ -2,7 +2,7 @@ package commons;
 
 import java.util.ArrayList;
 
-public class Baralho {
+public class Baralho implements Cloneable{
 
 	private ArrayList<Carta> baralho;
 
@@ -17,6 +17,26 @@ public class Baralho {
 				baralho.add(new Carta(PropriedadeCartas.NOMES[i], PropriedadeCartas.SIMBOLOS[j]));
 			}
 		}
+	}
+
+	public Baralho(Baralho modelo) throws Exception
+	{
+		if (modelo == null)
+			throw new Exception("Modelo inválido");
+
+		this.baralho = new ArrayList<>();
+
+		this.baralho.addAll(modelo.baralho);
+	}
+
+	public Object clone()
+	{
+		Baralho ret = null;
+		try {
+			ret = new Baralho(this);
+		}catch (Exception e){}
+
+		return ret;
 	}
 
 	public Carta comprarUmaCarta() {
@@ -66,13 +86,18 @@ public class Baralho {
 	}
 
 	@Override
-	public boolean equals(Object o) //TODO Verificar equals - Baralho
+	public boolean equals(Object o)
 	{
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
 
-		Baralho baralho1 = (Baralho) o;
+		if (o == null || this.getClass() != o.getClass()) return false;
 
-		return baralho.equals(baralho1.baralho);
+		Baralho brl = (Baralho) o;
+
+		for (int i = 0; i< this.baralho.size();i++)
+			if (!this.baralho.get(i).equals(brl.baralho.get(i)))
+				return false;
+
+		return true;
 	}
 }

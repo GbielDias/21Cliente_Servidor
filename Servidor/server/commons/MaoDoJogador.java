@@ -2,7 +2,7 @@ package commons;
 
 import java.util.ArrayList;
 
-public class MaoDoJogador extends Comunicado
+public class MaoDoJogador extends Comunicado implements Cloneable
 {
     private ArrayList<Carta> mao = new ArrayList<>();
 
@@ -11,6 +11,26 @@ public class MaoDoJogador extends Comunicado
         for (int i = 0; i < 3; i++)
             mao.add(valores.comprarUmaCarta());
 
+    }
+
+    public MaoDoJogador(MaoDoJogador modelo) throws Exception {
+        if (modelo == null)
+            throw new Exception("Modelo inválido");
+
+        this.mao = new ArrayList<>();
+
+        this.mao.addAll(modelo.mao);
+    }
+
+    public Object clone ()
+    {
+        MaoDoJogador ret = null;
+
+        try {
+            ret = new MaoDoJogador(this);
+        }
+        catch (Exception e){ }
+        return ret;
     }
 
     public ArrayList<Carta> getMao() {
@@ -71,19 +91,28 @@ public class MaoDoJogador extends Comunicado
     }
 
     @Override
-    public boolean equals(Object o) //TODO Verificar equals - MaoDoJogador
+    public boolean equals(Object o)
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MaoDoJogador that = (MaoDoJogador) o;
+        MaoDoJogador mdj = (MaoDoJogador) o;
 
-        return mao.equals(that.mao);
+        for (int i=0; i< this.mao.size();i++)
+            if (!this.mao.get(i).equals(mdj.mao.get(i)))
+                return false;
+
+        return true;
     }
 
     @Override
-    public int hashCode() //TODO Verificar equals - MaoDoJogador
+    public int hashCode()
     {
-        return mao.hashCode();
+        int ret = 255;
+
+        for (Carta crt : mao)
+            ret = 13 * ret + crt.hashCode();
+
+        return ret;
     }
 }

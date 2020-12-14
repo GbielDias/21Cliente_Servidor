@@ -1,6 +1,5 @@
 package commons;
 
-import commons.Comunicado;
 
 public class Carta extends Comunicado {
 	private String simbolo;
@@ -34,24 +33,30 @@ public class Carta extends Comunicado {
 	}
 
 	@Override
-	public boolean equals(Object o) //TODO Verificar equals - Carta
+	public boolean equals(Object o)
 	{
 		if (this == o) return true;
+
 		if (o == null || getClass() != o.getClass()) return false;
 
 		Carta carta = (Carta) o;
 
-		if (pontos != carta.pontos) return false;
-		if (!simbolo.equals(carta.simbolo)) return false;
+		if (this.pontos != carta.pontos) return false;
+
+		if (!this.simbolo.equals(carta.simbolo)) return false;
+
 		return nome.equals(carta.nome);
 	}
 
 	@Override
-	public int hashCode() //TODO Verificar hashCode - Carta
+	public int hashCode()
 	{
-		int result = simbolo.hashCode();
-		result = 31 * result + nome.hashCode();
-		result = 31 * result + pontos;
+		int result = 255;
+
+		result = 11 * result + this.simbolo.hashCode();
+		result = 31 * result + this.nome.hashCode();
+		result = 31 * result + this.pontos;
+
 		return result;
 	}
 }

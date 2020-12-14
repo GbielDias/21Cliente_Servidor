@@ -2,14 +2,14 @@ package commons;
 
 import java.util.ArrayList;
 
-public class Baralho {
+public class Baralho implements Cloneable{
 
 	private ArrayList<Carta> baralho;
 
-	
+
 	public Baralho() {
 		baralho = new ArrayList<>();
-		
+
 		for (int i = 0; i < PropriedadeCartas.NOMES.length; i++)
 		{
 			for (int j = 0; j < PropriedadeCartas.SIMBOLOS.length; j++)
@@ -17,6 +17,26 @@ public class Baralho {
 				baralho.add(new Carta(PropriedadeCartas.NOMES[i], PropriedadeCartas.SIMBOLOS[j]));
 			}
 		}
+	}
+
+	public Baralho(Baralho modelo) throws Exception
+	{
+		if (modelo == null)
+			throw new Exception("Modelo inválido");
+
+		this.baralho = new ArrayList<>();
+
+		this.baralho.addAll(modelo.baralho);
+	}
+
+	public Object clone()
+	{
+		Baralho ret = null;
+		try {
+			ret = new Baralho(this);
+		}catch (Exception e){}
+
+		return ret;
 	}
 
 	public Carta comprarUmaCarta() {
@@ -54,25 +74,30 @@ public class Baralho {
 	public String toString()
 	{
 		String str = "[";
-		
+
 		for (int i = 0; i < baralho.size(); i++) {
 			if(str.length() == 15) {
 				str += "\n" + baralho.get(i).toString() + ", ";
 			}
-				
+
 			str += baralho.get(i).toString() + ", ";
 		}
 		return str.substring(0, str.length() - 2) + "]";
 	}
 
 	@Override
-	public boolean equals(Object o) //TODO Verificar equals - Baralho
+	public boolean equals(Object o)
 	{
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
 
-		Baralho baralho1 = (Baralho) o;
+		if (o == null || this.getClass() != o.getClass()) return false;
 
-		return baralho.equals(baralho1.baralho);
+		Baralho brl = (Baralho) o;
+
+		for (int i = 0; i< this.baralho.size();i++)
+			if (!this.baralho.get(i).equals(brl.baralho.get(i)))
+				return false;
+
+		return true;
 	}
 }
