@@ -176,20 +176,20 @@ public class SupervisoraDeConexao extends Thread {
 				return;
 			}
 
-			if(mao.contar() > 30)
+			if(mao.contar() == 21)
 			{
 				this.usuario.receba(new ComunicadoDeVitoria());
 
-
-				for (Parceiro parceiro : usuarios)
+				synchronized (usuarios)
 				{
-					if (!(parceiro == usuarios.get(gerenciadora.getJ())))
-					{
-						parceiro.receba(new ComunicadoDeDerrota());
+					for (Parceiro parceiro: usuarios) {
+						if (!(this.usuario == parceiro))
+						{
+							parceiro.receba(new ComunicadoDeDerrota());
+						}
+
 					}
-
 				}
-
 			}
 			gerenciadora.proximoJogador();
 

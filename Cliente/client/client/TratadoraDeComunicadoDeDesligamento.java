@@ -37,6 +37,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(com instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
+                    System.exit(0);
                 }
 			}
 			catch (Exception erro)
