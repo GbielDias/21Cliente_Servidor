@@ -33,10 +33,10 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 {
                     System.out.println("Você venceu a partida");
                    // servidor.envie();
-//                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-//                    {
-//                        fimDeJogo();
-//                    }
+                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+                    {
+                        fimDeJogo();
+                    }
 
 
                     Comunicado comunicado = null;
@@ -68,10 +68,10 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
                    // servidor.envie();
-//                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-//                    {
-//                        fimDeJogo();
-//                    }
+                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+                    {
+                        fimDeJogo();
+                    }
 
 
                     Comunicado comunicado = null;

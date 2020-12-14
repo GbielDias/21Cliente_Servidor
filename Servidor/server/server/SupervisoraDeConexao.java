@@ -188,6 +188,7 @@ public class SupervisoraDeConexao extends Thread {
 						{
 							parceiro.receba(new ComunicadoDeFimDeJogo());
 						}
+						return;
 //						usuarios.remove(parceiro);
 //						parceiro.encerrar();
 					}
