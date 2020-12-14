@@ -95,29 +95,6 @@ public class AceitadoraDeConexao extends Thread{
 
 				}
 			}
-//			synchronized (usuarios) {
-//
-//				try
-//				{
-//					Comunicado com = usuarios.get(0).espiar();
-//					if(com instanceof ComunicadoDeRestart)
-//					{
-//						for (Parceiro usuario: usuarios)
-//						{
-//							usuario.receba(new ComunicadoDeRestart());
-//						}
-//					}
-//					else if(com instanceof ComunicadoDeDesligamento)
-//					{
-//						for (Parceiro usuario: usuarios)
-//						{
-//							usuario.receba(new ComunicadoDeDesligamento());
-//						}
-//					}
-//				}
-//				catch(Exception e){}
-//
-//			}
 
 		}
 	}

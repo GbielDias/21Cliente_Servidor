@@ -15,39 +15,40 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
     public void run ()
     {
-        Comunicado com = null;
+        Comunicado comunicado = null;
         for(;;)
         {
             try {
-                com = servidor.espiar();
+                comunicado = servidor.espiar();
             }catch(Exception e){}
             try
 			{
-                if(com instanceof ComunicadoDeDesligamento)
+                if(comunicado instanceof ComunicadoDeDesligamento)
                 {
                     System.out.println("\nO servidor vai ser desligado agora;");
                     System.err.println("volte mais tarde!\n");
                     System.exit(0);
                 }
-                else if(com instanceof ComunicadoDeVitoria)
+                else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
-                   // servidor.envie();
-                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-                    {
-                        fimDeJogo();
-                    }
-
-
-                    Comunicado comunicado = null;
+                    servidor.envie();
                     do
                     {
-                        try {
+                        if (servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+                        {
+                            fimDeJogo();
+                        }
+
+
+                        try
+                        {
                             comunicado = servidor.espiar();
                         }
-                        catch(Exception e){}
-                    }
-                    while(!(comunicado instanceof ComunicadoDeDesligamento || comunicado instanceof ComunicadoDeRestart));
+                        catch (Exception e) {}
+
+
+                    }while (!(comunicado instanceof ComunicadoDeDesligamento || comunicado instanceof ComunicadoDeRestart));
 
 
                     if(comunicado instanceof ComunicadoDeRestart)
@@ -64,20 +65,22 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                     }
 
                 }
-                else if(com instanceof ComunicadoDeDerrota)
+                else if(comunicado instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
-                   // servidor.envie();
-                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-                    {
-                        fimDeJogo();
-                    }
-
-
-                    Comunicado comunicado = null;
+                    servidor.envie();
                     do
                     {
-                        try {
+                        if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+                        {
+                            fimDeJogo();
+                        }
+
+
+
+
+                        try
+                        {
                             comunicado = servidor.espiar();
                         }
                         catch(Exception e){}
@@ -90,10 +93,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                         servidor.envie();
                         comunicado=null;
 
-                        /*
-
-                            Fazer algo aqui, ainda não sei o que;
-                        */
+                        System.out.println("restart01");
 
 
                     }
@@ -106,12 +106,15 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
     private void fimDeJogo()
     {
-        try {
+        try
+        {
+            servidor.envie();
             System.out.println("Você quer jogar novamente, ou encerrar a partida");
             System.out.println("R. Jogar novamente");
             System.out.println("E. Encerrar servidor");
             String opcao;
-            do {
+            do
+            {
                 opcao = (Teclado.getUmString().toLowerCase());
             }
             while (!(opcao.equals("r") || opcao.equals("e")));
@@ -119,7 +122,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
             switch (opcao)
             {
                 case "r": servidor.receba(new ComunicadoDeRestart()); break;
-                case "e": servidor.receba(new ComunicadoDeDesligamento());
+                case "e": servidor.receba(new ComunicadoDeDesligamento()); break;
             }
         }
         catch(Exception e){}

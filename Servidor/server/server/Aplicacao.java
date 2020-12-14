@@ -32,6 +32,7 @@ public class Aplicacao {
 		}
 		
 		while (true) {
+
 			System.out.println("O servidor esta ativo! Para desativa-lo,");
 			System.out.println("use o comando \"desativar\"\n");
 			System.out.print("> ");
@@ -60,32 +61,6 @@ public class Aplicacao {
 				System.exit(0);
 			} else
 				System.err.println("Comando invalido");
-
-
-			synchronized (usuarios)
-			{
-
-				try
-				{
-					Comunicado com = usuarios.get(0).espiar();
-					if(com instanceof ComunicadoDeRestart)
-					{
-						System.out.println("Chegay");
-//						for (Parceiro usuario: usuarios)
-//						{
-//							usuario.receba(new ComunicadoDeRestart());
-//						}
-					}
-					else if(com instanceof ComunicadoDeDesligamento)
-					{
-						for (Parceiro usuario: usuarios)
-						{
-							usuario.receba(new ComunicadoDeDesligamento());
-						}
-					}
-				}
-				catch(Exception e){}
-			}
 
 
 		}
