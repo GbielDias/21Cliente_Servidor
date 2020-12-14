@@ -19,11 +19,19 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
         {
 			try
 			{
-				if (this.servidor.espiar() instanceof ComunicadoDeDesligamento)
+				if (this.servidor.espiar() instanceof ComunicadoDeDesligamento /*|| this.servidor.espiar() instanceof ComunicadoDeVencedor */)
 				{
-					System.out.println ("\nO servidor vai ser desligado agora;");
-				    System.err.println ("volte mais tarde!\n");
-				    System.exit(0);
+				    if(this.servidor.espiar() instanceof ComunicadoDeDesligamento)
+				    {
+                        System.out.println("\nO servidor vai ser desligado agora;");
+                        System.err.println("volte mais tarde!\n");
+                        System.exit(0);
+                    }
+				    else
+                    {
+                        System.out.println("Um jogador ganhou a partida");
+                        System.exit(0);
+                    }
 				}
 			}
 			catch (Exception erro)
