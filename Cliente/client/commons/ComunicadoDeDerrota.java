@@ -1,2 +1,4 @@
-package commons;public class ComunicadoDeDerrota {
+package commons;
+
+public class ComunicadoDeDerrota extends Comunicado{
 }
