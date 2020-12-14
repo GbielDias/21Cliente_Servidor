@@ -12,8 +12,6 @@ public class AceitadoraDeConexao extends Thread{
 	private ArrayList<Parceiro> usuarios;
 	private GerenciadoraDeRodada gerenciadoraDeRodada;
 	private Dealer dealer;
-	private Semaphore mutEx = new Semaphore(1, true);
-	private ArrayList<Carta> baralho = new ArrayList<>();
 
 	public AceitadoraDeConexao(String porta, ArrayList<Parceiro> usuarios) throws Exception {
 		if(porta == null)
@@ -34,14 +32,10 @@ public class AceitadoraDeConexao extends Thread{
 		this.usuarios = usuarios;
 		this.dealer = new Dealer();
 		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
-
-
 	}
 	
 	public void run() {
 		while(true) {
-
-
 			Socket conexao = null;
 			try
 			{
@@ -54,7 +48,7 @@ public class AceitadoraDeConexao extends Thread{
 
 
 			SupervisoraDeConexao supervisora = null;
-			TratadoraDeVencedor tratadoraDeVencedor = null;
+//			TratadoraDeVencedor tratadoraDeVencedor = null;
 
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);

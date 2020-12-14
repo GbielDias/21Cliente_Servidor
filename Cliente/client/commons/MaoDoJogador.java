@@ -20,7 +20,7 @@ public class MaoDoJogador extends Comunicado
     //Verifica se contem a carta com o nome passado
     public boolean contemCarta(String nome) {
         for (int i = 0; i < mao.size(); i++) {
-            if (mao.get(i).getNome().equals(nome))
+            if (mao.get(i).toString().equals(nome))
                 return true;
         }
 
@@ -30,7 +30,7 @@ public class MaoDoJogador extends Comunicado
     public void removerCarta(String nome){
 
         for (int i = 0; i < 4; i++) {
-            if (mao.get(i).getNome().equals(nome)) {
+            if (mao.get(i).toString().equals(nome)) {
                 mao.remove(i);
                 return;
             }
@@ -42,7 +42,7 @@ public class MaoDoJogador extends Comunicado
             throw new Exception("Nome de carta inválido");
 
         for (int i = 0; i < 4; i++) {
-            if (mao.get(i).getNome().equals(nomeCarta)) {
+            if (mao.get(i).toString().equals(nomeCarta)) {
                 return mao.get(i);
             }
         }

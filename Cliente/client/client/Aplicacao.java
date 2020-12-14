@@ -10,10 +10,12 @@ import commons.*;
 public class Aplicacao {
 
     public static final String HOST_PADRAO = "localhost";
-    public static final int PORTA_PADRAO = 35555;
+//            "143.106.203.110";
+    public static final int PORTA_PADRAO = 8080;
 
     public static void main(String[] args) // Cliente
     {
+        Carta descarta = null;
         if (args.length > 2) {
             System.err.println("Uso esperado: java app [HOST[PORTA]]");
             return;
@@ -43,10 +45,7 @@ public class Aplicacao {
             return;
         }
 
-
-
         tratadoraDeDesligamento.start();
-
 
         //Aguarde os usuarios entrarem
         System.out.println("Aguarde os jogares entrarem na partida");
@@ -111,14 +110,27 @@ public class Aplicacao {
                     System.err.println(e.getMessage());
                 }
 
-                System.out.println(maoDoJogador);
+                do {
+                    try{
+                        comunicado = servidor.espiar();
+                    } catch(Exception e){
+                        System.err.println(e.getMessage() + " Erro ao espiar");
+                    }
+                } while(!(comunicado instanceof Carta));
 
+                try{
+                    descarta = (Carta) servidor.envie();
+                }catch (Exception e) {
+                }
+
+                System.out.println("\nSuas cartas: " + maoDoJogador);
+                System.out.println("Ultima descartada: " + descarta);
 
                 String opcao = "";
                 for(;;) {
                     try {
 
-                        System.out.println("Opções:");
+                        System.out.println("\nOpções:");
                         System.out.println("C. Comprar do baralho e descartar");
                         System.out.println("D. Comprar a ultima descartada e descartar");
                         System.out.println("S. Sair da partida");
@@ -148,7 +160,7 @@ public class Aplicacao {
                         } while (!(comunicado instanceof MaoDoJogador));
 
 
-                        //                  O servidor finalmente envia a mao do jogador e esse é passado pro objeto maoDoJogador
+                        //O servidor finalmente envia a mao do jogador e esse é passado pro objeto maoDoJogador
                         maoDoJogador = (MaoDoJogador) servidor.envie();
 
 
@@ -156,7 +168,7 @@ public class Aplicacao {
                         //So saio da repeticao quando tiver a carta com o nome correspondente
                         do {
                             System.out.println(maoDoJogador);
-                            System.out.print("Escolha o nome (tudo antes do hifen) de uma carta para ser descartada: ");
+                            System.out.print("Escolha o nome (nome-simbolo) de uma carta para ser descartada: ");
 
                             opcao = Teclado.getUmString().toUpperCase();
                             System.out.println("Jogador contem a carta " + opcao + ": " + maoDoJogador.contemCarta(opcao));
@@ -186,17 +198,22 @@ public class Aplicacao {
                         servidor.receba(new Pedido(maoDoJogador, opcao));
 
                         do {
-                            comunicado = (Comunicado) servidor.espiar();
-                        }
+                            if(comunicado instanceof Pedido){
+                                Pedido pedido = (Pedido) servidor.envie();
+                                System.out.println(pedido.getPedido());
+                            }
 
-                        while (!(comunicado instanceof MaoDoJogador));
+                            comunicado = (Comunicado) servidor.espiar();
+                        }while (!(comunicado instanceof MaoDoJogador));
+
+
                         maoDoJogador = (MaoDoJogador) servidor.envie();
 
 
                         System.out.println(maoDoJogador);
 
                         do {
-                            System.out.print("Escolha o nome (tudo antes do hifen) uma carta para ser descartada: ");
+                            System.out.print("Escolha o nome (nome-simbolo) uma carta para ser descartada: ");
 
 
                             opcao = Teclado.getUmString().toUpperCase();
@@ -223,7 +240,7 @@ public class Aplicacao {
 //                      AQUI ACABA A RODADA DO JOGADOR(A)
 
                 } catch (Exception erro) {
-                    System.err.println("Opção inválida");
+                    System.err.println("\nOpção inválida");
                 }
             }
         }

@@ -26,8 +26,6 @@ public class Dealer {
 
 	public MaoDoJogador descartar(MaoDoJogador mao, String nome) throws Exception {
 		descartada = mao.getCarta(nome);
-
-		System.out.println(descartada);
 		mao.removerCarta(nome);
 
 		return mao;

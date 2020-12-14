@@ -10,7 +10,6 @@ import java.util.concurrent.Semaphore;
 import commons.*;
 public class SupervisoraDeConexao extends Thread {
 	private Socket conexao;
-	private Semaphore mutEx = new Semaphore(1,true);
 	private GerenciadoraDeRodada gerenciadora;
 	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
@@ -86,34 +85,23 @@ public class SupervisoraDeConexao extends Thread {
 			return;
 		}
 
-		try
-		{
+		try {
 			do {}
 			while (!(usuario.espiar() instanceof ComunicadoDeComecar));
 
 			usuario.envie();
 		}catch(Exception e){}
 
-
-
-
-		while(true)
-		{
+		while(true) {
 			try {
 				if (gerenciadora != null && gerenciadora.pode(usuario)) {
-					try {
-						vezDoUsuario();
-
-					} catch (Exception e) {
-					}
+					vezDoUsuario();
 				}
 			}
 			catch (Exception e){
 				return;
 			}
 		}
-
-
 
 	}
 	
@@ -124,15 +112,20 @@ public class SupervisoraDeConexao extends Thread {
 
 			usuario.receba(this.mao);
 
+			if(dealer.getDescartada() == null){
+                usuario.receba(new Carta("Nula", "Nula"));
+            }
+			else
+				usuario.receba(dealer.getDescartada());
+
 			Comunicado comunicado = null;
 
-			 comunicado = this.usuario.envie();
+			comunicado = this.usuario.envie();
 
 			if (comunicado == null)
 				return;
 
-			else if (comunicado instanceof Pedido)
-			{
+			else if (comunicado instanceof Pedido){
 				Pedido pedido = (Pedido) comunicado;
 
 				switch (pedido.getPedido()){
@@ -145,11 +138,18 @@ public class SupervisoraDeConexao extends Thread {
 						mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
 						usuario.receba(mao);
 						break;
-
 					case "D":
 						//Estou usando Pedido para informar o cliente, porém isso poderá mudar
 						if(dealer.getDescartada() == null){
-							usuario.receba(new Pedido(mao, "Descartada inexistente"));
+							mao = dealer.comprarBaralho(pedido.getMao());
+
+							usuario.receba(new Pedido(mao, "Você recebeu uma carta do baralho porque não há descartada"));
+							usuario.receba(mao);
+
+							pedido = (Pedido) usuario.envie();
+
+							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
+							usuario.receba(mao);
 							break;
 						}
 						else
@@ -164,9 +164,7 @@ public class SupervisoraDeConexao extends Thread {
 						}
 						break;
 				}
-			}
-			else if (comunicado instanceof PedidoParaSair)
-			{
+			} else if (comunicado instanceof PedidoParaSair) {
 				synchronized (this.usuarios)
 				{
 					this.usuarios.remove (this.usuario);
@@ -176,8 +174,7 @@ public class SupervisoraDeConexao extends Thread {
 			}
 			gerenciadora.proximoJogador();
 
-		}catch(Exception e)
-		{
+		}catch(Exception e) {
 			try
 			{
 				transmissor.close();
