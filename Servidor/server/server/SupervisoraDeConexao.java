@@ -95,7 +95,16 @@ public class SupervisoraDeConexao extends Thread {
 		while(true) {
 			try {
 				if (gerenciadora != null && gerenciadora.pode(usuario)) {
+<<<<<<< HEAD
 					vezDoUsuario();
+=======
+					try
+					{
+						vezDoUsuario();
+
+					} catch (Exception e) {
+					}
+>>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
 				}
 			}
 			catch (Exception e){
@@ -171,6 +180,23 @@ public class SupervisoraDeConexao extends Thread {
 				}
 				this.usuario.encerrar();
 				return;
+			}
+
+			if(mao.contar() == 21)
+			{
+				this.usuario.receba(new ComunicadoDeVitoria());
+
+				synchronized (usuarios)
+				{
+					for (Parceiro parceiro: usuarios)
+					{
+						if (!(this.usuario == parceiro))
+							parceiro.receba(new ComunicadoDeDerrota());
+
+						usuarios.remove(parceiro);
+						parceiro.encerrar();
+					}
+				}
 			}
 			gerenciadora.proximoJogador();
 

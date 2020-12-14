@@ -34,8 +34,17 @@ public class AceitadoraDeConexao extends Thread{
 		this.gerenciadoraDeRodada = new GerenciadoraDeRodada(this.usuarios);
 	}
 	
+<<<<<<< HEAD
 	public void run() {
 		while(true) {
+=======
+	public void run()
+	{
+		while(true)
+		{
+
+
+>>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
 			Socket conexao = null;
 			try
 			{
@@ -48,12 +57,15 @@ public class AceitadoraDeConexao extends Thread{
 
 
 			SupervisoraDeConexao supervisora = null;
+<<<<<<< HEAD
 //			TratadoraDeVencedor tratadoraDeVencedor = null;
+=======
+
+>>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
 
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 
-//				tratadoraDeVencedor = new TratadoraDeVencedor(usuarios,gerenciadoraDeRodada,conexao);
 
 			}
 			catch (Exception e)
@@ -74,12 +86,14 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() > 0) //TODO Colocar o num exato de usuario
+				if (usuarios.size() == 2) //TODO Colocar o num exato de usuario
 				{
 					try
 					{
 						for (Parceiro usuario : usuarios)
 							usuario.receba(new ComunicadoDeComecar());
+
+
 
 					} catch (Exception e) {}
 
@@ -89,14 +103,5 @@ public class AceitadoraDeConexao extends Thread{
 
 
 		}
-		
-		//TODO startar patida
-
-		//Por enquanto é while(true), mas muito provavelmente vai ser modificado no futuro
-		//Em prol de avisar ao quarto jogador que ele nao pode entrar na partida, tem que ser aceito a sua conexao antes
-		//Por isso o while anterior tem que rodar ao mesmo tempo que esse while embaixo
-
-
-
 	}
 }

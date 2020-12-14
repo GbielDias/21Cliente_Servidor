@@ -15,16 +15,30 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
     public void run ()
     {
+        Comunicado com = null;
         for(;;)
         {
-			try
+            try {
+                com = servidor.espiar();
+            }catch(Exception e){}
+            try
 			{
-				if (this.servidor.espiar() instanceof ComunicadoDeDesligamento)
-				{
-					System.out.println ("\nO servidor vai ser desligado agora;");
-				    System.err.println ("volte mais tarde!\n");
-				    System.exit(0);
-				}
+                if(com instanceof ComunicadoDeDesligamento)
+                {
+                    System.out.println("\nO servidor vai ser desligado agora;");
+                    System.err.println("volte mais tarde!\n");
+                    System.exit(0);
+                }
+                else if(com instanceof ComunicadoDeVitoria)
+                {
+                    System.out.println("Você venceu a partida");
+                    System.exit(0);
+                }
+                else if(com instanceof ComunicadoDeDerrota)
+                {
+                    System.out.println("Você perdeu :( Alguém já venceu a partida");
+                    System.exit(0);
+                }
 			}
 			catch (Exception erro)
 			{}

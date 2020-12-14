@@ -10,7 +10,10 @@ import commons.*;
 public class Aplicacao {
 
     public static final String HOST_PADRAO = "localhost";
+<<<<<<< HEAD
 //            "143.106.203.110";
+=======
+>>>>>>> a9f2e8a071da7e525a83b8b231948c92aadc36fe
     public static final int PORTA_PADRAO = 8080;
 
     public static void main(String[] args) // Cliente
