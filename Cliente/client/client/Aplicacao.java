@@ -243,6 +243,31 @@ public class Aplicacao {
                     System.err.println("\nOpção inválida");
                 }
             }
+
+            try {
+                if (servidor.espiar() instanceof ComunicadoDeFimDeJogo) {
+
+                    try {
+                        System.out.println("Você quer jogar novamente, ou encerrar a partida");
+                        System.out.println("R. Jogar novamente");
+                        System.out.println("E. Encerrar servidor");
+                        String opcao;
+                        do {
+                            opcao = (Teclado.getUmString().toLowerCase());
+                        }
+                        while (!(opcao.equals("r") || opcao.equals("e")));
+
+                        switch (opcao)
+                        {
+                            case "r": servidor.receba(new ComunicadoDeRestart()); break;
+                            case "e": servidor.receba(new ComunicadoDeDesligamento());
+                        }
+                    }
+                    catch(Exception e){}
+                }
+            }
+            catch (Exception e)
+            {}
         }
         // Perguntar pro dono da partida se ele quer jogar novamente ou sair do programa
             try

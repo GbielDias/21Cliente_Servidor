@@ -32,11 +32,11 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(com instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
-                    servidor.envie();
-                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-                    {
-                        fimDeJogo();
-                    }
+                   // servidor.envie();
+//                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+//                    {
+//                        fimDeJogo();
+//                    }
 
 
                     Comunicado comunicado = null;
@@ -67,11 +67,11 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(com instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
-                    servidor.envie();
-                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-                    {
-                        fimDeJogo();
-                    }
+                   // servidor.envie();
+//                    if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+//                    {
+//                        fimDeJogo();
+//                    }
 
 
                     Comunicado comunicado = null;
@@ -118,8 +118,8 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
             switch (opcao)
             {
-                case "r" -> servidor.receba(new ComunicadoDeRestart());
-                case "e" -> servidor.receba(new ComunicadoDeDesligamento());
+                case "r": servidor.receba(new ComunicadoDeRestart()); break;
+                case "e": servidor.receba(new ComunicadoDeDesligamento());
             }
         }
         catch(Exception e){}

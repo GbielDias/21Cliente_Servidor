@@ -31,43 +31,63 @@ public class Aplicacao {
 			System.err.print(e.getMessage());			
 		}
 		
-		while (true)
-		{
-			System.out.println ("O servidor esta ativo! Para desativa-lo,");
-            System.out.println ("use o comando \"desativar\"\n");
-            System.out.print   ("> ");
-            
-            try {
-            	comando = (Teclado.getUmString().toLowerCase());
-            }catch(Exception e) {
-            	System.err.println(e.getMessage());
-            }
+		while (true) {
+			System.out.println("O servidor esta ativo! Para desativa-lo,");
+			System.out.println("use o comando \"desativar\"\n");
+			System.out.print("> ");
 
-            if (comando.equals("desativar") || comando.equals("desconectar"))
-            {
-				synchronized (usuarios)
-				{
+			try {
+				comando = (Teclado.getUmString().toLowerCase());
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+
+			if (comando.equals("desativar") || comando.equals("desconectar")) {
+				synchronized (usuarios) {
 					ComunicadoDeDesligamento comunicadoDeDesligamento =
-							new ComunicadoDeDesligamento ();
+							new ComunicadoDeDesligamento();
 
-					for (Parceiro usuario:usuarios)
-					{
-						try
-						{
-							usuario.receba (comunicadoDeDesligamento);
+					for (Parceiro usuario : usuarios) {
+						try {
+							usuario.receba(comunicadoDeDesligamento);
 							usuario.encerrar();
+						} catch (Exception erro) {
 						}
-						catch (Exception erro)
-						{}
 					}
 				}
 
-				System.out.println ("O servidor foi desativado!\n");
+				System.out.println("O servidor foi desativado!\n");
 				System.exit(0);
-            } 
-            
-            else 
-            	System.err.println("Comando invalido");
+			} else
+				System.err.println("Comando invalido");
+
+
+			synchronized (usuarios)
+			{
+
+				try
+				{
+					Comunicado com = usuarios.get(0).espiar();
+					if(com instanceof ComunicadoDeRestart)
+					{
+						System.out.println("Chegay");
+//						for (Parceiro usuario: usuarios)
+//						{
+//							usuario.receba(new ComunicadoDeRestart());
+//						}
+					}
+					else if(com instanceof ComunicadoDeDesligamento)
+					{
+						for (Parceiro usuario: usuarios)
+						{
+							usuario.receba(new ComunicadoDeDesligamento());
+						}
+					}
+				}
+				catch(Exception e){}
+			}
+
+
 		}
 	}
 }
