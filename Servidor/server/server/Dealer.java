@@ -9,8 +9,7 @@ public class Dealer {
 
 	// Retirar os valores do baralho e colocar na maoDoJogador
 	public Dealer() {
-		baralho = new Baralho(); // 1-10
-
+		baralho = new Baralho();
 	}
 
 	public MaoDoJogador comprarBaralho(MaoDoJogador mao) {

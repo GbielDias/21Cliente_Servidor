@@ -14,7 +14,7 @@ public class SupervisoraDeConexao extends Thread {
 	private Parceiro usuario;
 	private ArrayList<Parceiro> usuarios;
 	private Dealer dealer;
-	private MaoDoJogador mao;
+	public MaoDoJogador mao;
 	private ObjectOutputStream transmissor;
 	private ObjectInputStream receptor;
 
@@ -89,7 +89,9 @@ public class SupervisoraDeConexao extends Thread {
 			while (!(usuario.espiar() instanceof ComunicadoDeComecar));
 
 			usuario.envie();
-		}catch(Exception e){}
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 
 		Comunicado comunicado;
 		while(true) {
@@ -195,6 +197,8 @@ public class SupervisoraDeConexao extends Thread {
 							Pedido reiniciar = (Pedido) parceiro.envie();
 
 							if(reiniciar.getPedido().equals("REINICIAR")){
+								dealer.resetDealer();
+								gerenciadora.resetarMao(dealer);
 
 								vezDoUsuario();
 							}else {
@@ -214,5 +218,9 @@ public class SupervisoraDeConexao extends Thread {
 			}
 			catch (Exception falha){}
 		}
+	}
+
+	public MaoDoJogador getMaoDoJogador() {
+		return mao;
 	}
 }

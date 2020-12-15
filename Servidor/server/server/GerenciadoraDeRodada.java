@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class GerenciadoraDeRodada {
     private final ArrayList<Parceiro> usuarios;
+    private final ArrayList<SupervisoraDeConexao> supervisoras = new ArrayList<>();
     private int j = 0;
 
     public GerenciadoraDeRodada(ArrayList<Parceiro> usuarios) throws Exception {
@@ -46,6 +47,21 @@ public class GerenciadoraDeRodada {
 
     public void setJ(int j) {
         this.j = j;
+    }
+
+    public void addSupervisora(SupervisoraDeConexao sup) throws Exception{
+        if(sup == null)
+            throw new Exception("Supervisora nula");
+
+        supervisoras.add(sup);
+    }
+
+    public void resetarMao(Dealer dealer){
+        synchronized (supervisoras){
+            for (int i = 0; i < supervisoras.size(); i++){
+                supervisoras.get(i).mao = new MaoDoJogador(dealer.getBaralho());
+            }
+        }
     }
 
     @Override

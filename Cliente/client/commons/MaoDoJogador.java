@@ -6,10 +6,10 @@ public class MaoDoJogador extends Comunicado
 {
     private ArrayList<Carta> mao = new ArrayList<>();
 
-    public MaoDoJogador(Baralho valores) {
+    public MaoDoJogador(Baralho baralho) {
 
         for (int i = 0; i < 3; i++)
-            mao.add(valores.comprarUmaCarta());
+            mao.add(baralho.comprarUmaCarta());
 
     }
 
@@ -57,6 +57,18 @@ public class MaoDoJogador extends Comunicado
         }
 
         return soma;
+    }
+
+    public ArrayList<Carta> resetarMao(Baralho baralho){
+        for (int i = 0; i < mao.size(); i++){
+            mao.remove(i);
+        }
+
+        for (int i = 0; i < 3; i++){
+            mao.add(baralho.comprarUmaCarta());
+        }
+
+        return mao;
     }
 
     @Override
