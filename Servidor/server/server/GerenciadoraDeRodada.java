@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class GerenciadoraDeRodada {
     private final ArrayList<Parceiro> usuarios;
-    private Socket conexao;
     private int j = 0;
 
     public GerenciadoraDeRodada(ArrayList<Parceiro> usuarios) throws Exception {
@@ -31,7 +30,6 @@ public class GerenciadoraDeRodada {
             synchronized (usuarios) {
 
                 return usuario == usuarios.get(j);
-
             }
         } catch (Exception e) {
             throw new Exception("Usuário retirado");
@@ -54,7 +52,6 @@ public class GerenciadoraDeRodada {
     public String toString() {
         return "GerenciadoraDeRodada{" +
                 "usuarios=" + usuarios +
-                ", conexao=" + conexao +
                 ", j=" + j +
                 '}';
     }
@@ -71,10 +68,6 @@ public class GerenciadoraDeRodada {
 
         if(gr.j != j)
             return false;
-
-        if(!gr.conexao.equals(conexao)) {
-            return false;
-        }
 
         //Mantém assim porque há uma ordem para os jogadores terem sua vez
         if(gr.usuarios.size() == usuarios.size()){
@@ -96,7 +89,6 @@ public class GerenciadoraDeRodada {
 
         //Atributos e objetos mais simples
         hash = hash * 7 + Integer.valueOf(j).hashCode();
-        hash = hash * 7 + conexao.hashCode();
 
         //Estrutura de dados
         for (int i = 0; i < usuarios.size(); i++){

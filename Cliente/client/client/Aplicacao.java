@@ -171,30 +171,26 @@ public class Aplicacao {
                             System.out.print("Escolha o nome (nome-simbolo) de uma carta para ser descartada: ");
 
                             opcao = Teclado.getUmString().toUpperCase();
-                            System.out.println("Jogador contem a carta " + opcao + ": " + maoDoJogador.contemCarta(opcao));
-                            //                      Vai verificar caso o jogador tem essa carta que ele(a) escreveu
-
-                        }
-                        while (!maoDoJogador.contemCarta(opcao));
-                        //                  Caso tenha a carta descrevida, sai do do-while.
+                        }while (!maoDoJogador.contemCarta(opcao));
+                        //Caso tenha a carta descrevida, sai do do-while.
 
 
-                        //                  O servidor recebe a mao do jogador e a opcao, que no caso eh o nome da carta
+                        //servidor recebe a mao do jogador e a opcao, que no caso eh o nome da carta
                         servidor.receba(new Pedido(maoDoJogador, opcao));
 
                         do {
 
                             //O usuario espera o servidor enviar a sua mao de volta
                             comunicado = (Comunicado) servidor.espiar();
-                        }
-                        while (!(comunicado instanceof MaoDoJogador));
+                        }while (!(comunicado instanceof MaoDoJogador));
 
                         //                  Usuario recebe sua mao de volta e ve sua mao logo apos
                         maoDoJogador = (MaoDoJogador) servidor.envie();
                         System.out.println(maoDoJogador);
 
 
-                    } else if (opcao.equals("D")) {
+                    }
+                    else if (opcao.equals("D")) {
                         servidor.receba(new Pedido(maoDoJogador, opcao));
 
                         do {
@@ -236,9 +232,7 @@ public class Aplicacao {
                         break;
                     }
 
-
-//                      AQUI ACABA A RODADA DO JOGADOR(A)
-
+                    //AQUI ACABA A RODADA DO JOGADOR(A)
                 } catch (Exception erro) {
                     System.err.println("\nOpção inválida");
                 }

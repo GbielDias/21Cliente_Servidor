@@ -39,6 +39,11 @@ public class Dealer {
 		return this.baralho;
 	}
 
+	public void resetDealer() {
+		baralho = new Baralho();
+		descartada = null;
+	}
+
 	@Override
 	public boolean equals(Object o)  //TODO Verificar equals - Dealer
 	{
@@ -52,8 +57,8 @@ public class Dealer {
 	}
 
 	@Override
-	public int hashCode() //TODO Verificar hashCode - Dealer
-	{
+	//TODO Verificar hashCode - Dealer
+	public int hashCode() {
 		int result = baralho.hashCode();
 		result = 31 * result + descartada.hashCode();
 		return result;
