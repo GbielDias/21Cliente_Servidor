@@ -1,6 +1,8 @@
 package client;
 import commons.*;
 
+import java.util.Locale;
+
 public class TratadoraDeComunicadoDeDesligamento extends Thread
 {
     private Parceiro servidor;
@@ -33,33 +35,25 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
-                    do
+
+                    servidor.envie();
+
+                    if(servidor.espiar() instanceof ComunicadoDeRestart)
                     {
-                        if (servidor.espiar() instanceof ComunicadoDeFimDeJogo)
-                        {
-                            fimDeJogo();
-                        }
-
-
-                        try
-                        {
-                            comunicado = servidor.envie();
-                        }
-                        catch (Exception e) {}
-
-
-                    }while (!(comunicado instanceof ComunicadoDeDesligamento || comunicado instanceof ComunicadoDeRestart));
-
-
-                    if(comunicado instanceof ComunicadoDeRestart)
-                    {
+                        System.out.println("Chegou o restart");
                         servidor.envie();
-                        comunicado=null;
 
-                        System.out.println("O jogo vai ser reiniciado");
+                        String opcao;
+                        do{
+                            System.out.print("Deseja reiniciar a partida? (s/n) ");
+                            opcao = Teclado.getUmString().toLowerCase();
 
-                        //Fazer algo aqui para reiniciar a partida, ainda não sei o que;
-                        
+                        }while (!opcao.equals("s") && !opcao.equals("n"));
+
+                        if(opcao.equals("s"))
+                            servidor.receba(new Pedido(null, "REINICIAR"));
+                        else
+                            servidor.receba(new Pedido(null, "DESLIGAR"));
 
 
                     }

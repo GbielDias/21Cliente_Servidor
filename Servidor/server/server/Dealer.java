@@ -39,6 +39,11 @@ public class Dealer {
 		return this.baralho;
 	}
 
+	public void resetDealer() {
+		baralho = new Baralho();
+		descartada = null;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

@@ -63,8 +63,6 @@ public class AceitadoraDeConexao extends Thread{
 
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
-
-
 			}
 			catch (Exception e)
 			{

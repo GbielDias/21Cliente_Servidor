@@ -36,7 +36,6 @@ public class SupervisoraDeConexao extends Thread {
 	}
 
 	public void run() {
-
 		try
 		{
 			transmissor = new ObjectOutputStream(this.conexao.getOutputStream());
@@ -92,6 +91,7 @@ public class SupervisoraDeConexao extends Thread {
 			usuario.envie();
 		}catch(Exception e){}
 
+		Comunicado comunicado;
 		while(true) {
 			try {
 				if (gerenciadora != null && gerenciadora.pode(usuario)) {
@@ -181,16 +181,26 @@ public class SupervisoraDeConexao extends Thread {
 				{
 					for (Parceiro parceiro: usuarios)
 					{
-						if (!(this.usuario == parceiro))
+						if (this.usuario != parceiro)
 							parceiro.receba(new ComunicadoDeDerrota());
 
 						if(parceiro == usuarios.get(0))
 						{
-							parceiro.receba(new ComunicadoDeFimDeJogo());
+							parceiro.receba(new ComunicadoDeRestart());
+
+							Comunicado comReiniciar;
+							do{
+								comReiniciar = parceiro.espiar();
+							}while(!(comReiniciar instanceof Pedido));
+							Pedido reiniciar = (Pedido) parceiro.envie();
+
+							if(reiniciar.getPedido().equals("REINICIAR")){
+
+								vezDoUsuario();
+							}else {
+								parceiro.receba(new ComunicadoDeDesligamento());
+							}
 						}
-						return;
-//						usuarios.remove(parceiro);
-//						parceiro.encerrar();
 					}
 				}
 			}
