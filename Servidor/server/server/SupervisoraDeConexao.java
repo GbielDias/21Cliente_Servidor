@@ -181,28 +181,38 @@ public class SupervisoraDeConexao extends Thread {
 
 				synchronized (usuarios)
 				{
-					for (Parceiro parceiro: usuarios)
+					for (int i = usuarios.size()-1; i >= 0;i--)
 					{
-						if (this.usuario != parceiro)
-							parceiro.receba(new ComunicadoDeDerrota());
+						if (this.usuario != usuarios.get(i))
+							usuarios.get(i).receba(new ComunicadoDeDerrota());
 
-						if(parceiro == usuarios.get(0))
+						if(usuarios.get(i) == usuarios.get(0))
 						{
-							parceiro.receba(new ComunicadoDeRestart());
+							usuarios.get(i).receba(new ComunicadoDeRestart());
 
 							Comunicado comReiniciar;
-							do{
-								comReiniciar = parceiro.espiar();
-							}while(!(comReiniciar instanceof Pedido));
-							Pedido reiniciar = (Pedido) parceiro.envie();
+							do
+							{
+								comReiniciar = usuarios.get(i).espiar();
+							}
+							while(!(comReiniciar instanceof Pedido));
 
-							if(reiniciar.getPedido().equals("REINICIAR")){
-								dealer.resetDealer();
+							Pedido reiniciar = (Pedido) usuarios.get(i).envie();
+
+							if(reiniciar.getPedido().equals("REINICIAR"))
+							{
+								dealer.resetDealer(); //Acredito que essa parte não vá ficar aqui e sim em outro for para ser mandada pra todos os jogadores
 								gerenciadora.resetarMao(dealer);
-
-								vezDoUsuario();
-							}else {
-								parceiro.receba(new ComunicadoDeDesligamento());
+								gerenciadora.setJ(0);
+								//vezDoUsuario();
+								return;
+							}
+							else if(reiniciar.getPedido().equals("DESLIGAR"))
+							{
+								for (Parceiro usuario: usuarios)
+								{
+									usuario.receba(new ComunicadoDeDesligamento());
+								}
 							}
 						}
 					}
@@ -215,6 +225,7 @@ public class SupervisoraDeConexao extends Thread {
 			{
 				transmissor.close();
 				receptor.close();
+				System.err.println(e.getMessage());
 			}
 			catch (Exception falha){}
 		}

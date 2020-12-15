@@ -35,7 +35,6 @@ public class AceitadoraDeConexao extends Thread{
 	}
 	
 	public void run() {
-		int capacidade = 3;
 
 		while(true) {
 			Socket conexao;
