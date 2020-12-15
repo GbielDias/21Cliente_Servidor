@@ -44,7 +44,7 @@ public class Dealer {
 	}
 
 	@Override
-	public boolean equals(Object o)  //TODO Verificar equals - Dealer
+	public boolean equals(Object o)
 	{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -56,9 +56,11 @@ public class Dealer {
 	}
 
 	@Override
-	//TODO Verificar hashCode - Dealer
-	public int hashCode() {
-		int result = baralho.hashCode();
+	public int hashCode()
+	{
+		int result = 255;
+
+		result = 11 * result + baralho.hashCode();
 		result = 31 * result + descartada.hashCode();
 		return result;
 	}

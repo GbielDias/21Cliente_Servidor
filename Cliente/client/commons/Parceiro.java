@@ -81,11 +81,11 @@ public class Parceiro {
 	@Override
 	public String toString() //TODO VERIFICAR toString - Parceiro
 	{
-		return "Parceiro{ " + "conexao=" + conexao + " }";
+		return "Conexao = " + conexao + " }";
 	}
 
 	@Override
-	public boolean equals(Object o) //TODO VERIFICAR  - Parceiro
+	public boolean equals(Object o)
 	{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -100,22 +100,23 @@ public class Parceiro {
 	}
 
 	@Override
-	public int hashCode() //TODO VERIFICAR  hashCode - Parceiro
+	public int hashCode()
 	{
-		int result = conexao.hashCode();
+		int result = 255;
+
+		result = 31 * result + conexao.hashCode();
 		result = 31 * result + receptor.hashCode();
 		result = 31 * result + transmissor.hashCode();
 		result = 31 * result + proximoComunicado.hashCode();
 		result = 31 * result + mutuaExclusao.hashCode();
+
 		return result;
 	}
 
 
 	//TODO VERIFICACOES de Getters e Setters - Parceiro
 
-	public Comunicado getProximoComunicado() {
-		return proximoComunicado;
-	}
+	public Comunicado getProximoComunicado() {return proximoComunicado;}
 
 	public ObjectInputStream getReceptor() {
 		return receptor;
@@ -129,17 +130,11 @@ public class Parceiro {
 		return mutuaExclusao;
 	}
 
-	public Socket getConexao() {
-		return conexao;
-	}
+	public Socket getConexao(){return conexao;}
 
-	public void setConexao(Socket conexao) {
-		this.conexao = conexao;
-	}
+	public void setConexao(Socket conexao) {this.conexao = conexao;}
 
-	public void setMutuaExclusao(Semaphore mutuaExclusao) {
-		this.mutuaExclusao = mutuaExclusao;
-	}
+	public void setMutuaExclusao(Semaphore mutuaExclusao) {this.mutuaExclusao = mutuaExclusao;}
 
 	public void setProximoComunicado(Comunicado proximoComunicado) {
 		this.proximoComunicado = proximoComunicado;

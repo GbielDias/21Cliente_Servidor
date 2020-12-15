@@ -17,23 +17,25 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
     public void run ()
     {
-        Comunicado com = null;
+        Comunicado comunicado = null;
         for(;;)
         {
             try {
-                com = servidor.espiar();
+                comunicado = servidor.espiar();
             }catch(Exception e){}
             try
 			{
-                if(com instanceof ComunicadoDeDesligamento)
+                if(comunicado instanceof ComunicadoDeDesligamento)
                 {
                     System.out.println("\nO servidor vai ser desligado agora;");
                     System.err.println("volte mais tarde!\n");
+                    servidor.encerrar();
                     System.exit(0);
                 }
-                else if(com instanceof ComunicadoDeVitoria)
+                else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
+
                     servidor.envie();
 
                     if(servidor.espiar() instanceof ComunicadoDeRestart)
@@ -53,20 +55,69 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                         else
                             servidor.receba(new Pedido(null, "DESLIGAR"));
 
+
                     }
+
                 }
-                else if(com instanceof ComunicadoDeDerrota)
+                else if(comunicado instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("Você perdeu :( Alguém já venceu a partida");
-                    servidor.envie();
-                    if(servidor.espiar() instanceof ComunicadoDeRestart)
+                    do
                     {
-                        System.out.println("Restart");
+                        if(servidor.espiar() instanceof ComunicadoDeFimDeJogo)
+                        {
+                            fimDeJogo();
+                        }
+
+
+
+
+                        try
+                        {
+                            comunicado = servidor.envie();
+                        }
+                        catch(Exception e){}
+                    }
+                    while(!(comunicado instanceof ComunicadoDeDesligamento || comunicado instanceof ComunicadoDeRestart));
+
+
+                    if(comunicado instanceof ComunicadoDeRestart)
+                    {
+                        servidor.envie();
+                        comunicado=null;
+
+                        System.out.println("restart01");
+
+
                     }
                 }
 			}
 			catch (Exception erro)
 			{}
         }
+    }
+
+    private void fimDeJogo()
+    {
+        try
+        {
+            servidor.envie();
+            System.out.println("Você quer jogar novamente, ou encerrar a partida");
+            System.out.println("R. Jogar novamente");
+            System.out.println("E. Encerrar servidor");
+            String opcao;
+            do
+            {
+                opcao = (Teclado.getUmString().toLowerCase());
+            }
+            while (!(opcao.equals("r") || opcao.equals("e")));
+
+            switch (opcao)
+            {
+                case "r": servidor.receba(new ComunicadoDeRestart()); break;
+                case "e": servidor.receba(new ComunicadoDeDesligamento()); break;
+            }
+        }
+        catch(Exception e){}
     }
 }

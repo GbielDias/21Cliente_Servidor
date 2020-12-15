@@ -237,6 +237,8 @@ public class Aplicacao {
                     System.err.println("\nOpção inválida");
                 }
             }
+
+
         }
         // Perguntar pro dono da partida se ele quer jogar novamente ou sair do programa
             try
