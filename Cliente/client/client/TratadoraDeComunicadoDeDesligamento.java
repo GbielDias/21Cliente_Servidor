@@ -27,6 +27,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 {
                     System.out.println("\nO servidor vai ser desligado agora;");
                     System.err.println("volte mais tarde!\n");
+                    servidor.encerrar();
                     System.exit(0);
                 }
                 else if(comunicado instanceof ComunicadoDeVitoria)
