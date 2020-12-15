@@ -49,7 +49,7 @@ public class Instanciacao
         try {
             ret = new ObjectInputStream(conexao.getInputStream());
         } catch (IOException err) {
-            System.err.println("O servidor está cheio, volte mais tarde");
+            System.err.println("O servidor está cheio, volte mais tarde !");
             System.exit(0);
         }  catch (Exception err) {
             throw new Exception("Ocorreu um erro na instanciação do \"receptor\".");

@@ -52,7 +52,7 @@ public class AceitadoraDeConexao extends Thread{
 			{
 				try {
 					conexao.close();
-
+					continue;
 				}catch (Exception e){
 
 				}
@@ -63,7 +63,10 @@ public class AceitadoraDeConexao extends Thread{
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 
+				synchronized (gerenciadoraDeRodada)
+				{
 				gerenciadoraDeRodada.addSupervisora(supervisora);
+				}
 			}
 			catch (Exception e)
 			{
@@ -82,7 +85,7 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() == 2 ) //TODO Colocar o num exato de usuario
+				if (usuarios.size() == 3 ) //TODO Colocar o num exato de usuario
 				{
 					try
 					{

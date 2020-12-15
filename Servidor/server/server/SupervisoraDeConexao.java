@@ -169,6 +169,7 @@ public class SupervisoraDeConexao extends Thread {
 			} else if (comunicado instanceof PedidoParaSair) {
 				synchronized (this.usuarios)
 				{
+					gerenciadora.proximoJogador();
 					this.usuarios.remove (this.usuario);
 				}
 				this.usuario.encerrar();
@@ -210,9 +211,14 @@ public class SupervisoraDeConexao extends Thread {
 							else if(reiniciar.getPedido().equals("DESLIGAR"))
 							{
 								for (Parceiro usuario: usuarios)
-								{
 									usuario.receba(new ComunicadoDeDesligamento());
-								}
+
+
+								for (Parceiro usuario : usuarios)
+									usuarios.remove(usuario);
+
+								System.out.println(gerenciadora.getUsuarios());
+								return;
 							}
 						}
 					}
