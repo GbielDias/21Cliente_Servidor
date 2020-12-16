@@ -39,9 +39,9 @@ public class Aplicacao {
         catch (Exception err)
         {
             System.err.println(err.getMessage());
-            System.err.println("Verefique se o servidor está ativo.\n " +
+            System.err.println("Verefique se o servidor está ativo.\n" +
                     "Se sim, verefique se o servidor e a porta provido estão corretos!\n");
-            return;
+            System.exit(0);
         }
 
         tratadoraDeDesligamento.start();
@@ -89,6 +89,9 @@ public class Aplicacao {
                 rodada = servidor.envie();
             }
             catch (Exception e){}
+
+
+            System.out.println("\n\n-----------Seu turno comecou----------");
 
 
             if(rodada instanceof  PermissaoDeRodada)

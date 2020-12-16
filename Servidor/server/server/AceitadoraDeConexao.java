@@ -11,6 +11,7 @@ public class AceitadoraDeConexao extends Thread{
 	private ArrayList<Parceiro> usuarios;
 	private GerenciadoraDeRodada gerenciadoraDeRodada;
 	private Dealer dealer;
+	private Boolean isComecou = false;
 
 	public AceitadoraDeConexao(String porta, ArrayList<Parceiro> usuarios) throws Exception {
 		if(porta == null)
@@ -63,7 +64,7 @@ public class AceitadoraDeConexao extends Thread{
 			SupervisoraDeConexao supervisora = null;
 
 			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada,isComecou);
 
 				synchronized (gerenciadoraDeRodada)
 				{
@@ -87,17 +88,29 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() == 3 ) //TODO Colocar o num exato de usuario
+				if (usuarios.size() == 3 && !isComecou) //TODO Colocar o num exato de usuario
 				{
+					isComecou = true;
 					try
 					{
 						for (Parceiro usuario : usuarios)
 							usuario.receba(new ComunicadoDeComecar());
 
-
-
 					} catch (Exception e) {}
 
+				}
+				else if (isComecou)
+				{
+					try
+					{
+						if (usuarios.size() ==2)
+						usuarios.get(1).receba(new ComunicadoDeComecar());
+						else
+							if (usuarios.size() ==3)
+								usuarios.get(2).receba(new ComunicadoDeComecar());
+					}
+					catch (Exception e)
+					{}
 				}
 			}
 

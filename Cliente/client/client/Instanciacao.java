@@ -23,10 +23,12 @@ public class Instanciacao
                 porta = Integer.parseInt(args[1]);
 
             ret = new Socket(host, porta);
-        } catch (IOException err) {
-            System.exit(0);
+        } catch (IOException err)
+        {
             throw new Exception("O servidor está cheio");
-        } catch (Exception err) {
+        }
+        catch (Exception err)
+        {
             throw new Exception("Ocorreu um erro na instanciação de \"conexao\".");
         }
 

@@ -39,6 +39,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                 }else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
+                    System.out.println("\nAguarde o Dono do Jogo");
 
                     servidor.envie();
 
@@ -59,14 +60,14 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                             servidor.receba(new Pedido(null, "DESLIGAR"));
 
 
-                    } else {
-                        System.out.println("\nAguarde o Dono do Jogo");
                     }
 
                 }
                 else if(comunicado instanceof ComunicadoDeDerrota)
                 {
                     System.out.println("\nVocê perdeu :( Alguém já venceu a partida");
+
+                    System.out.println("\nAguarde o Dono do Jogo");
 
                     servidor.envie();
 
@@ -88,9 +89,12 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                             servidor.receba(new Pedido(null, "DESLIGAR"));
 
 
-                    } else {
-                        System.out.println("\nAguarde o Dono do Jogo");
                     }
+                }
+                else if(servidor.espiar() instanceof ComunicadoDeReinicio)
+                {
+                    servidor.envie();
+                    System.out.println("A partida foi reiniciada. Bom jogo!!!");
                 }
 			}
 			catch (Exception erro)
