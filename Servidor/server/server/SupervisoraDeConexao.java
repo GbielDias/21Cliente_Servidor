@@ -202,12 +202,16 @@ public class SupervisoraDeConexao extends Thread {
 
 							if(reiniciar.getPedido().equals("REINICIAR"))
 							{
-
-
 								dealer.resetDealer(); //Acredito que essa parte não vá ficar aqui e sim em outro for para ser mandada pra todos os jogadores
 								gerenciadora.resetarMao(dealer);
 								gerenciadora.setJ(0);
-								//vezDoUsuario();
+
+								synchronized (usuarios)
+								{
+									for (Parceiro par:usuarios)
+										par.receba(new ComunicadoDeReinicio());
+								}
+
 								return;
 							}
 							else if(reiniciar.getPedido().equals("DESLIGAR"))
