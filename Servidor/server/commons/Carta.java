@@ -41,9 +41,11 @@ public class Carta extends Comunicado {
 
 		Carta carta = (Carta) o;
 
-		if (this.pontos != carta.pontos) return false;
+		if (this.pontos != carta.pontos)
+			return false;
 
-		if (!this.simbolo.equals(carta.simbolo)) return false;
+		if (!this.simbolo.equals(carta.simbolo))
+			return false;
 
 		return nome.equals(carta.nome);
 	}
@@ -57,6 +59,6 @@ public class Carta extends Comunicado {
 		result = 31 * result + this.nome.hashCode();
 		result = 31 * result + this.pontos;
 
-		return result;
+		return Math.abs(result);
 	}
 }

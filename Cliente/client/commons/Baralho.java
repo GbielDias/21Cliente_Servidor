@@ -67,7 +67,7 @@ public class Baralho implements Cloneable{
 		for (Carta carta: baralho)
 			ret = ret * 3 + carta.hashCode();
 
-		return ret;
+		return Math.abs(ret);
 	}
 
 	@Override

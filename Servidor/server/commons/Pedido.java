@@ -43,6 +43,6 @@ public class Pedido extends Comunicado {
         result = 11 * result + mao.hashCode();
         result = 31 * result + pedido.hashCode();
 
-        return result;
+        return Math.abs(result);
     }
 }

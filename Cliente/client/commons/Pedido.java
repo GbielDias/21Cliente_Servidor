@@ -6,6 +6,7 @@ public class Pedido extends Comunicado {
     private String pedido;
 
     public Pedido(MaoDoJogador mao, String pedido)throws Exception {
+
         if(pedido == null || pedido.isEmpty())
             throw new Exception("Pedido vazio");
 
@@ -42,6 +43,6 @@ public class Pedido extends Comunicado {
         result = 11 * result + mao.hashCode();
         result = 31 * result + pedido.hashCode();
 
-        return result;
+        return Math.abs(result);
     }
 }

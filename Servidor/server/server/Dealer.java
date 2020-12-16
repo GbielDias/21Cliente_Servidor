@@ -51,7 +51,9 @@ public class Dealer {
 
 		Dealer dealer = (Dealer) o;
 
-		if (!baralho.equals(dealer.baralho)) return false;
+		if (!baralho.equals(dealer.baralho))
+			return false;
+
 		return descartada.equals(dealer.descartada);
 	}
 
@@ -62,6 +64,12 @@ public class Dealer {
 
 		result = 11 * result + baralho.hashCode();
 		result = 31 * result + descartada.hashCode();
-		return result;
+
+		return Math.abs(result);
+	}
+
+	@Override
+	public String toString(){
+		return "Baralho: " + baralho + "\nÚltima descartada: " + descartada;
 	}
 }

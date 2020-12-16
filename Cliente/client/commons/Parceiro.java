@@ -110,13 +110,15 @@ public class Parceiro {
 		result = 31 * result + proximoComunicado.hashCode();
 		result = 31 * result + mutuaExclusao.hashCode();
 
-		return result;
+		return Math.abs(result);
 	}
 
 
 	//TODO VERIFICACOES de Getters e Setters - Parceiro
 
-	public Comunicado getProximoComunicado() {return proximoComunicado;}
+	public Comunicado getProximoComunicado() {
+		return proximoComunicado;
+	}
 
 	public ObjectInputStream getReceptor() {
 		return receptor;
