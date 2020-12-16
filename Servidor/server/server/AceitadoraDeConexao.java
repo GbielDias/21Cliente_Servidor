@@ -48,13 +48,15 @@ public class AceitadoraDeConexao extends Thread{
 				continue;
 			}
 
-			if(usuarios.size() == 3)
-			{
-				try {
-					conexao.close();
-					continue;
-				}catch (Exception e){
+			synchronized (usuarios){
+				if(usuarios.size() == 3)
+				{
+					try {
+						conexao.close();
+						continue;
+					}catch (Exception e){
 
+					}
 				}
 			}
 

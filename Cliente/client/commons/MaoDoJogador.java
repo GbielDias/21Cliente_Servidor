@@ -125,6 +125,6 @@ public class MaoDoJogador extends Comunicado implements Cloneable
        for (Carta crt : mao)
         ret = 13 * ret + crt.hashCode();
 
-       return ret;
+       return Math.abs(ret);
     }
 }

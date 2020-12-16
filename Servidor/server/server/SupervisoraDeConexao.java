@@ -202,6 +202,8 @@ public class SupervisoraDeConexao extends Thread {
 
 							if(reiniciar.getPedido().equals("REINICIAR"))
 							{
+
+
 								dealer.resetDealer(); //Acredito que essa parte não vá ficar aqui e sim em outro for para ser mandada pra todos os jogadores
 								gerenciadora.resetarMao(dealer);
 								gerenciadora.setJ(0);
@@ -210,14 +212,19 @@ public class SupervisoraDeConexao extends Thread {
 							}
 							else if(reiniciar.getPedido().equals("DESLIGAR"))
 							{
-								for (Parceiro usuario: usuarios)
-									usuario.receba(new ComunicadoDeDesligamento());
+								for (Parceiro usuario: usuarios){
+
+									usuario.receba(new ComunicadoDeFimDeJogo());
+								}
 
 
-								for (Parceiro usuario : usuarios)
-									usuarios.remove(usuario);
+								for (int j = usuarios.size() - 1;  j >= 0; j--){
+									usuarios.remove(j);
+								}
 
-								System.out.println(gerenciadora.getUsuarios());
+								dealer.resetDealer();
+								gerenciadora.setJ(0);
+
 								return;
 							}
 						}

@@ -122,8 +122,9 @@ public class Aplicacao {
                 }catch (Exception e) {
                 }
 
-                System.out.println("\nSuas cartas: " + maoDoJogador);
-                System.out.println("Ultima descartada: " + descarta);
+
+                System.out.print("\nSuas cartas: " + maoDoJogador + "\nUltima descartada: ");
+                System.out.println(descarta.getNome().equals("Nula") ? " " : descarta);
 
                 String opcao = "";
                 for(;;) {
@@ -211,11 +212,7 @@ public class Aplicacao {
                         do {
                             System.out.print("Escolha o nome (nome-simbolo) uma carta para ser descartada: ");
 
-
                             opcao = Teclado.getUmString().toUpperCase();
-                            System.out.println(opcao + " " + maoDoJogador.contemCarta(opcao));
-
-
                         } while (!maoDoJogador.contemCarta(opcao));
 
                         servidor.receba(new Pedido(maoDoJogador, opcao));

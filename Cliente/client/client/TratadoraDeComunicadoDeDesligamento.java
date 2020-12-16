@@ -31,8 +31,12 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                     System.err.println("Volte mais tarde!\n");
                     servidor.encerrar();
                     System.exit(0);
-                }
-                else if(comunicado instanceof ComunicadoDeVitoria)
+                } else if (comunicado instanceof ComunicadoDeFimDeJogo){
+                    System.err.println("\nA partida foi encerrada...");
+                    servidor.encerrar();
+                    System.exit(0);
+
+                }else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
 
@@ -40,7 +44,6 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
                     if(servidor.espiar() instanceof ComunicadoDeRestart)
                     {
-                        System.out.println("Chegou o restart");
                         servidor.envie();
 
                         String opcao;
@@ -56,12 +59,14 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                             servidor.receba(new Pedido(null, "DESLIGAR"));
 
 
+                    } else {
+                        System.out.println("\nAguarde o Dono do Jogo");
                     }
 
                 }
                 else if(comunicado instanceof ComunicadoDeDerrota)
                 {
-                    System.out.println("Você perdeu :( Alguém já venceu a partida");
+                    System.out.println("\nVocê perdeu :( Alguém já venceu a partida");
 
                     servidor.envie();
 
@@ -83,6 +88,8 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
                             servidor.receba(new Pedido(null, "DESLIGAR"));
 
 
+                    } else {
+                        System.out.println("\nAguarde o Dono do Jogo");
                     }
                 }
 			}
