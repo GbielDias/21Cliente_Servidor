@@ -17,8 +17,9 @@ public class SupervisoraDeConexao extends Thread {
 	public MaoDoJogador mao;
 	private ObjectOutputStream transmissor;
 	private ObjectInputStream receptor;
+	private Boolean isComecou;
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora, Boolean isComecou) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -169,7 +170,9 @@ public class SupervisoraDeConexao extends Thread {
 			} else if (comunicado instanceof PedidoParaSair) {
 				synchronized (this.usuarios)
 				{
+					if (this.usuario == usuarios.get(2))
 					gerenciadora.proximoJogador();
+
 					this.usuarios.remove (this.usuario);
 				}
 				this.usuario.encerrar();
