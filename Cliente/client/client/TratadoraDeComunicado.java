@@ -3,11 +3,11 @@ import commons.*;
 
 import java.util.Locale;
 
-public class TratadoraDeComunicadoDeDesligamento extends Thread
+public class TratadoraDeComunicado extends Thread
 {
     private Parceiro servidor;
 
-    public TratadoraDeComunicadoDeDesligamento(Parceiro servidor) throws Exception
+    public TratadoraDeComunicado(Parceiro servidor) throws Exception
     {
         if (servidor==null)
             throw new Exception ("Porta invalida");
@@ -21,7 +21,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
         for(;;)
         {
             try {
-                comunicado = servidor.espiar();
+                comunicado = servidor.espiar(); // Permissao
             }catch(Exception e){}
             try
 			{
