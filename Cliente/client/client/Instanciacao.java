@@ -71,10 +71,10 @@ public class Instanciacao
         return ret;
     }
 
-    public static TratadoraDeComunicadoDeDesligamento instanciarTratadora(Parceiro servidor) throws Exception {
-        TratadoraDeComunicadoDeDesligamento ret = null;
+    public static TratadoraDeComunicado instanciarTratadora(Parceiro servidor) throws Exception {
+        TratadoraDeComunicado ret = null;
         try {
-            ret = new TratadoraDeComunicadoDeDesligamento(servidor);
+            ret = new TratadoraDeComunicado(servidor);
         } catch (Exception err) {
             throw new Exception("Ocorreu um erro na instanciação da \"tratadoraDeDesligamento\"");
         }
