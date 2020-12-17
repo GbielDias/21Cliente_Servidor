@@ -74,6 +74,9 @@ public class GerenciadoraDeRodada {
 
     @Override
     public boolean equals(Object obj) {
+
+        if (this == obj) return true;
+
         if(obj == null)
             return false;
 
@@ -111,7 +114,7 @@ public class GerenciadoraDeRodada {
             hash = hash * 7 + usuarios.get(i).hashCode();
         }
 
-        return hash;
+        return Math.abs(hash);
     }
 
 }

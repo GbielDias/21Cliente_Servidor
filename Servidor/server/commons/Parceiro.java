@@ -110,7 +110,8 @@ public class Parceiro {
 		result = 31 * result + proximoComunicado.hashCode();
 		result = 31 * result + mutuaExclusao.hashCode();
 
-		return result;
+
+		return Math.abs(result);
 	}
 
 

@@ -64,7 +64,7 @@ public class AceitadoraDeConexao extends Thread{
 			SupervisoraDeConexao supervisora = null;
 
 			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada,isComecou);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 
 				synchronized (gerenciadoraDeRodada)
 				{
@@ -115,5 +115,60 @@ public class AceitadoraDeConexao extends Thread{
 			}
 
 		}
+	}
+
+	@Override
+	public String toString ()
+	{
+		String ret ="";
+
+		ret = "Servidor: " + servidor + "\nPartida iniciada: " + isComecou + "\n Dealer:" + dealer+ "\n Gerenciadora Da Rodada:" + gerenciadoraDeRodada;
+
+		return ret;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+
+		if (o == null) return false;
+
+		if (this.getClass() != o.getClass()) return false;
+
+		AceitadoraDeConexao act = (AceitadoraDeConexao) o;
+
+		if (!this.servidor.equals(act.servidor)) return false;
+
+		if (!this.gerenciadoraDeRodada.equals(act.gerenciadoraDeRodada)) return false;
+
+		if(!this.isComecou.equals(act.isComecou)) return false;
+
+		if (!this.dealer.equals(act.dealer)) return false;
+
+		if (this.usuarios.size() != act.usuarios.size()) return false;
+
+		for (int i = 0; i < this.usuarios.size() ; i++)
+			if (!this.usuarios.get(i).equals(act.usuarios.get(i)))
+				return false;
+
+			return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int ret = 456;
+
+		ret = ret * 7 + this.dealer.hashCode();
+		ret = ret * 7 + this.isComecou.hashCode();
+		ret = ret * 7 + this.gerenciadoraDeRodada.hashCode();
+		ret = ret * 7 + this.servidor.hashCode();
+
+		for (int i = 0; i < usuarios.size(); i++){
+			ret = ret * 7 + usuarios.get(i).hashCode();
+		}
+
+		return Math.abs(ret);
 	}
 }

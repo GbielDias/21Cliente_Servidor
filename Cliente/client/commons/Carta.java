@@ -57,6 +57,6 @@ public class Carta extends Comunicado {
 		result = 31 * result + this.nome.hashCode();
 		result = 31 * result + this.pontos;
 
-		return result;
+		return Math.abs(result);
 	}
 }

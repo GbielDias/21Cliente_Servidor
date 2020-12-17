@@ -62,6 +62,7 @@ public class Dealer {
 
 		result = 11 * result + baralho.hashCode();
 		result = 31 * result + descartada.hashCode();
-		return result;
+
+		return Math.abs(result);
 	}
 }

@@ -4,6 +4,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.Semaphore;
 
 
@@ -17,9 +18,8 @@ public class SupervisoraDeConexao extends Thread {
 	public MaoDoJogador mao;
 	private ObjectOutputStream transmissor;
 	private ObjectInputStream receptor;
-	private Boolean isComecou;
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora, Boolean isComecou) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -251,7 +251,63 @@ public class SupervisoraDeConexao extends Thread {
 		}
 	}
 
-	public MaoDoJogador getMaoDoJogador() {
-		return mao;
+	@Override
+	public String toString() //TODO Implementar toString na Supervisora
+	{
+		String ret = "";
+
+
+
+		return ret;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+
+		if (o == null || getClass() != o.getClass()) return false;
+
+		SupervisoraDeConexao sup = (SupervisoraDeConexao) o;
+
+		if (!this.usuario.equals(sup.usuario)) return false;
+
+		if (!this.mao.equals(sup.mao)) return false;
+
+		if (!this.conexao.equals(sup.conexao)) return false;
+
+		if (!this.dealer.equals(sup.dealer)) return false;
+
+		if (!this.gerenciadora.equals(sup.gerenciadora)) return  false;
+
+		if (!this.receptor.equals(sup.receptor)) return false;
+
+		if (!this.transmissor.equals(sup.transmissor)) return false;
+
+		if (this.usuarios.size() != sup.usuarios.size()) return false;
+
+		for(int i = 0; i < this.usuarios.size();i++)
+			if (!this.usuarios.get(i).equals(sup.usuarios.get(i)))
+				return false;
+
+			return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int ret = 255;
+
+		ret = ret * 11 + this.gerenciadora.hashCode();
+		ret = ret * 11 + this.usuario.hashCode();
+		ret = ret * 11 + this.dealer.hashCode();
+		ret = ret * 11 + this.mao.hashCode();
+		ret = ret * 11 + this.conexao.hashCode();
+		ret = ret * 11 + this.receptor.hashCode();
+		ret = ret * 11 + this.transmissor.hashCode();
+
+		for (Parceiro parc:usuarios)
+			ret = ret * 11 + parc.hashCode();
+
+		return Math.abs(ret);
 	}
 }
