@@ -102,4 +102,31 @@ public class TratadoraDeComunicado extends Thread
         }
     }
 
+
+    @Override
+    public String toString()
+    {
+        return "Servidor: "+ servidor;
+    }
+
+    public boolean equals (Object o){
+        if (this == o) return true;
+
+        if (o == null) return false;
+
+        if (this.getClass() != o.getClass()) return false;
+
+        TratadoraDeComunicado tdc = (TratadoraDeComunicado) o;
+
+        return this.servidor.equals(tdc.servidor);
+    }
+
+    public int hashCode()
+    {
+        int ret = 258;
+
+        ret = ret * 11 + servidor.hashCode();
+
+        return Math.abs(ret);
+    }
 }
