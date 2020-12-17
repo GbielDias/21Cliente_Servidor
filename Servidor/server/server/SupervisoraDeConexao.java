@@ -254,10 +254,7 @@ public class SupervisoraDeConexao extends Thread {
 	@Override
 	public String toString() //TODO Implementar toString na Supervisora
 	{
-		String ret = "";
-
-
-
+		String ret = "Supervisora do usuário: "+ usuario;
 		return ret;
 	}
 
