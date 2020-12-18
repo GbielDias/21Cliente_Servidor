@@ -38,6 +38,9 @@ public class AceitadoraDeConexao extends Thread{
 	public void run() {
 
 		while(true) {
+			if (isComecou && usuarios.size()==1)
+				isComecou=false;
+
 			Socket conexao;
 
 			try
