@@ -71,5 +71,6 @@ public class Dealer {
 	@Override
 	public String toString(){
 		return "Baralho: " + baralho + "\nÚltima descartada: " + descartada;
+
 	}
 }

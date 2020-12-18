@@ -25,7 +25,7 @@ public class Aplicacao {
         ObjectOutputStream transmissor = null;
         ObjectInputStream receptor = null;
         Parceiro servidor = null;
-        TratadoraDeComunicadoDeDesligamento tratadoraDeDesligamento = null;
+        TratadoraDeComunicado tratadoraDeComunicado = null;
         MaoDoJogador maoDoJogador = null;
 
         try
@@ -34,7 +34,7 @@ public class Aplicacao {
             transmissor = Instanciacao.instanciarTransmissor(conexao);
             receptor = Instanciacao.instanciarReceptor(conexao);
             servidor = Instanciacao.instanciarServidor(conexao, receptor, transmissor);
-            tratadoraDeDesligamento = Instanciacao.instanciarTratadora(servidor);
+            tratadoraDeComunicado = Instanciacao.instanciarTratadora(servidor);
         }
         catch (Exception err)
         {
@@ -44,7 +44,7 @@ public class Aplicacao {
             System.exit(0);
         }
 
-        tratadoraDeDesligamento.start();
+        tratadoraDeComunicado.start();
 
         //Aguarde os usuarios entrarem
         System.out.println("Aguarde os jogares entrarem na partida");

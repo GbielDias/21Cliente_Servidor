@@ -23,9 +23,6 @@ public class Instanciacao
                 porta = Integer.parseInt(args[1]);
 
             ret = new Socket(host, porta);
-        } catch (IOException err)
-        {
-            throw new Exception("O servidor está cheio");
         }
         catch (Exception err)
         {
@@ -71,10 +68,10 @@ public class Instanciacao
         return ret;
     }
 
-    public static TratadoraDeComunicadoDeDesligamento instanciarTratadora(Parceiro servidor) throws Exception {
-        TratadoraDeComunicadoDeDesligamento ret = null;
+    public static TratadoraDeComunicado instanciarTratadora(Parceiro servidor) throws Exception {
+        TratadoraDeComunicado ret = null;
         try {
-            ret = new TratadoraDeComunicadoDeDesligamento(servidor);
+            ret = new TratadoraDeComunicado(servidor);
         } catch (Exception err) {
             throw new Exception("Ocorreu um erro na instanciação da \"tratadoraDeDesligamento\"");
         }
