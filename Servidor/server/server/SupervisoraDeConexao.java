@@ -17,9 +17,8 @@ public class SupervisoraDeConexao extends Thread {
 	public MaoDoJogador mao;
 	private ObjectOutputStream transmissor;
 	private ObjectInputStream receptor;
-	private Boolean isComecou;
 
-	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora, Boolean isComecou) throws Exception {
+	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
 		if (conexao == null)
 			throw new Exception("Conexao ausente");
 
@@ -28,6 +27,9 @@ public class SupervisoraDeConexao extends Thread {
 
 		if (dealer == null)
 			throw new Exception("Dealer Invalido");
+
+		if (gerenciadora == null)
+			throw new Exception("Gerenciadora Invalida");
 
 		this.conexao = conexao;
 		this.usuarios = usuarios;
@@ -94,10 +96,9 @@ public class SupervisoraDeConexao extends Thread {
 			System.out.println(e.getMessage());
 		}
 
-		Comunicado comunicado;
 		while(true) {
 			try {
-				if (gerenciadora != null && gerenciadora.pode(usuario)) {
+				if (gerenciadora.pode(usuario)) {
 					vezDoUsuario();
 				}
 			}
@@ -142,7 +143,6 @@ public class SupervisoraDeConexao extends Thread {
 						usuario.receba(mao);
 						break;
 					case "D":
-						//Estou usando Pedido para informar o cliente, porém isso poderá mudar
 						if(dealer.getDescartada() == null){
 							mao = dealer.comprarBaralho(pedido.getMao());
 
@@ -205,7 +205,7 @@ public class SupervisoraDeConexao extends Thread {
 
 							if(reiniciar.getPedido().equals("REINICIAR"))
 							{
-								dealer.resetDealer(); //Acredito que essa parte não vá ficar aqui e sim em outro for para ser mandada pra todos os jogadores
+								dealer.resetDealer();
 								gerenciadora.resetarMao(dealer);
 								gerenciadora.setJ(0);
 

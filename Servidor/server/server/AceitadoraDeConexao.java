@@ -64,7 +64,7 @@ public class AceitadoraDeConexao extends Thread{
 			SupervisoraDeConexao supervisora = null;
 
 			try {
-				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada,isComecou);
+				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 
 				synchronized (gerenciadoraDeRodada)
 				{
@@ -88,7 +88,7 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() == 3 && !isComecou) //TODO Colocar o num exato de usuario
+				if (usuarios.size() == 3 && !isComecou)
 				{
 					isComecou = true;
 					try
