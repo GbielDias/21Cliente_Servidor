@@ -39,7 +39,7 @@ public class TratadoraDeComunicado extends Thread
                 }else if(comunicado instanceof ComunicadoDeVitoria)
                 {
                     System.out.println("Você venceu a partida");
-                    System.out.println("\nAguarde o Dono do Jogo");
+                    System.out.println("\nAguarde o Dono do Jogo escolher jogar novamente ou encerrar a partida...");
 
                     servidor.envie();
 
@@ -67,13 +67,12 @@ public class TratadoraDeComunicado extends Thread
                 {
                     System.out.println("\nVocê perdeu :( Alguém já venceu a partida");
 
-                    System.out.println("\nAguarde o Dono do Jogo");
+                    System.out.println("\nAguarde o Dono do Jogo escolher jogar novamente ou encerrar a partida...");
 
                     servidor.envie();
 
                     if(servidor.espiar() instanceof ComunicadoDeRestart)
                     {
-                        System.out.println("Chegou o restart");
                         servidor.envie();
 
                         String opcao;
