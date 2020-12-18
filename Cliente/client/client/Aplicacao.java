@@ -91,7 +91,7 @@ public class Aplicacao {
             catch (Exception e){}
 
 
-            System.out.println("\n\n-----------Seu turno comecou----------");
+            System.out.println("\n-----------Seu turno comecou----------");
 
 
             if(rodada instanceof  PermissaoDeRodada)

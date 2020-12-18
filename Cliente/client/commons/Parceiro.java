@@ -116,7 +116,9 @@ public class Parceiro {
 
 	//TODO VERIFICACOES de Getters e Setters - Parceiro
 
-	public Comunicado getProximoComunicado() {return proximoComunicado;}
+	public Comunicado getProximoComunicado() {
+		return proximoComunicado;
+	}
 
 	public ObjectInputStream getReceptor() {
 		return receptor;

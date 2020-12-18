@@ -66,9 +66,9 @@ public class AceitadoraDeConexao extends Thread{
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 
-				synchronized (gerenciadoraDeRodada)
+				synchronized (gerenciadoraDeRodada.getSupervisoras())
 				{
-				gerenciadoraDeRodada.addSupervisora(supervisora);
+					gerenciadoraDeRodada.addSupervisora(supervisora);
 				}
 			}
 			catch (Exception e)
@@ -88,7 +88,7 @@ public class AceitadoraDeConexao extends Thread{
 
 			synchronized (usuarios)
 			{
-				if (usuarios.size() == 3 && !isComecou) //TODO Colocar o num exato de usuario
+				if (usuarios.size() == 3 && !isComecou)
 				{
 					isComecou = true;
 					try

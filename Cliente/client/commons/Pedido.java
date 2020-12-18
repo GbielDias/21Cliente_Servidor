@@ -6,6 +6,7 @@ public class Pedido extends Comunicado {
     private String pedido;
 
     public Pedido(MaoDoJogador mao, String pedido)throws Exception {
+
         if(pedido == null || pedido.isEmpty())
             throw new Exception("Pedido vazio");
 

@@ -18,6 +18,7 @@ public class SupervisoraDeConexao extends Thread {
 	public MaoDoJogador mao;
 	private ObjectOutputStream transmissor;
 	private ObjectInputStream receptor;
+	public boolean fim = true;
 
 	public SupervisoraDeConexao(Socket conexao, ArrayList<Parceiro> usuarios, Dealer dealer, GerenciadoraDeRodada gerenciadora) throws Exception {
 		if (conexao == null)
@@ -28,6 +29,9 @@ public class SupervisoraDeConexao extends Thread {
 
 		if (dealer == null)
 			throw new Exception("Dealer Invalido");
+
+		if (gerenciadora == null)
+			throw new Exception("Gerenciadora Invalida");
 
 		this.conexao = conexao;
 		this.usuarios = usuarios;
@@ -94,10 +98,9 @@ public class SupervisoraDeConexao extends Thread {
 			System.out.println(e.getMessage());
 		}
 
-		Comunicado comunicado;
-		while(true) {
+		while(fim) {
 			try {
-				if (gerenciadora != null && gerenciadora.pode(usuario)) {
+				if (gerenciadora.pode(usuario)) {
 					vezDoUsuario();
 				}
 			}
@@ -131,7 +134,7 @@ public class SupervisoraDeConexao extends Thread {
 			else if (comunicado instanceof Pedido){
 				Pedido pedido = (Pedido) comunicado;
 
-				switch (pedido.getPedido()){
+				switch (pedido.getPedido()) {
 					case "C":
 						mao = dealer.comprarBaralho(pedido.getMao());
 						usuario.receba(mao);
@@ -142,40 +145,27 @@ public class SupervisoraDeConexao extends Thread {
 						usuario.receba(mao);
 						break;
 					case "D":
-						//Estou usando Pedido para informar o cliente, porém isso poderá mudar
-						if(dealer.getDescartada() == null){
-							mao = dealer.comprarBaralho(pedido.getMao());
 
-							usuario.receba(new Pedido(mao, "Você recebeu uma carta do baralho porque não há descartada"));
-							usuario.receba(mao);
+						mao = dealer.comprarDescartada(pedido.getMao());
+						usuario.receba(mao);
 
-							pedido = (Pedido) usuario.envie();
+						pedido = (Pedido) usuario.envie();
 
-							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
-							usuario.receba(mao);
-							break;
-						}
-						else
-						{
-							mao = dealer.comprarDescartada(pedido.getMao());
-							usuario.receba(mao);
+						mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
+						usuario.receba(mao);
 
-							pedido = (Pedido) usuario.envie();
-
-							mao = dealer.descartar(pedido.getMao(), pedido.getPedido());
-							usuario.receba(mao);
-						}
 						break;
 				}
 			} else if (comunicado instanceof PedidoParaSair) {
 				synchronized (this.usuarios)
 				{
-					if (this.usuario == usuarios.get(2))
+					if (this.usuario == usuarios.get(usuarios.size()-1))
 					gerenciadora.proximoJogador();
 
 					this.usuarios.remove (this.usuario);
 				}
 				this.usuario.encerrar();
+				fim = false;
 				return;
 			}
 
@@ -205,25 +195,22 @@ public class SupervisoraDeConexao extends Thread {
 
 							if(reiniciar.getPedido().equals("REINICIAR"))
 							{
-								dealer.resetDealer(); //Acredito que essa parte não vá ficar aqui e sim em outro for para ser mandada pra todos os jogadores
+								dealer.resetDealer();
 								gerenciadora.resetarMao(dealer);
 								gerenciadora.setJ(0);
 
-								synchronized (usuarios)
-								{
-									for (Parceiro par:usuarios)
-										par.receba(new ComunicadoDeReinicio());
-								}
+								for (Parceiro par:usuarios)
+									par.receba(new ComunicadoDeReinicio());
 
 								return;
 							}
 							else if(reiniciar.getPedido().equals("DESLIGAR"))
 							{
 								for (Parceiro usuario: usuarios){
-
 									usuario.receba(new ComunicadoDeFimDeJogo());
 								}
 
+								gerenciadora.fimThreadSup();
 
 								for (int j = usuarios.size() - 1;  j >= 0; j--){
 									usuarios.remove(j);
@@ -240,7 +227,8 @@ public class SupervisoraDeConexao extends Thread {
 			}
 			gerenciadora.proximoJogador();
 
-		}catch(Exception e) {
+		}
+		catch(Exception e) {
 			try
 			{
 				transmissor.close();
@@ -251,8 +239,9 @@ public class SupervisoraDeConexao extends Thread {
 		}
 	}
 
+
 	@Override
-	public String toString() //TODO Implementar toString na Supervisora
+	public String toString()
 	{
 		String ret = "Supervisora do usuário: "+ usuario;
 		return ret;
