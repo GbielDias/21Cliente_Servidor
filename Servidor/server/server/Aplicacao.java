@@ -43,7 +43,7 @@ public class Aplicacao {
 				System.err.println(e.getMessage());
 			}
 
-			if (comando.equals("desativar") || comando.equals("desconectar")) {
+			if (comando.equals("desativar")) {
 				synchronized (usuarios) {
 					ComunicadoDeDesligamento comunicadoDeDesligamento =
 							new ComunicadoDeDesligamento();

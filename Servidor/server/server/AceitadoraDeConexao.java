@@ -66,9 +66,9 @@ public class AceitadoraDeConexao extends Thread{
 			try {
 				supervisora = new SupervisoraDeConexao(conexao, usuarios, dealer, gerenciadoraDeRodada);
 
-				synchronized (gerenciadoraDeRodada)
+				synchronized (gerenciadoraDeRodada.getSupervisoras())
 				{
-				gerenciadoraDeRodada.addSupervisora(supervisora);
+					gerenciadoraDeRodada.addSupervisora(supervisora);
 				}
 			}
 			catch (Exception e)

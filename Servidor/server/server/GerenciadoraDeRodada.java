@@ -21,7 +21,7 @@ public class GerenciadoraDeRodada {
     public void proximoJogador() {
         synchronized (usuarios) {
             j++;
-            if (j >= usuarios.size())
+            if (j == usuarios.size())
                 j = 0;
         }
     }
@@ -60,6 +60,20 @@ public class GerenciadoraDeRodada {
         synchronized (supervisoras){
             for (int i = 0; i < supervisoras.size(); i++){
                 supervisoras.get(i).mao = new MaoDoJogador(dealer.getBaralho());
+            }
+        }
+    }
+
+    public ArrayList<SupervisoraDeConexao> getSupervisoras()
+    {
+        return supervisoras;
+    }
+
+    public void fimThreadSup()
+    {
+        synchronized (supervisoras){
+            for (int i = 0; i < supervisoras.size(); i++){
+                supervisoras.get(i).fim = false;
             }
         }
     }

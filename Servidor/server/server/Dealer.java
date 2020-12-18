@@ -2,12 +2,12 @@ package server;
 
 import commons.*;
 
-// Aqui vai ter todos os relacionamentos entre mao e baralho
+
 public class Dealer {
 	private Baralho baralho;
 	private Carta descartada = null;
 
-	// Retirar os valores do baralho e colocar na maoDoJogador
+
 	public Dealer() {
 		baralho = new Baralho();
 	}
